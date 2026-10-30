@@ -7,3 +7,6 @@
 
 .decrypt-body{margin:0;background:#0d1015;color:#e7eaf0;font:16px/1.7 system-ui}.decrypt-panel{max-width:640px;margin:60px auto;padding:24px}.decrypt-panel a{color:#dfc384}
 .entry-body{margin:0;background:#101113;color:#d9d3c6;font:16px/1.8 system-ui}.entry-screen{box-sizing:border-box;min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px;text-align:center;background:radial-gradient(ellipse at center,#20201e 0,#101113 70%)}.entry-mark{font-size:11px;letter-spacing:5px;color:#b3a078}.entry-screen h1{font:normal 38px/1.5 "Noto Serif SC",SimSun,serif;letter-spacing:8px;margin:16px 0}.entry-screen p{font-size:14px;color:#aaa89f;margin:0}.entry-screen button{margin:20px 6px 0;padding:10px 20px;border:1px solid #555246;border-radius:5px;background:#20211f;color:#dfd6c0;font:inherit;min-height:44px;cursor:pointer}
+
+input,textarea{-webkit-user-select:text;user-select:text}
+@media(any-pointer:coarse){input:not([readonly]),textarea:not([readonly]){font-size:16px!important;min-height:32px;touch-action:manipulation}}

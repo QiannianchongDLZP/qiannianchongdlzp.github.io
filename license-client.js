@@ -1,5 +1,34 @@
 (() => {
  'use strict';
+  const textInputTarget = target => {
+    const input = target?.closest?.('input, textarea, [contenteditable="true"]');
+    if (!input || input.disabled || input.readOnly) return null;
+    return input.isContentEditable || input.tagName === 'TEXTAREA' || ['text', 'search', 'password', 'email', 'url', 'tel', 'number'].includes(input.type) ? input : null;
+  };
+  // iPad can omit the compatibility click after a touch. Focus the actual field
+  // synchronously inside the trusted gesture so WebKit may show its keyboard.
+  // Leave scrolling, selection, paste and native click behavior untouched.
+  function bindTextInputs() {
+    let touch = null, pen = null;
+    const begin = (input, id, x, y) => input && ({ input, id, x, y, moved: false });
+    const move = (press, x, y) => { if (press && Math.hypot(x - press.x, y - press.y) > 12) press.moved = true; };
+    const finish = (press, e, x, y) => {
+      if (!press || !e.isTrusted || press.moved || !press.input.isConnected || textInputTarget(e.target) !== press.input) return;
+      const r = press.input.getBoundingClientRect();
+      if (x >= r.left && x <= r.right && y >= r.top && y <= r.bottom) press.input.focus();
+    };
+    document.addEventListener('touchstart', e => { const t = e.touches[0]; touch = e.touches.length === 1 ? begin(textInputTarget(e.target), t.identifier, t.clientX, t.clientY) : null; }, { capture: true, passive: true });
+    document.addEventListener('touchmove', e => { const t = touch && [...e.touches].find(t => t.identifier === touch.id); if (t) move(touch, t.clientX, t.clientY); }, { capture: true, passive: true });
+    document.addEventListener('touchend', e => { const t = touch && [...e.changedTouches].find(t => t.identifier === touch.id); if (t) { move(touch, t.clientX, t.clientY); finish(touch, e, t.clientX, t.clientY); } touch = null; }, { capture: true, passive: true });
+    document.addEventListener('touchcancel', () => { touch = null; }, { capture: true, passive: true });
+    document.addEventListener('pointerdown', e => { if (e.pointerType === 'pen') pen = begin(textInputTarget(e.target), e.pointerId, e.clientX, e.clientY); }, true);
+    document.addEventListener('pointermove', e => { if (pen && pen.id === e.pointerId) move(pen, e.clientX, e.clientY); }, true);
+    document.addEventListener('pointerup', e => { if (pen && pen.id === e.pointerId) { move(pen, e.clientX, e.clientY); finish(pen, e, e.clientX, e.clientY); pen = null; } }, true);
+    document.addEventListener('pointercancel', () => { pen = null; }, true);
+  }
+
+bindTextInputs();
+const hasTouchKeyboard=()=>navigator.maxTouchPoints>0||matchMedia('(pointer:coarse)').matches;
  const config=window.QNC2_LICENSE_CONFIG||{},base=config.apiBase||'',playPath=config.playPath||'/play';let modal,busy=false,identityPromise,installed=false;
  async function api(path,body){
   const headers=body?{'Content-Type':'application/json','X-QNC2-Request':'1'}:{};
@@ -30,7 +59,7 @@
   layer.querySelector('h2').textContent=complete?'第一章已完成':'解锁完整故事';const previous=document.activeElement,close=()=>{if(busy)return;layer.remove();modal=null;previous?.focus();};layer.querySelector('.license-close').onclick=close;
   layer.addEventListener('keydown',e=>{if(e.key==='Escape')close();if(e.key==='Tab'){const els=[...layer.querySelectorAll('button,input')].filter(x=>!x.disabled),first=els[0],last=els.at(-1);if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}}});
   layer.querySelector('form').onsubmit=async e=>{e.preventDefault();if(busy)return;busy=true;const button=layer.querySelector('[type=submit]'),status=layer.querySelector('.license-status'),input=layer.querySelector('input');button.disabled=true;status.textContent='正在验证密钥…';try{await prove('activate',input.value);input.value='';status.textContent='解锁成功，正在继续故事…';location.replace(playPath);}catch(error){status.textContent=error.message;button.disabled=false;busy=false;}};
-  document.body.append(layer);modal=layer;layer.querySelector('input').focus();
+  document.body.append(layer);modal=layer;if(!hasTouchKeyboard())layer.querySelector('input').focus();
  }
  function install(){
  if(installed)return;installed=true;

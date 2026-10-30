@@ -12,7 +12,7 @@
   let plain;try{plain=await crypto.subtle.decrypt({name:'AES-GCM',iv:data.slice(8,20),additionalData:data.slice(0,8),tagLength:128},key,data.slice(20));}catch{throw Error('解密失败，密钥与游戏文件不匹配，或文件已被修改。');}
   status.textContent='正在进入故事…';
   const reveal='<style id="qnc2-reveal">html{background:#101113}body{visibility:hidden!important}html:after{content:"千年虫 2　·　正在载入故事…";position:fixed;inset:0;display:grid;place-items:center;background:#101113;color:#d9d3c6;font:18px/1.8 system-ui;letter-spacing:2px}</style>';
-  const html=new TextDecoder().decode(plain).replace('<head>','<head>'+reveal).replace('src="/license-client.js"','src="/license-client.js?v=20261030-entry2"');
+  const html=new TextDecoder().decode(plain).replace('<head>','<head>'+reveal).replace('src="/license-client.js"','src="/license-client.js?v=20261030-ipad1"');
   document.open();document.write(html);document.close();
  }catch(e){status.textContent=e.message||'无法解锁，请检查网络后重试。';document.getElementById('decrypt-return')?.removeAttribute('hidden');window.dispatchEvent(new Event('qnc2-entry-error'));}
 })();
