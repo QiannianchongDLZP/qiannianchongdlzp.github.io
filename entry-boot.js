@@ -17,7 +17,7 @@
   try{
    if(!await auth.resume()){showTrial();return;}
    finished=true;
-   const script=document.createElement('script');script.src='/decrypt-player.js?v=20261030-entry2';
+   const script=document.createElement('script');script.src='/decrypt-player.js?v=20261030-save1';
    script.onerror=()=>{finished=false;running=false;status.textContent='暂时无法载入故事，请重试。';actions.hidden=false;};
    document.body.append(script);
   }catch(e){

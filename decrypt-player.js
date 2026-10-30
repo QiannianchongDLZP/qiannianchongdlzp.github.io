@@ -3,9 +3,11 @@
  try{
   const auth=window.QNC2License;let permission;
   try{permission=await auth.api('/api/content-key');}catch(e){if(e.status!==401||!await auth.resume())throw e;permission=await auth.api('/api/content-key');}
-  const r=await fetch('/full-game.qnc',{cache:'no-store'});if(!r.ok)throw Error('加密游戏文件读取失败，请稍后重试。');
+  const release=window.QNC2_GAME_PACKAGE;
+  if(release&&!/^full-game-[0-9a-f]{16}\.qnc$/.test(release.file))throw Error('游戏版本信息不正确，请刷新页面。');
+  const r=await fetch('/'+(release?.file||'full-game.qnc'),{cache:'no-store'});if(!r.ok)throw Error('加密游戏文件读取失败，请稍后重试。');
   const data=new Uint8Array(await r.arrayBuffer());if(new TextDecoder().decode(data.slice(0,8))!=='QNC2ENC1'||permission.format!=='QNC2ENC1')throw Error('游戏文件格式不正确。');
-  const digest=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',data)),n=>n.toString(16).padStart(2,'0')).join('');if(digest!==permission.sha256)throw Error('游戏文件校验失败，请刷新后重试。');
+  const digest=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',data)),n=>n.toString(16).padStart(2,'0')).join('');if(digest!==(release?.sha256||permission.sha256))throw Error('游戏文件校验失败，请刷新后重试。');
   const key=await crypto.subtle.importKey('raw',bytes(permission.key),{name:'AES-GCM'},false,['decrypt']);permission.key='';
   let plain;try{plain=await crypto.subtle.decrypt({name:'AES-GCM',iv:data.slice(8,20),additionalData:data.slice(0,8),tagLength:128},key,data.slice(20));}catch{throw Error('解密失败，密钥与游戏文件不匹配，或文件已被修改。');}
   status.textContent='正在进入故事…';
