@@ -1,1 +1,1 @@
-window.QNC2_GAME_PACKAGE={"file":"full-game-2760a4cf16299c27.qnc","sha256":"2760a4cf16299c279f3a64337a4a3fec4f4d718dcf96350b26440d1f7b2f21ba"};
+window.QNC2_GAME_PACKAGE={"file":"full-game-6f4ee80ef4442d1a.qnc","sha256":"6f4ee80ef4442d1a1893317df49daf783b614fd3f61ea068891b3bf9d7713560"};
