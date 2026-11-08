@@ -920,7 +920,7 @@ table.cmp tr.sel td { outline: 2px solid #1f5fbf; outline-offset: -2px; }
 .title .feedback-entry-button:hover,.title .feedback-entry-button:focus-visible{color:#fff1c4;background:#3a2f1b;outline:2px solid #f1d28f;outline-offset:3px}
 @media(max-width:600px){.title .title-topbar .feedback-entry-button{font-size:13px;padding:8px 12px}}
 </style><link rel="stylesheet" href="/license.css?v=20261030-ipad1"></head><body class="entry-body"><main class="entry-screen"><div class="entry-mark" aria-hidden="true">Y2K · II</div><h1>千年虫 2</h1><p id="decrypt-status" role="status" aria-live="polite">正在载入故事…</p><div id="entry-actions" hidden><button id="entry-retry" type="button">重试</button><button id="entry-trial" type="button">进入免费试玩</button></div><noscript>请启用 JavaScript 后游玩。</noscript></main><script id="qnc2-trial" type="application/x-qnc2-trial">window.Y2K_PAID_MODE='trial';
-window.Y2K_LANGS=['zh'];window.Y2K_STATS_CONFIG={"game":"2-sixth-disk-paid","allowedOrigins":[],"leaderboardEndpoint":""};
+window.Y2K_LANGS=['zh'];window.Y2K_STATS_CONFIG={"endpoint":"https://qiannianchong-stats.chenhao2003.chatgpt.site/api/stats2","allowedOrigins":["https://qiannianchong2.chenhao2003.chatgpt.site","https://qiannianchongdlzp.github.io","https://qiannianchonggametwo.github.io"],"game":"2-sixth-disk-paid","leaderboardEndpoint":"","feedbackEndpoint":"https://qiannianchong-stats.chenhao2003.chatgpt.site/api/feedback?game=2-sixth-disk","feedbackAllowedOrigins":["https://qiannianchongdlzp.github.io","https://qiannianchonggametwo.github.io","https://qiannianchong2.chenhao2003.chatgpt.site"],"feedbackOnlineUrl":"https://qiannianchongdlzp.github.io/"};
 // Anonymous results are separate from story saves; only completed runs are submitted.
 (() => {
   'use strict';
@@ -1111,6 +1111,239 @@ window.Y2K_LANGS=['zh'];window.Y2K_STATS_CONFIG={"game":"2-sixth-disk-paid","all
   void flush();
 })();
 
+// Public feedback has its own anonymous ID and drafts; it never reads game saves.
+(() => {
+  'use strict';
+  const config = window.Y2K_STATS_CONFIG || {}, endpoint = config.feedbackEndpoint;
+  const enabled = !!endpoint && (config.feedbackAllowedOrigins || config.allowedOrigins || []).includes(location.origin);
+  const prefix = 'y2k2_feedback_';
+  const read = (key, fallback) => { try { return JSON.parse(localStorage.getItem(prefix + key)) ?? fallback; } catch { return fallback; } };
+  const write = (key, value) => { try { localStorage.setItem(prefix + key, JSON.stringify(value)); } catch {} };
+  const uuid = () => crypto.randomUUID ? crypto.randomUUID() : '10000000-1000-4000-8000-100000000000'.replace(/[018]/g, c => (Number(c) ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> Number(c) / 4).toString(16));
+  let visitor = read('visitor', null);
+  if (!/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(visitor || '')) { visitor = uuid(); write('visitor', visitor); }
+  let draft = read('draft', {}), pending = read('pending', null);
+  if (!draft || typeof draft !== 'object') draft = {};
+  const words = {
+    zh: { title: '评分与留言', help: '匿名发布，所有人都可以看到。评分为 1–10 分，留言选填，最多 500 字。', rating: '你的评分', message: '留言（选填）', placeholder: '聊聊你的感受，也欢迎提出建议……', publish: '匿名发布', sending: '正在发布…', sent: '已发布，谢谢你的分享。', choose: '请先选择 1–10 分。', failed: '还没收到发布成功的消息。你的留言还在，可以再试一次。', limited: '发布太频繁，请稍后再试。', retry: '重试发布', loading: '正在读取…', loadError: '留言没加载出来。点“刷新”再试一次。', refresh: '刷新', empty: '还没有评分或留言，欢迎留下第一条。', anonymous: '匿名玩家', ratingOnly: '这位玩家只留下了评分。', previous: '上一页', next: '下一页', pages: (p, n) => `第 ${p} / ${n} 页`, summary: (average, count, total) => `平均评分 ${average === null ? '—' : average.toFixed(1)} / 10 · ${count} 人评分 · ${total} 条反馈`, offline: '评分与留言仅在在线版开放。', online: '打开在线版', list: '玩家评分与留言', pageNav: '留言翻页' },
+    en: { title: 'Ratings & messages', help: 'Post anonymously for everyone to read. Rate from 1 to 10; an optional message can contain up to 500 characters.', rating: 'Your rating', message: 'Message (optional)', placeholder: 'Share your thoughts or suggestions…', publish: 'Post anonymously', sending: 'Posting…', sent: 'Posted. Thank you for sharing.', choose: 'Choose a rating from 1 to 10 first.', failed: 'Posting was not confirmed. Your text is saved; try again.', limited: 'You are posting too quickly. Please try again shortly.', retry: 'Retry posting', loading: 'Loading…', loadError: 'Unable to load feedback. Select Refresh to try again.', refresh: 'Refresh', empty: 'No ratings or messages yet. Be the first to share.', anonymous: 'Anonymous player', ratingOnly: 'This player left a rating only.', previous: 'Previous', next: 'Next', pages: (p, n) => `Page ${p} of ${n}`, summary: (average, count, total) => `Average ${average === null ? '—' : average.toFixed(1)} / 10 · ${count} rated · ${total} posts`, offline: 'Ratings and messages are available in the online edition.', online: 'Open online edition', list: 'Player ratings and messages', pageNav: 'Message pages' },
+    ja: { title: '評価とメッセージ', help: '匿名で投稿し、誰でも閲覧できます。評価は1〜10点、メッセージは任意で500文字までです。', rating: 'あなたの評価', message: 'メッセージ（任意）', placeholder: '感想や改善してほしいことなど……', publish: '匿名で投稿', sending: '投稿中…', sent: '投稿しました。ありがとうございます。', choose: '先に1〜10点の評価を選んでください。', failed: '投稿を確認できませんでした。内容を残して再試行してください。', limited: '投稿の間隔を空けて、もう一度お試しください。', retry: '投稿を再試行', loading: '読込中…', loadError: '読み込めませんでした。「更新」で再試行してください。', refresh: '更新', empty: 'まだ評価やメッセージはありません。最初の感想をどうぞ。', anonymous: '匿名プレイヤー', ratingOnly: '評価のみの投稿です。', previous: '前のページ', next: '次のページ', pages: (p, n) => `${p} / ${n} ページ`, summary: (average, count, total) => `平均 ${average === null ? '—' : average.toFixed(1)} / 10 · ${count}人が評価 · ${total}件`, offline: '評価とメッセージはオンライン版で利用できます。', online: 'オンライン版を開く', list: 'プレイヤーの評価とメッセージ', pageNav: 'ページ切り替え' },
+  };
+  function el(tag, cls, text) { const node = document.createElement(tag); if (cls) node.className = cls; if (text !== undefined) node.textContent = text; return node; }
+  async function request(url, options = {}) {
+    const controller = new AbortController(), timer = setTimeout(() => controller.abort(), 12000);
+    try {
+      const response = await fetch(url, { ...options, credentials: 'omit', cache: 'no-store', signal: controller.signal });
+      const data = await response.json();
+      if (!response.ok) { const error = new Error(data.error || 'request_failed'); error.status = response.status; throw error; }
+      return data;
+    } finally { clearTimeout(timer); }
+  }
+  function mount(body, language = 'zh') {
+    const t = words[language] || words.zh;
+    body.parentElement.classList.add('feedback-panel');
+    if (!enabled) {
+      const link = el('a', 'tbtn feedback-online', t.online); link.href = config.feedbackOnlineUrl || 'https://qiannianchongdlzp.github.io/'; link.target = '_blank'; link.rel = 'noopener';
+      body.append(el('p', 'feedback-help', t.offline), link); return;
+    }
+    const summary = el('p', 'feedback-summary', t.loading), help = el('p', 'feedback-help', t.help);
+    const layout = el('div', 'feedback-layout'), form = el('form', 'feedback-form');
+    const fieldset = el('fieldset', 'feedback-ratings'), legend = el('legend', '', t.rating), scores = el('div', 'feedback-scores');
+    fieldset.append(legend, scores);
+    let selected = Number.isInteger(draft.rating) && draft.rating >= 1 && draft.rating <= 10 ? draft.rating : 0;
+    for (let n = 1; n <= 10; n++) {
+      const label = el('label', 'feedback-score'), radio = document.createElement('input');
+      radio.type = 'radio'; radio.name = 'feedback-rating'; radio.value = String(n); radio.checked = selected === n;
+      radio.setAttribute('aria-label', `${n} / 10`);
+      label.append(radio, el('span', '', String(n))); scores.append(label);
+    }
+    const label = el('label', 'feedback-label', t.message); label.htmlFor = 'feedback-message';
+    const input = el('textarea'); input.id = 'feedback-message'; input.rows = 5; input.maxLength = 500; input.placeholder = t.placeholder;
+    input.value = typeof draft.message === 'string' ? draft.message.slice(0, 500) : '';
+    const count = el('p', 'feedback-count', `${input.value.length} / 500`), postStatus = el('p', 'feedback-post-status');
+    count.id = 'feedback-count'; input.setAttribute('aria-describedby', count.id); postStatus.setAttribute('role', 'status');
+    const publish = el('button', 'tbtn feedback-publish', t.publish); publish.type = 'submit';
+    form.append(fieldset, label, input, count, publish, postStatus);
+    const section = el('section', 'feedback-list-section'), toolbar = el('div', 'feedback-toolbar');
+    section.setAttribute('aria-label', t.list);
+    const listStatus = el('p', 'feedback-list-status', t.loading); listStatus.setAttribute('role', 'status');
+    const refresh = el('button', 'tbtn', t.refresh); refresh.type = 'button'; toolbar.append(listStatus, refresh);
+    const nav = el('nav', 'feedback-pagination'); nav.setAttribute('aria-label', t.pageNav);
+    const previous = el('button', 'tbtn', t.previous), pageLabel = el('span', 'feedback-page', t.pages(1, 1)), next = el('button', 'tbtn', t.next);
+    previous.type = next.type = 'button'; previous.disabled = next.disabled = true;
+    pageLabel.setAttribute('aria-live', 'polite'); nav.append(previous, pageLabel, next);
+    const list = el('div', 'feedback-list'); section.append(toolbar, nav, list); layout.append(form, section); body.append(summary, help, layout);
+    let page = 1, pages = 1, generation = 0, loading = false, sending = false;
+    const buttons = () => { previous.disabled = loading || page <= 1; next.disabled = loading || page >= pages; };
+    const remember = () => { draft = { rating: selected, message: input.value }; write('draft', draft); };
+    form.oninput = () => { selected = Number(form.querySelector('input:checked')?.value || 0); count.textContent = `${input.value.length} / 500`; remember(); };
+    async function load(target, scroll = false) {
+      const token = ++generation; loading = true; buttons(); listStatus.textContent = t.loading; list.setAttribute('aria-busy', 'true');
+      try {
+        const url = new URL(endpoint); url.searchParams.set('page', String(target));
+        const data = await request(url.href);
+        if (!body.isConnected || token !== generation) return;
+        if (!Array.isArray(data.items) || !Number.isSafeInteger(data.page) || !Number.isSafeInteger(data.pages) || data.page < 1 || data.pages < data.page) throw Error('invalid_response');
+        page = data.page; pages = data.pages;
+        summary.textContent = t.summary(data.averageRating, data.ratingCount, data.total); pageLabel.textContent = t.pages(page, pages);
+        list.replaceChildren();
+        for (const entry of data.items) {
+          const article = el('article', 'feedback-entry'), head = el('div', 'feedback-entry-head'), date = new Date(entry.createdAt);
+          const time = el('time', ''); if (Number.isFinite(date.getTime())) { time.dateTime = date.toISOString(); time.textContent = date.toLocaleString({ zh: 'zh-CN', en: 'en-US', ja: 'ja-JP' }[language] || 'zh-CN', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' }); }
+          head.append(el('strong', '', t.anonymous), el('span', 'feedback-entry-rating', `${entry.rating} / 10`), time);
+          article.append(head, el('p', 'feedback-entry-message', entry.message || t.ratingOnly)); list.append(article);
+        }
+        if (!data.items.length) list.append(el('p', 'feedback-empty', t.empty));
+        listStatus.textContent = '';
+        if (scroll) section.scrollIntoView({ block: 'start', behavior: 'smooth' });
+      } catch {
+        if (body.isConnected && token === generation) listStatus.textContent = t.loadError;
+      } finally {
+        if (token === generation) { loading = false; buttons(); list.removeAttribute('aria-busy'); }
+      }
+    }
+    previous.onclick = () => load(page - 1, true); next.onclick = () => load(page + 1, true); refresh.onclick = () => load(page);
+    form.onsubmit = async event => {
+      event.preventDefault(); if (sending) return;
+      selected = Number(form.querySelector('input:checked')?.value || 0);
+      if (selected < 1 || selected > 10) { postStatus.textContent = t.choose; return; }
+      const message = input.value.trim();
+      const reuse = pending && pending.visitorId === visitor && pending.rating === selected && pending.message === message;
+      const submission = reuse ? pending : { game: '2-sixth-disk', submissionId: uuid(), visitorId: visitor, rating: selected, message };
+      pending = submission; write('pending', pending); remember();
+      sending = true; publish.disabled = true; publish.textContent = t.sending; postStatus.textContent = '';
+      try {
+        const result = await request(endpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(submission) });
+        if (!result.accepted) throw Error('not_accepted');
+        if (pending?.submissionId === submission.submissionId) { pending = null; write('pending', null); draft = { rating: selected, message: '' }; write('draft', draft); }
+        if (!body.isConnected) return;
+        input.value = ''; count.textContent = '0 / 500'; postStatus.textContent = t.sent;
+        publish.textContent = t.publish; void load(1);
+      } catch (error) {
+        if (!body.isConnected) return;
+        postStatus.textContent = error.status === 429 ? t.limited : t.failed; publish.textContent = t.retry;
+      } finally { sending = false; publish.disabled = false; }
+    };
+    void load(1);
+  }
+  window.Y2KFeedback = { mount };
+})();
+
+'use strict';
+// 只传递随机标识与游玩状态；与剧情、昵称和存档无关。
+window.Y2KStats = (() => {
+  const words = {
+    zh: ['累计访问', '当前在线', '同一访客刷新、多标签页不重复计数；全部退出后再次进入才新增一次。在线包含主页和后台页面，同一浏览器只计一人，约每 30 秒更新。', '正在读取统计', '统计暂时不可用', '离线模式', '本地预览不计入统计'],
+    en: ['Total visits', 'Online now', 'Refreshes and multiple tabs count as one visit. A new visit starts after all game pages are closed. Online includes home and background pages, with one person per browser, and updates about every 30 seconds.', 'Loading statistics', 'Statistics temporarily unavailable', 'Offline mode', 'Local previews are not counted'],
+    ja: ['累計アクセス', '現在オンライン', '再読み込みや複数タブは1回の訪問として集計します。すべてのゲームページを閉じてから再訪すると加算されます。ホーム画面やバックグラウンドもオンラインに含み、ブラウザーごとに1人として約30秒ごとに更新します。', '統計を読み込み中', '統計を取得できません', 'オフラインモード', 'ローカルプレビューは集計対象外です'],
+  };
+  let started = false, playing = false, pageId, sessionId, visitorId, registered = false;
+  let flight = false, queued = false, seq = 0, lastApplied = 0, values = null, mode = 'loading';
+  let endpoint = '', enabled = false, departed = false;
+  let retryTimer = 0, retryAttempt = 0;
+  const panels = new Map();
+  const uuid = () => {
+    if (typeof crypto.randomUUID === 'function') return crypto.randomUUID();
+    // Older Safari/WebViews support getRandomValues but not randomUUID.
+    const bytes = crypto.getRandomValues(new Uint8Array(16));
+    bytes[6] = (bytes[6] & 15) | 64; bytes[8] = (bytes[8] & 63) | 128;
+    const hex = Array.from(bytes, b => b.toString(16).padStart(2, '0')).join('');
+    return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`;
+  };
+  const validId = value => /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(value || '');
+  function beginPage(reload) {
+    pageId = uuid(); sessionId = uuid(); seq = 0; lastApplied = 0; registered = false;
+    try {
+      const previous = sessionStorage.getItem('y2k2_stats_visit');
+      if (reload && validId(previous)) pageId = previous;
+      sessionStorage.setItem('y2k2_stats_visit', pageId);
+    } catch (_) {}
+  }
+  function paint() {
+    for (const [el, lang] of panels) {
+      if (!el.isConnected) { panels.delete(el); continue; }
+      const w = words[lang] || words.zh;
+      const format = value => new Intl.NumberFormat(lang === 'zh' ? 'zh-CN' : lang).format(value);
+      const ready = mode === 'ready' && values;
+      el.querySelector('[data-stat="visits"]').textContent = ready ? format(values.visits) : '—';
+      el.querySelector('[data-stat="online"]').textContent = ready ? format(values.online) : '—';
+      el.querySelector('.stats-state').textContent = ready ? '' : w[{ loading: 3, error: 4, offline: 5, preview: 6 }[mode] || 4];
+      el.querySelector('.stats-retry').hidden = mode !== 'error' || !enabled;
+      el.dataset.state = mode;
+    }
+  }
+  function mount(lang) {
+    const w = words[lang] || words.zh, el = document.createElement('div');
+    el.className = 'site-stats'; el.setAttribute('role', 'group');
+    for (const [label, key] of [[w[0], 'visits'], [w[1], 'online']]) {
+      const item = document.createElement('span'), text = document.createElement('span'), value = document.createElement('strong');
+      item.className = 'stat-item'; text.textContent = label; value.dataset.stat = key; value.textContent = '—';
+      item.append(text, value); el.append(item);
+    }
+    const state = document.createElement('span'); state.className = 'stats-state'; state.setAttribute('role', 'status'); el.append(state);
+    const retry = document.createElement('button'); retry.type = 'button'; retry.className = 'stats-retry'; retry.hidden = true;
+    retry.textContent = ({ zh: '重新连接', en: 'Reconnect', ja: '再接続' })[lang] || '重新连接';
+    retry.onclick = () => { retryAttempt = 0; mode = 'loading'; paint(); void send(); }; el.append(retry);
+    panels.set(el, lang); queueMicrotask(paint); return el;
+  }
+  function active() { return playing && document.visibilityState === 'visible'; }
+  function payload(event) { return { event, pageId, sessionId, visitorId, seq: ++seq, playing: event === 'leave' ? false : active() }; }
+  function leave() {
+    if (!enabled) return;
+    clearTimeout(retryTimer); retryTimer = 0;
+    const body = JSON.stringify(payload('leave'));
+    // 递增序号避免迟到的心跳把已离开的玩家重新记为在线。
+    fetch(endpoint, { method: 'POST', body, headers: { 'Content-Type': 'text/plain;charset=UTF-8' }, keepalive: true, credentials: 'omit' }).catch(() => {
+      try { navigator.sendBeacon?.(endpoint, new Blob([body], { type: 'text/plain;charset=UTF-8' })); } catch (_) {}
+    });
+  }
+  async function send() {
+    if (!enabled || departed) return;
+    if (flight) { queued = true; return; }
+    clearTimeout(retryTimer); retryTimer = 0;
+    flight = true;
+    const message = payload(registered ? 'heartbeat' : 'visit'), controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 15000);
+    try {
+      const response = await fetch(endpoint, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=UTF-8' }, body: JSON.stringify(message), credentials: 'omit', cache: 'no-store', signal: controller.signal });
+      if (!response.ok) throw new Error('stats unavailable');
+      const result = await response.json();
+      if (![result.visits, result.online].every(n => Number.isSafeInteger(n) && n >= 0)) throw new Error('invalid statistics');
+      if (message.sessionId !== sessionId) return;
+      if (message.event === 'visit') registered = true;
+      retryAttempt = 0;
+      if (message.seq >= lastApplied && document.visibilityState === 'visible') { lastApplied = message.seq; values = result; mode = 'ready'; paint(); }
+    } catch (_) {
+      if (departed || message.sessionId !== sessionId) return;
+      mode = 'error'; paint();
+      if (retryAttempt < 3) retryTimer = setTimeout(() => { retryTimer = 0; void send(); }, [1500, 4000, 10000][retryAttempt++]);
+    }
+    finally { clearTimeout(timeout); flight = false; if (queued) { queued = false; void send(); } }
+  }
+  function setPlaying(value) { const changed = playing !== value; playing = value; if (started && changed) void send(); }
+  function start() {
+    if (started) return; started = true;
+    const config = window.Y2K_STATS_CONFIG || {};
+    if (location.protocol === 'file:') { mode = 'offline'; paint(); return; }
+    if (!(config.allowedOrigins || []).includes(location.origin)) { mode = 'preview'; paint(); return; }
+    try {
+      const url = new URL(config.endpoint); if (url.protocol !== 'https:') throw new Error('HTTPS required');
+      endpoint = url.href; beginPage(performance.getEntriesByType('navigation')[0]?.type === 'reload');
+      try {
+        visitorId = localStorage.getItem('y2k2_stats_visitor');
+        if (!validId(visitorId)) { visitorId = uuid(); localStorage.setItem('y2k2_stats_visitor', visitorId); }
+      } catch (_) { visitorId = uuid(); }
+      enabled = true;
+    } catch (_) { mode = 'error'; paint(); return; }
+    // 后台仍属于同一次访问；只有离开页面才结束这个标签页。
+    document.addEventListener('visibilitychange', () => void send());
+    window.addEventListener('pagehide', () => { departed = true; leave(); });
+    window.addEventListener('pageshow', e => { if (e.persisted) { departed = false; beginPage(false); void send(); } });
+    window.addEventListener('online', () => void send());
+    setInterval(() => void send(), 30000); void send();
+  }
+  return { mount, setPlaying, start };
+})();
 
 'use strict';
 // 《千年虫2》引擎：数据合并、标记与条件、动作、存档、2026 手机、Windows 98 桌面与各个应用。
