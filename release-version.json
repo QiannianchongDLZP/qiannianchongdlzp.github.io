@@ -1,15 +1,10 @@
 {
-  "version": "20261110-forum-handoff-3aa6e43e5e47b5fc",
-  "sourceCommit": "30876056791dd057d60a88165d523045e8ab7c9c",
-  "changes": [
-    "米乐发出邀请翻阅旧帖的消息后，即可打开梧城热线，无需先回复。",
-    "兼容已经收到这条消息的旧存档。",
-    "保留手机原生下拉选择账号，以及已完成的对白修改。"
-  ],
+  "version": "full-game-3aa6e43e5e47b5fc",
   "package": {
     "file": "full-game-3aa6e43e5e47b5fc.qnc",
     "sha256": "3aa6e43e5e47b5fc6d98a252a9fb1da0807b3a74d615b89b4518306a2104aa1e"
   },
+  "trial": "trial-29c25319f915848f.js",
   "files": {
     "index.html": "258d52f7100e5e31bd6722204463267c9dcea59a98661f1142b761d702b945ea",
     "license.css": "32974ec3c4747568a8c7adea308b57b54fc2d91ad17aea7fa698fccf4d680ff8",
@@ -19,16 +14,15 @@
     "entry-boot.js": "8f8daad153bedbc10f09b0100eec8aed5529f32d0b186a42ff02d30a68e1ac2f",
     "player.html": "f35ffc72764e1cafa38361822c6fa40f22910f0b3ee2cb1cce24438566394fc9",
     "decrypt-player.js": "fbed037e2038b3a9a4e3c223ce1951e029a58e224eb5468af3448f7c8064f446",
-    "full-game.qnc": "249e53b573c6a14db51f9db45933f64a90f9ba084f367284d0232ec07d0deeee",
+    "full-game.qnc": "3aa6e43e5e47b5fc6d98a252a9fb1da0807b3a74d615b89b4518306a2104aa1e",
     "full-game-3aa6e43e5e47b5fc.qnc": "3aa6e43e5e47b5fc6d98a252a9fb1da0807b3a74d615b89b4518306a2104aa1e",
     "trial-29c25319f915848f.js": "29c25319f915848f478253273bdae7ca14f53642e09198fb538ba06e1d7f3b79",
-    "trial-photo-17eddff45a8fcaa9.webp": "17eddff45a8fcaa973330164d1bd43140a7481d60828dc758696c3a15d77e5e4",
-    "trial-photo-2b9398a8492f4daf.webp": "2b9398a8492f4daf59a5068a592611b99a4c3a5ec0ef47e7c1dbd3c4fd5d56f5",
-    "trial-photo-2ca4a500ff630388.webp": "2ca4a500ff63038887ea89167306c5dc25231c2908e89e2eacff2e5ccfbd94b4",
-    "trial-photo-6ea20b33995faaef.webp": "6ea20b33995faaef2274f03aafacdeb622b3d1051f183edc709e4305b8f949c5",
     "trial-photo-c0c342f976256546.png": "c0c342f9762565468697a887b91b0f6a776ee3617be5a6965a160514f0141305",
+    "trial-photo-17eddff45a8fcaa9.webp": "17eddff45a8fcaa973330164d1bd43140a7481d60828dc758696c3a15d77e5e4",
+    "trial-photo-6ea20b33995faaef.webp": "6ea20b33995faaef2274f03aafacdeb622b3d1051f183edc709e4305b8f949c5",
     "trial-photo-f4e74f9bd52123bb.webp": "f4e74f9bd52123bbe8d2d033417345826e8928a7a53850cbabd6fe709263a3eb",
     "trial-photo-fa86aa1a03346e05.webp": "fa86aa1a03346e05073ac280bab5a8f360bea796885b0fa999341b80f71b9839",
-    ".nojekyll": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    "trial-photo-2b9398a8492f4daf.webp": "2b9398a8492f4daf59a5068a592611b99a4c3a5ec0ef47e7c1dbd3c4fd5d56f5",
+    "trial-photo-2ca4a500ff630388.webp": "2ca4a500ff63038887ea89167306c5dc25231c2908e89e2eacff2e5ccfbd94b4"
   }
 }
