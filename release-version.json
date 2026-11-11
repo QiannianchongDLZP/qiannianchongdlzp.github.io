@@ -1,21 +1,21 @@
 {
-  "version": "full-game-b2f3c07525adc484",
+  "version": "full-game-734782fcd532f648",
   "package": {
-    "file": "full-game-b2f3c07525adc484.qnc",
-    "sha256": "b2f3c07525adc484905427aae41f00b6a0289dfb0abc3abca046d29fa3610282"
+    "file": "full-game-734782fcd532f648.qnc",
+    "sha256": "734782fcd532f648b6735f64d6b07c9c40c1dd19b84baaff47e311d75d59bd83"
   },
   "trial": "trial-b5c17a774f6b00be.js",
   "files": {
     "index.html": "530d37c8039da3a0ad527ce498ff6fd914fc4ed99836669760e8985889b2d711",
     "license.css": "32974ec3c4747568a8c7adea308b57b54fc2d91ad17aea7fa698fccf4d680ff8",
     "license-config.js": "6b719f3f4b5bc11ad93dade638e380e27c18bcc3745e4610135ecc197b72dc1e",
-    "package-config.js": "696b32b8ef5e64c12e5fc91bad316fbd8a2376ab0ae761cc6c745ccaf5cef158",
+    "package-config.js": "b17bf5447e06c87ef89b7b9f668bff0a50356f582246b4a8c485bfca2cde9312",
     "license-client.js": "fac72d2e638f1548234528f97845893ad029f4da2439605df382407bd68d2a27",
     "entry-boot.js": "8f8daad153bedbc10f09b0100eec8aed5529f32d0b186a42ff02d30a68e1ac2f",
     "player.html": "d169b547ddc58fb3e1f7dc98a210b25a136e08cf190c74869367484218d595fb",
     "decrypt-player.js": "fbed037e2038b3a9a4e3c223ce1951e029a58e224eb5468af3448f7c8064f446",
-    "full-game.qnc": "b2f3c07525adc484905427aae41f00b6a0289dfb0abc3abca046d29fa3610282",
-    "full-game-b2f3c07525adc484.qnc": "b2f3c07525adc484905427aae41f00b6a0289dfb0abc3abca046d29fa3610282",
+    "full-game.qnc": "734782fcd532f648b6735f64d6b07c9c40c1dd19b84baaff47e311d75d59bd83",
+    "full-game-734782fcd532f648.qnc": "734782fcd532f648b6735f64d6b07c9c40c1dd19b84baaff47e311d75d59bd83",
     "trial-b5c17a774f6b00be.js": "b5c17a774f6b00bea724a51826c8b0dceeb260ca0e8648cefb0f45e90c98e0d5",
     "trial-photo-39cbf4a215896f5f.webp": "39cbf4a215896f5fae712e341dede8efa63cc1b422bf8383098783ea6b32330f",
     "trial-photo-17eddff45a8fcaa9.webp": "17eddff45a8fcaa973330164d1bd43140a7481d60828dc758696c3a15d77e5e4",
