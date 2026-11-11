@@ -1,22 +1,22 @@
 {
-  "version": "full-game-0ef1cc1e28f11ca2",
+  "version": "full-game-b2f3c07525adc484",
   "package": {
-    "file": "full-game-0ef1cc1e28f11ca2.qnc",
-    "sha256": "0ef1cc1e28f11ca2b7dbb878298c0c67a52969d839a3761c9ff45c4d0eeadfa5"
+    "file": "full-game-b2f3c07525adc484.qnc",
+    "sha256": "b2f3c07525adc484905427aae41f00b6a0289dfb0abc3abca046d29fa3610282"
   },
-  "trial": "trial-61ac745a331fad26.js",
+  "trial": "trial-b5c17a774f6b00be.js",
   "files": {
-    "index.html": "eb8e14a7d342baa5b0b8f884e3dc2df546473ddf5e0598d3a622286ec45caaab",
+    "index.html": "530d37c8039da3a0ad527ce498ff6fd914fc4ed99836669760e8985889b2d711",
     "license.css": "32974ec3c4747568a8c7adea308b57b54fc2d91ad17aea7fa698fccf4d680ff8",
     "license-config.js": "6b719f3f4b5bc11ad93dade638e380e27c18bcc3745e4610135ecc197b72dc1e",
-    "package-config.js": "a23d259f02c6301aa64a1c10bd15a8b844093b7c06356a3b601fb0c1153d80e0",
+    "package-config.js": "696b32b8ef5e64c12e5fc91bad316fbd8a2376ab0ae761cc6c745ccaf5cef158",
     "license-client.js": "fac72d2e638f1548234528f97845893ad029f4da2439605df382407bd68d2a27",
     "entry-boot.js": "8f8daad153bedbc10f09b0100eec8aed5529f32d0b186a42ff02d30a68e1ac2f",
-    "player.html": "12786bbfa40ff8a9bc3f32e911d0487f82f8d2a74b5f9b06734c9b15bde2107a",
+    "player.html": "d169b547ddc58fb3e1f7dc98a210b25a136e08cf190c74869367484218d595fb",
     "decrypt-player.js": "fbed037e2038b3a9a4e3c223ce1951e029a58e224eb5468af3448f7c8064f446",
-    "full-game.qnc": "0ef1cc1e28f11ca2b7dbb878298c0c67a52969d839a3761c9ff45c4d0eeadfa5",
-    "full-game-0ef1cc1e28f11ca2.qnc": "0ef1cc1e28f11ca2b7dbb878298c0c67a52969d839a3761c9ff45c4d0eeadfa5",
-    "trial-61ac745a331fad26.js": "61ac745a331fad264d0ba117e51b14b58a0ada9e1d5a297f031ef1ab6a639ad8",
+    "full-game.qnc": "b2f3c07525adc484905427aae41f00b6a0289dfb0abc3abca046d29fa3610282",
+    "full-game-b2f3c07525adc484.qnc": "b2f3c07525adc484905427aae41f00b6a0289dfb0abc3abca046d29fa3610282",
+    "trial-b5c17a774f6b00be.js": "b5c17a774f6b00bea724a51826c8b0dceeb260ca0e8648cefb0f45e90c98e0d5",
     "trial-photo-39cbf4a215896f5f.webp": "39cbf4a215896f5fae712e341dede8efa63cc1b422bf8383098783ea6b32330f",
     "trial-photo-17eddff45a8fcaa9.webp": "17eddff45a8fcaa973330164d1bd43140a7481d60828dc758696c3a15d77e5e4",
     "trial-photo-6ea20b33995faaef.webp": "6ea20b33995faaef2274f03aafacdeb622b3d1051f183edc709e4305b8f949c5",
