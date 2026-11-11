@@ -3449,9 +3449,12 @@ const Y2K = (() => {
       });
       const notice = (!bbsArchiveReady() && D.bbsMeta.publicHomeNotice) || D.bbsMeta.homeNotice || '';
       const batch = (D.bbsMeta.recoveryBatches || []).filter(pack => test(pack.requires)).at(-1);
-      const recent = batch ? vt.filter(thread => batch.ids.includes(thread.id)) : vt.slice().sort((a, b) => b.date.localeCompare(a.date)).slice(0, 8);
-      const latest = recent.sort((a, b) => b.date.localeCompare(a.date)).map(t => `<li><a href="/thread.asp?id=${t.id}">${esc(strip(t.title))}</a> <span style="color:#888">— ${uLink(t.author)} ${esc(t.date)}</span></li>`).join('');
-      return { title: D.bbsMeta.name || _t('少年宫小站'), html: topBar('') + `<div class="notice">${fmt(notice)}</div><div class="wrap"><table class="t"><tr><th>${_t('版面')}</th><th>${_t('版主')}</th><th>${_t('主题数')}</th><th>${_t('最新主题')}</th></tr>${rows}</table><p style="color:#666">${_t('注册用户')} ${D.users.filter(x => test(x.requires)).length} ${_t('人　|　帖子')} ${vt.length} ${_t('篇　|　本地网页备份')}</p><h2>${batch ? _t('本批恢复的帖子') : _t('最新帖子')}</h2><ul class="bbs-latest" style="padding-left:18px;margin:0">${latest}</ul></div>`, source: '' };
+      const recent = batch ? batch.ids.map(id => THREAD[id]).filter(t => vt.includes(t)) : vt.slice().sort((a, b) => b.date.localeCompare(a.date)).slice(0, 8);
+      const separate = new Set(batch?.separateIds || []);
+      recent.sort((a, b) => Number(separate.has(a.id)) - Number(separate.has(b.id)));
+      const latest = recent.map(t => `<li><a href="/thread.asp?id=${t.id}">${esc(strip(t.title))}</a> <span style="color:#888">— ${uLink(t.author)} ${esc(t.date)}${separate.has(t.id) ? ' · 单独找回的整页' : ''}</span></li>`).join('');
+      const batchTitle = batch?.through ? '本批恢复的帖子 · 整理至 ' + batch.through.replaceAll('-', '.') : _t(batch ? '本批恢复的帖子' : '最新帖子');
+      return { title: D.bbsMeta.name || _t('少年宫小站'), html: topBar('') + `<div class="notice">${fmt(notice)}</div><div class="wrap"><table class="t"><tr><th>${_t('版面')}</th><th>${_t('版主')}</th><th>${_t('主题数')}</th><th>${_t('最新主题')}</th></tr>${rows}</table><p style="color:#666">${_t('注册用户')} ${D.users.filter(x => test(x.requires)).length} ${_t('人　|　帖子')} ${vt.length} ${_t('篇　|　本地网页备份')}</p><h2>${esc(batchTitle)}</h2><ul class="bbs-latest" style="padding-left:18px;margin:0">${latest}</ul></div>`, source: '' };
     }
     if (path === '/board.asp') {
       const b = D.bbsBoards.find(x => x.id === P.id && test(x.requires));
