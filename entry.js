@@ -49,7 +49,7 @@
     window.QNC2ResumeTrial = continueTrial;
     if (request.has('unlock')) history.replaceState(null, '', location.pathname + location.hash);
     document.open();
-    document.write(html);
+    document.write(html.replace(/<\/body>(?=<\/html>\s*$)/i, '<script src="./author-note.js"></script></body>'));
     document.close();
   }
   form.addEventListener('submit', async event => {
