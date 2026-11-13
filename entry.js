@@ -6,10 +6,15 @@
   const status = document.querySelector('#status');
   const retry = document.querySelector('#retry');
   const auth = window.QNC2License;
+  const request = new URLSearchParams(location.search);
+  const continueTrial = request.get('unlock') === 'continue';
+  const trialLink = document.querySelector('#trial-link');
+  trialLink.href = './trial.html' + location.hash;
+  function startTrial() { location.replace(trialLink.href); }
   function askForCode(message = '') {
     form.hidden = false;
     submit.disabled = false;
-    status.textContent = message;
+    status.textContent = message || (continueTrial ? '第一章已完成，进度已保存。解锁后从第二章继续。' : '');
   }
   function showFailure(error) {
     status.textContent = error instanceof TypeError || error.name === 'AbortError'
@@ -41,6 +46,8 @@
       throw Error('未能解密游戏，请核对游戏包版本。');
     }
     const html = new TextDecoder().decode(plain);
+    window.QNC2ResumeTrial = continueTrial;
+    if (request.has('unlock')) history.replaceState(null, '', location.pathname + location.hash);
     document.open();
     document.write(html);
     document.close();
@@ -68,9 +75,13 @@
     }
     try {
       if (await auth.resume()) await play();
-      else askForCode();
+      else if (request.has('unlock')) askForCode();
+      else startTrial();
     } catch (error) {
-      if (error.status === 401 || error.status === 403) askForCode(error.message);
+      if (error.status === 401 || error.status === 403) {
+        if (request.has('unlock')) askForCode(error.message);
+        else startTrial();
+      }
       else showFailure(error);
     }
   }

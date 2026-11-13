@@ -7,10 +7,12 @@
 body::before{content:"";position:fixed;inset:0;z-index:-1;background:linear-gradient(0deg,rgba(12,15,13,.98) 0%,rgba(12,15,13,.85) 20%,rgba(12,15,13,.22) 65%),url("./cover.webp") center 38% /cover no-repeat}
 main{width:min(100%,700px);padding:clamp(24px,5vw,72px);margin:0 0 2vh max(0px,calc((100vw - 1200px)/2))}h1{font:600 clamp(30px,6vw,58px)/1.16 "Songti SC","SimSun",serif;margin:0 0 18px}h1 small{font:500 .42em/1.6 system-ui,sans-serif;display:block;margin-bottom:5px}label{display:block;margin:0 0 6px}input,button{font:inherit;border-radius:4px;padding:10px 14px;border:1px solid #abac9f}input{width:100%;color:#151713;background:#faf7ef}button{background:#ede6d3;color:#161912;font-weight:600;cursor:pointer;white-space:nowrap}button:disabled{opacity:.6}button:focus-visible,input:focus-visible{outline:3px solid #edd490;outline-offset:3px}.row{display:flex;gap:10px}#status{min-height:1.6em;margin:10px 0 0;color:#f1ddbd}[hidden]{display:none!important}
 @media(max-width:540px){main{margin:0;padding:24px 20px max(24px,env(safe-area-inset-bottom))}.row{flex-direction:column}body::before{background-position:center,50% 38%}}
+#trial-link{color:inherit;text-underline-offset:3px}
 </style></head><body>
 <main><h1><small>千年虫 2</small>未寄出的明天</h1>
 <form id="unlock" hidden><label for="license">激活码</label><div class="row"><input id="license" type="text" placeholder="QNC2.…" autocomplete="off" spellcheck="false" autocapitalize="off" required><button id="submit" type="submit">解锁游戏</button></div></form>
 <p id="status" role="status" aria-live="polite">正在检查激活状态…</p><button id="retry" type="button" hidden>重新载入</button>
+<a id="trial-link" href="./trial.html">试玩序章和第一章</a>
 <noscript>请启用 JavaScript 后打开游戏。</noscript></main>
 <script src="./license-config.js"></script><script src="./license-client.js"></script><script src="./package-config.js"></script><script src="./entry.js"></script>
 </body></html>
