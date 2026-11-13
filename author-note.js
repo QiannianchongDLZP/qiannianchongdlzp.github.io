@@ -43,9 +43,15 @@
     </div>`;
   document.body.append(dialog);
 
-  const key = 'qnc2-author-note-202611-read';
+  const key = 'qnc2-author-note-dismissed';
   let read = false;
-  try { read = localStorage.getItem(key) === '1'; } catch {}
+  try {
+    if (performance.getEntriesByType('navigation')[0]?.type === 'reload') {
+      read = sessionStorage.getItem(key) === '1';
+    } else {
+      sessionStorage.removeItem(key);
+    }
+  } catch {}
   const opener = document.createElement('button');
   opener.className = 'tbtn feedback-entry-button';
   opener.type = 'button';
@@ -58,15 +64,15 @@
   opener.addEventListener('click', openNote);
   dialog.addEventListener('close', () => {
     read = true;
-    try { localStorage.setItem(key, '1'); } catch {}
+    try { sessionStorage.setItem(key, '1'); } catch {}
     opener.focus({ preventScroll: true });
   });
   function bindTitle() {
     const actions = title.querySelector('.title-actions');
     if (!actions) return;
-    actions.append(opener);
+    if (opener.parentNode !== actions) actions.append(opener);
     if (!read && !dialog.open && !title.classList.contains('panel-open')) openNote();
   }
-  new MutationObserver(bindTitle).observe(title, { childList: true });
+  new MutationObserver(bindTitle).observe(title, { childList: true, attributes: true, attributeFilter: ['class'] });
   bindTitle();
 })();
