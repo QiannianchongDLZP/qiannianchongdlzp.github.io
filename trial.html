@@ -1198,6 +1198,131 @@ table.cmp tr.sel td { outline: 2px solid #1f5fbf; outline-offset: -2px; }
 .det th[aria-sort="ascending"] button::after { content: " ▴"; }
 .det th[aria-sort="descending"] button::after { content: " ▾"; }
 
+/* Classic desktop chrome. The document and photograph keep their own type and colours. */
+#screen { color-scheme: light; }
+.title-icon, .address-field > span { display: inline-flex; align-items: center; }
+#startmenu { max-height: calc(100% - 28px); }
+#startmenu ul { min-height: 0; overflow: auto; }
+#startmenu li:focus-visible { background: var(--w-title); color: white; outline: 1px dotted white; outline-offset: -3px; }
+#startmenu li:nth-last-child(4), #startmenu li:last-child { border-top: 2px groove #eee; }
+.win .nav-band, .win .nav-address { border-top: 1px solid white; border-bottom: 1px solid var(--w-lo); padding: 2px 4px; gap: 2px; }
+.nav-band::before, .nav-address::before { content: ''; width: 3px; align-self: stretch; margin: 2px 3px 2px 0; border-left: 1px solid white; border-right: 1px solid var(--w-lo); }
+.win .nav-command { display: inline-flex; gap: 3px; align-items: center; padding: 2px 5px; box-shadow: none; border: 1px solid transparent; }
+.nav-command span:first-child { display: flex; }
+.nav-command svg { width: 18px; height: 18px; }
+.win .nav-command:enabled:hover { border-color: #fff #808080 #808080 #fff; }
+.win .nav-command:enabled:active { border-color: #808080 #fff #fff #808080; }
+.nav-command:disabled svg { filter: grayscale(1); opacity: .45; }
+.nav-address label { padding-right: 4px; white-space: nowrap; }
+.address-field { display: flex; align-items: center; gap: 2px; flex: 1; min-width: 0; padding: 2px 3px; }
+.address-field svg { width: 16px; height: 16px; }
+.address-field .f98 { box-shadow: none; padding: 0 2px; border-radius: 0; }
+.nav-address > button { min-width: 0; }
+.win [type=text], .win [type=password], .dlg98 .f98 { border-radius: 0; }
+.win .f98:focus-visible, .dlg98:not(.dlgph) .f98:focus-visible { outline: 1px dotted #222; outline-offset: -3px; }
+.win .menubar { flex-wrap: wrap; }
+.win .dropdown { max-height: min(50vh, 420px); overflow: auto; }
+.win .menubar > div.open { z-index: 2; }
+#screen .flist button.icon { background: transparent; border: none; color: #000; font: var(--font-98); }
+#screen .flist button.icon.sel span { color: #fff; }
+
+/* Dialogs summoned by the read station appear on its screen. */
+#modal.pc-modal { position: fixed; z-index: 9450; pointer-events: none; }
+#modal.pc-modal > .dlg98, #modal.pc-modal > .shade { position: absolute; pointer-events: auto; }
+#modal.pc-modal > .shade { background: transparent; }
+body:has(#modal.pc-modal > .dlg98) .win.active > .titlebar { background: linear-gradient(90deg,var(--w-title-off),var(--w-title-off2)); color: #dedede; }
+.sheet-tab { width: max-content; max-width: 100%; margin: 0 0 -1px 2px; position: relative; padding: 2px 11px; border: 1px solid; border-color: #fff #707070 var(--w-face) #fff; background: var(--w-face); }
+.property-sheet { padding: 12px; border: 1px solid; border-color: #fff #707070 #707070 #fff; box-shadow: 1px 1px #404040; min-width: 0; }
+.property-name { display: flex; align-items: center; gap: 12px; padding: 2px 0 6px; overflow-wrap: anywhere; }
+.property-name svg { width: 32px; height: 32px; flex: none; }
+.property-sheet table { border-collapse: collapse; width: 100%; }
+.property-sheet td { padding: 3px 2px; vertical-align: top; white-space: pre-wrap; overflow-wrap: anywhere; }
+.property-sheet td:first-child { width: 6.8em; white-space: nowrap; }
+.property-sheet td label { display: inline-flex; align-items: center; gap: 3px; }
+.property-sheet .sep98 { margin-block: 7px; }
+.display-body { background: var(--w-face); }
+.display-sheet { padding: 8px; display: flex; flex-direction: column; min-height: 100%; }
+.display-sheet .property-sheet { flex: 1; }
+.sheet-actions { display: flex; justify-content: flex-end; margin-top: 10px; }
+.crt-preview { width: 148px; margin: 1px auto 13px; }
+.crt-case, .crt-foot { border: 2px solid; border-color: #fff #444 #444 #eee; background: #bebfbd; }
+.crt-case { padding: 9px 9px 14px; position: relative; border-radius: 5px; }
+.crt-case::after { content: ''; background: #38a63f; border: 1px inset #bbb; position: absolute; width: 4px; height: 3px; bottom: 4px; right: 11px; }
+.crt-glass { width: 100%; aspect-ratio: 4/3; overflow: hidden; background: #0b0c0c; border: 2px inset #888; display: flex; align-items: center; }
+.crt-glass span { color: #ffd84a; padding-left: 8px; white-space: nowrap; font: 12px var(--font-hand); }
+.crt-neck { height: 5px; width: 48%; margin: auto; background: #999; border-inline: 1px solid #666; }
+.crt-foot { width: 73%; height: 7px; margin: auto; }
+.saver-group { min-width: 0; margin: 0; border: 2px groove #eee; padding: 7px 9px 9px; }
+.saver-options, .saver-wait { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.saver-options select { flex: 1; min-width: 60px; }
+.saver-options button { min-width: 52px; }
+.saver-wait { margin-top: 6px; }
+.saver-wait input { width: 36px; text-align: center; }
+.saver-setting { padding: 5px; margin-top: 4px; }
+#screen .splash { gap: 0; color: #141421; background: radial-gradient(ellipse at 25% 65%, #fff 0%, #ffffff99 19%, transparent 49%), radial-gradient(ellipse at 82% 33%, #fff 0%, #ffffffa0 12%, transparent 32%), linear-gradient(160deg,#7795c4,#c7d9ea 47%,#fcfcfa 72%,#a6c4df); }
+.splash .boot-mark svg { width: clamp(98px,18vh,175px); height: auto; }
+#screen .splash .logo { font: 700 clamp(36px,7vh,65px)/1 Arial, sans-serif; letter-spacing: -.09em; }
+.splash .logo small { display: block; font: 14px/1 Arial,sans-serif; letter-spacing: -.04em; }
+#screen .splash .logo b { font-weight: 400; color: #171722; }
+#screen .splash .bar { position: absolute; inset: auto 0 0; width: 100%; height: 14px; border: 0; background: #253695; }
+
+/* Imaging workspace and disk utilities. */
+.classic-viewer { padding: 3px; background: var(--w-face); color: #111; font: var(--font-98); border: 0; border-radius: 0; color-scheme: light; }
+.classic-viewer > .titlebar { background: linear-gradient(90deg,var(--w-title),var(--w-title2)); color: white; }
+.classic-viewer .viewer-toolbar { padding: 4px; gap: 4px; border-bottom: 1px solid var(--w-lo); }
+.classic-viewer .viewer-toolbar .b98 { min-width: 0; }
+.classic-viewer .viewer-toolbar output { font: var(--font-98); }
+.classic-viewer .viewer-scroll { background: #808080; border: 2px inset #ddd; }
+.classic-viewer .viewer-caption { background: var(--w-face); color: #222; border-top: 1px solid white; font: var(--font-98); }
+#desktop .imgview .canvas { margin-block: auto; }
+.image-stage .imgview { min-height: 100%; }
+.win[data-window^="zip_"] .zipv { min-height: 100%; }
+.zipv .archive-entries { flex: 1; min-height: 65px; background: white; overflow: auto; }
+.zipv .cmt { min-height: 30px; }
+.cmp-preview { display: grid; grid-template-columns: 1fr 1fr; min-height: 100%; background: white; }
+.cmp-preview section { min-width: 0; border: 1px inset #ccc; }
+.cmp-preview .cmp-preview-heading { padding: 2px 6px; font: var(--font-98); }
+.cmp-preview .note { min-height: 0; }
+.cmp-preview .empty98 { padding: 7px; }
+.cmp-wrap { margin: 0; min-height: 100%; border: 2px inset #eee; }
+.cmp-pick label { white-space: nowrap; }
+.cmp-pick .cmp-sel { min-width: 0; }
+.map-side, .fx-list { border: 2px inset #eee; }
+.map-head { background: var(--w-face); border-bottom: 2px groove #eee; }
+.fx-list { gap: 0; padding: 2px; }
+.fx-list > .k { background: var(--w-face); border-bottom: 1px solid #808080; padding: 3px; color: #222; }
+.fx-file { border: 0; border-bottom: 1px dotted #ccc; background: white; }
+.fx-file.on, .fx-file.on span, .fx-file.on b::after { color: white; background: var(--w-title); }
+.gx .ct.sel { background: #d8e8fc; outline: 1px dotted #60779c; outline-offset: -1px; }
+.win[data-window="gexun"] .wbody:has(.gx-login) { background: #dce8f4; }
+.gx-login { background: #ecf3fa; border: 1px solid #8aa7c1; padding: 0 15px 14px; min-height: auto; }
+.gx-login .gx-brand { margin: 0 -15px 4px; padding: 10px 15px; border-bottom: 1px solid #779bbd; width: calc(100% + 30px); background: linear-gradient(105deg,#426b95,#729bc0 72%,#aecbe2); color: white; }
+.gx-brand small { color: #f1f5fa; }
+.gx-login-error:not(:empty) { min-height: auto; }
+.help-tabs { gap: 0; padding: 9px 10px 0; }
+.help-tabs .b98 { font-weight: normal; }
+.help-tabs .on { background: var(--w-face); font-weight: bold; }
+.help-content { border: 2px inset #eee; }
+
+@media (min-width: 961px) and (pointer: fine) {
+  .win > .titlebar, .dlg98:not(.dlgph) > .titlebar, .classic-viewer > .titlebar { height: 20px; gap: 2px; }
+  .titlebar .b98.tbb { width: 17px; min-width: 17px; height: 15px; }
+  .titlebar .b98.tbb:last-child { margin-left: 2px; }
+  .win .status98 { font-size: 12px; line-height: 16px; }
+}
+@media (max-width: 960px), (pointer: coarse) {
+  #startmenu { max-height: calc(100% - 44px); }
+  .classic-viewer > .titlebar { height: 44px; }
+  .classic-viewer .tbb, .classic-viewer .viewer-toolbar button { min-height: 36px; min-width: 42px; }
+  .win .nav-band { gap: 1px; }
+}
+@media (max-width: 480px) {
+  .win .nav-command { flex-direction: column; gap: 0; min-width: 39px; padding: 2px 3px; }
+  .cmp-pick { display: grid; grid-template-columns: auto minmax(0,1fr); }
+  .win .menubar > div { padding-inline: 6px; }
+  .property-sheet { padding: 8px; }
+}
+
 .panel.title-panel.leaderboard-panel { width: 1360px; max-width: 100%; }
 .leaderboard-rule { margin: 0 0 8px; color: #e5e7eb; }
 .leaderboard-note { margin: 4px 0; color: #a6acb8; font-size: 13px; line-height: 1.6; }
@@ -2893,6 +3018,7 @@ const Y2K = (() => {
     txt: '<path d="M7 3h13l5 5v21H7z" fill="#fff" stroke="#000"/><path d="M20 3v5h5" fill="none" stroke="#000"/><path d="M10 12h12M10 15h12M10 18h12M10 21h9" stroke="#000080"/>',
     doc: '<path d="M7 3h13l5 5v21H7z" fill="#fff" stroke="#000"/><path d="M20 3v5h5" fill="none" stroke="#000"/><rect x="10" y="11" width="12" height="9" fill="#1d55c4"/><text x="12" y="19" font-size="8" fill="#fff" font-family="Arial" font-weight="bold">W</text><path d="M10 23h12" stroke="#000"/>',
     img: '<rect x="4" y="6" width="24" height="20" fill="#fff" stroke="#000"/><rect x="6" y="8" width="20" height="14" fill="#7ec0ff"/><path d="M6 22l7-8 5 5 3-3 5 6z" fill="#2f8a2f"/><circle cx="21" cy="12" r="2" fill="#ff0"/>',
+    video: '<path d="M3 5h26v22H3z" fill="#434446" stroke="#000"/><path d="M7 8h18v16H7z" fill="#86b6ce"/><path d="M4 8v3m0 3v3m0 3v3M27 8v3m0 3v3m0 3v3" stroke="#fff" stroke-width="2"/><path d="M13 11l8 5-8 5z" fill="white"/>',
     audio: '<rect x="3" y="8" width="26" height="17" rx="2" fill="#333" stroke="#000"/><rect x="6" y="10" width="20" height="5" fill="#f3edd8"/><circle cx="11" cy="20" r="3" fill="#ddd"/><circle cx="21" cy="20" r="3" fill="#ddd"/>',
     zip: '<rect x="6" y="4" width="20" height="24" fill="#f2c94c" stroke="#000"/><path d="M16 4v24" stroke="#000" stroke-dasharray="2 2"/><rect x="13" y="16" width="6" height="6" fill="#c0c0c0" stroke="#000"/>',
     exe: '<rect x="4" y="6" width="24" height="20" fill="#c0c0c0" stroke="#000"/><rect x="4" y="6" width="24" height="4" fill="#000080"/><rect x="8" y="14" width="16" height="2" fill="#000"/><rect x="8" y="18" width="10" height="2" fill="#000"/>',
@@ -2904,12 +3030,29 @@ const Y2K = (() => {
     recyclefull: '<path d="M8 9h16l-2 19H10z" fill="#d9e6ef" stroke="#3a4a5a"/><rect x="6" y="6" width="20" height="3" fill="#b9c9d6" stroke="#3a4a5a"/><path d="M11 9l3-5 4 3 4-4 1 6" fill="#fff" stroke="#555"/>',
     display: '<rect x="4" y="5" width="24" height="17" fill="#c0c0c0" stroke="#000"/><rect x="7" y="8" width="18" height="11" fill="#000"/><text x="9" y="16" font-size="6" fill="#ff0" font-family="Arial">abc</text><rect x="12" y="23" width="8" height="4" fill="#c0c0c0" stroke="#000"/>',
     help: '<circle cx="16" cy="16" r="11" fill="#fff" stroke="#000"/><text x="11" y="22" font-size="16" font-weight="bold" font-family="Arial" fill="#000080">?</text>',
-    win: '<rect x="4" y="5" width="11" height="10" fill="#e33"/><rect x="17" y="5" width="11" height="10" fill="#3b3"/><rect x="4" y="17" width="11" height="10" fill="#36f"/><rect x="17" y="17" width="11" height="10" fill="#fc3"/>',
+    win: '<g transform="skewX(-12) translate(4 0)"><path d="M9 3q5-2 10 0t10 0v22q-5 2-10 0t-10 0z" fill="#171717"/><path d="M11 5q4-1 7 0v8q-4-1-7 0z" fill="#f04426"/><path d="M20 6q4 1 7-1v8q-3 2-7 1z" fill="#59aa38"/><path d="M11 15q3-1 7 0v8q-4-1-7 0z" fill="#2869bc"/><path d="M20 16q3 1 7-1v8q-3 2-7 1z" fill="#ffd538"/><path d="M6 4h2v3H6zm-4 1h2v2H2zm3 4h3v3H5zm-4 1h2v2H1zm5 4h2v3H6zm-3 2h2v2H3zm2 4h3v3H5z" fill="#222"/></g>',
     lock: '<rect x="18" y="20" width="12" height="10" fill="#f2c94c" stroke="#000"/><path d="M20 20v-3a4 4 0 0 1 8 0v3" fill="none" stroke="#000" stroke-width="2"/>',
     shutdown: '<rect x="5" y="6" width="22" height="16" fill="#c0c0c0" stroke="#000"/><rect x="8" y="9" width="16" height="10" fill="#000080"/><rect x="11" y="23" width="10" height="4" fill="#c0c0c0" stroke="#000"/>',
     notepad: '<rect x="6" y="4" width="20" height="25" fill="#fff" stroke="#000"/><path d="M6 4h20v4H6z" fill="#7aa7e0"/><path d="M9 12h14M9 15h14M9 18h14M9 21h10" stroke="#555"/>',
   };
-  const TYPEICON = { folder: 'folder', txt: 'txt', log: 'txt', bas: 'txt', ini: 'sys', bat: 'sys', bak: 'sys', dat: 'sys', sys: 'sys', doc: 'doc', htm: 'htm', img: 'img', audio: 'audio', video: 'audio', zip: 'zip', exe: 'exe', lnk: 'exe' };
+  // Small toolbar bitmaps share the desktop icon palette and fixed pixel grid.
+  const navGlyphs = {
+    back: '<path d="M2 10l8-7v4h8v6h-8v4z" fill="#44993d" stroke="#1c5720"/><path d="M4 10l5-4m1 2h7" fill="none" stroke="#a8db86"/>',
+    up: '<path d="M1 7h6l2 2h10v9H1z" fill="#ffdc73" stroke="#765900"/><path d="M10 13V5H7l5-4 5 4h-3v8z" fill="#4c9845" stroke="#23581e"/>',
+    refresh: '<path d="M3 1h10l4 4v13H3z" fill="#fff" stroke="#666"/><path d="M13 1v5h4" fill="none" stroke="#777"/><path d="M5 10a5 5 0 0 1 8-3l2-2v6h-6l2-2a3 3 0 0 0-6 1zm10 2a5 5 0 0 1-8 3l-2 2v-6h6l-2 2a3 3 0 0 0 6-1z" fill="#38854b"/>',
+    home: '<path d="M3 9L10 3l7 6v9H3z" fill="#faecc3" stroke="#674f32"/><path d="M1 9l9-8 9 8-2 2-7-6-7 6z" fill="#ad533b" stroke="#79382c"/><path d="M8 12h4v6H8z" fill="#717c8f"/>',
+    search: '<path d="M9 12l-7 7" stroke="#272328" stroke-width="5"/><path d="M8 13l-5 5" stroke="#956840" stroke-width="3"/><circle cx="12" cy="7" r="6" fill="#cbebf6" stroke="#455368" stroke-width="2"/><path d="M8 7q1-4 5-4" fill="none" stroke="#fff" stroke-width="2"/>',
+    props: '<path d="M3 1h10l4 4v13H3z" fill="#fff" stroke="#666"/><path d="M13 1v5h4M6 8h6M6 11h6M6 14h4" fill="none" stroke="#557085"/>',
+    favorite: '<path d="M10 1l2.4 5.2 5.8.8-4.2 4.1 1 5.9-5-2.8L5 17l1-5.9L1.8 7l5.8-.8z" fill="#ffcf55" stroke="#916424"/>',
+    source: '<path d="M3 1h10l4 4v13H3z" fill="#fff" stroke="#555"/><path d="M13 1v5h4M8 9l-3 3 3 3m4-6 3 3-3 3" fill="none" stroke="#142e83" stroke-width="1.5"/>',
+  };
+  function navButton(glyph, label, action, disabled = false, accessible = label) {
+    const artwork = glyph === 'forward' ? '<g transform="translate(20 0) scale(-1 1)">' + navGlyphs.back + '</g>' : navGlyphs[glyph];
+    const svg = '<svg viewBox="0 0 20 20" aria-hidden="true">' + artwork + '</svg>';
+    return controlButton({class:'b98 nav-command', disabled, title:label, 'aria-label':accessible}, action,
+      h('span', {html:svg}), h('span', {text:label}));
+  }
+  const TYPEICON = { folder: 'folder', txt: 'txt', log: 'txt', bas: 'txt', ini: 'sys', bat: 'sys', bak: 'sys', dat: 'sys', sys: 'sys', doc: 'doc', htm: 'htm', img: 'img', audio: 'audio', video: 'video', zip: 'zip', exe: 'exe', lnk: 'exe' };
   const TYPENAME = { folder: _t('文件夹'), txt: _t('文本文档'), log: _t('日志文件'), ini: _t('配置设置'), bas: _t('BASIC 源文件'), bat: _t('MS-DOS 批处理程序'), bak: _t('BAK 文件'), dat: _t('DAT 文件'), sys: _t('系统文件'), doc: _t('写字板文档'), htm: _t('HTML 文档'), img: _t('位图图像'), audio: _t('波形声音'), zip: _t('ZIP 压缩文件'), exe: _t('应用程序'), lnk: _t('快捷方式'), video: _t('视频文件') };
   function icon(name, locked) {
     return `<svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">${ICONS[name] || ICONS.txt}${locked ? ICONS.lock : ''}</svg>`;
@@ -3198,12 +3341,12 @@ const Y2K = (() => {
     root.querySelectorAll('.evidence-surface, svg, img').forEach(img => {
       if (img.parentElement?.closest('.evidence-surface')) return;
       img.style.cursor = 'zoom-in'; img.setAttribute('role', 'button'); img.setAttribute('tabindex', '0'); img.setAttribute('aria-label', _t('放大图片'));
-      const open = () => viewImage(img.outerHTML);
+      const open = () => viewImage(img.outerHTML, null, false, !!img.closest('#desktop'));
       bindControl(img, open);
       img.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } };
     });
   }
-  function viewImage(html, file, back = false) {
+  function viewImage(html, file, back = false, fromPC = !!file) {
     const previousFocus = document.activeElement;
     const canvas = h('div', { class: 'viewer-canvas', html: back && file?.backHtml ? file.backHtml : html });
     canvas.querySelectorAll('[tabindex]').forEach(el => { el.removeAttribute('tabindex'); el.removeAttribute('role'); el.removeAttribute('aria-label'); el.style.cursor = ''; });
@@ -3241,7 +3384,15 @@ const Y2K = (() => {
       file && file.documentPhoto && file.caption ? controlButton({ class: 'ph-btn', text: _t('照片说明') }, () => msgBox(_t('照片说明'), fmt(file.caption), null, true)) : null,
       file ? controlButton({ class: 'ph-btn', text: _t('属性') }, () => showProps(file, true)) : null, closeBtn);
     const caption = file && file.caption && !file.documentPhoto ? h('div', { class: 'viewer-caption', html: fmt(file.caption) }) : null;
-    const panel = h('div', { class: 'viewer-panel', role: 'dialog', 'aria-modal': 'true', 'aria-label': _t('图像查看器') }, toolbar, area, caption);
+    const panel = h('div', { class: 'viewer-panel' + (fromPC ? ' classic-viewer out' : ''), role: 'dialog', 'aria-modal': 'true', 'aria-label': _t('图像查看器') }, toolbar, area, caption);
+    if (fromPC) {
+      const title = (file ? nameOf(file.path) + ' - ' : '') + _t('图像查看器');
+      closeBtn.className = 'b98 tbb';
+      closeBtn.setAttribute('aria-label', _t('关闭'));
+      closeBtn.replaceChildren(h('span', { class: 'window-symbol close', 'aria-hidden': 'true' }));
+      panel.prepend(h('div', { class: 'titlebar' }, h('span', { html: icon('img') }), h('span', { class: 't', text: title }), closeBtn));
+      toolbar.querySelectorAll('button').forEach(button => button.className = 'b98');
+    }
     const el = h('div', { class: 'viewer', onclick: e => { if (e.target === el) close(); } }, panel);
     if (file) bindCtx(area, () => [[_t('属性'), () => showProps(file, true)]], null, overlay());
     panel.onkeydown = e => {
@@ -3377,7 +3528,20 @@ const Y2K = (() => {
     box.focusFirst = () => { if (focusEl && !touchKeyboard()) focusEl.focus(); };
     return box;
   }
-  function modalRoot() { return $('#modal'); }
+  function positionPCDialog(root) {
+    const bounds = screen().getBoundingClientRect();
+    root.style.left = bounds.left + 'px';
+    root.style.top = bounds.top + 'px';
+    root.style.width = bounds.width + 'px';
+    root.style.height = bounds.height + 'px';
+  }
+  function modalRoot(onPC = false) {
+    const root = $('#modal');
+    const pc = onPC && !titleOn && desktop() && !overlay().classList.contains('on');
+    root.classList.toggle('pc-modal', !!pc);
+    if (pc) positionPCDialog(root);
+    return root;
+  }
   function closeModal(acknowledge = true) {
     const m = modalRoot(), feedback = m && m.querySelector('.pz[data-awaiting-ack]');
     if (m) m.innerHTML = '';
@@ -3392,7 +3556,7 @@ const Y2K = (() => {
     if (p.kind === 'map') { if (narrow()) togglePhone(false); return openMap({ puzzle: id }); }
     if (p.kind === 'frame') { ui.tab = 'clips'; ui.clip = p.clip; ui.framePuzzle = id; ui.frameSel = null; ui.frameMsg = ''; if (narrow()) togglePhone(true); else renderPhone(); return; }
     if (p.kind === 'chain') { if (narrow()) togglePhone(false); return openDiskFix({ puzzle: id }); }
-    const m = modalRoot(); m.innerHTML = '';
+    const m = modalRoot(!phoneStyle); m.innerHTML = '';
     const shade = h('div', { class: 'shade', onclick: () => closeModal() });
     const dlg = h('div', { class: phoneStyle ? 'dlg98 dlgph' : 'dlg98 out', role: 'dialog' });
     const form = puzzleForm(id, { onSolved: () => { if (form.isConnected) closeModal(); onSolved && onSolved(); }, onAnswer: value => {
@@ -3405,8 +3569,8 @@ const Y2K = (() => {
     m.append(shade, dlg);
     form.focusFirst();
   }
-  function msgBox(title, html, buttons, aboveOverlay) {
-    const m = modalRoot(); m.innerHTML = '';
+  function msgBox(title, html, buttons, aboveOverlay, onPC = false) {
+    const m = modalRoot(onPC); m.innerHTML = '';
     const dlg = h('div', { class: 'dlg98 out' + (aboveOverlay ? ' raised' : '') + (titleOn ? ' ontitle' : ''), role: 'dialog' });
     const row = h('div', { class: 'row' });
     (buttons || [{ text: _t('确定') }]).forEach(b => row.append(controlButton({ class: 'b98', text: b.text }, () => { closeModal(); b.fn && b.fn(); })));
@@ -3437,7 +3601,9 @@ const Y2K = (() => {
   function lockedBoardCard(id, board) {
     const card = h('div', {class:'ph-card', 'data-locked-board':id}, h('div', {class:'k', text:_t('尚未解锁')}), h('strong', {text:board.title}));
     if (!test(board.investigationRequires)) {
-      card.append(h('p', {text:_t('本章调查仍在进行。')}));
+      card.append(h('p', {text:_t('本章调查仍在进行。')}), h('button', {class:'ph-source', type:'button', text:_t('查看本章调查'), onclick:() => {
+        ui.tab = 'notes'; ui.noteTab = 'questions'; ui.reading = null; renderPhone();
+      }}));
       return card;
     }
     const missing = board.requiredSources.filter(sid => !S.flags['seen_' + sid]);
@@ -3822,14 +3988,22 @@ const Y2K = (() => {
     }
     if (source.type === 'chat') { ui.tab = 'msg'; ui.chat = source.id; ui.reading = null; ui.item = null; ui.mail = null; renderPhone(); return; }
     if (source.type === 'board') { if (canOpenBoard(source.id)) openBoard(source.id); return; }
-    if (S.stage !== 'win') return;
+    if (source.type === 'collection') {
+      ui.tab = 'notes'; ui.noteTab = 'poems'; ui.reading = null; renderPhone(); return;
+    }
+    if (S.stage !== 'win') {
+      if (narrow()) togglePhone(false);
+      if (S.stage === 'off') powerOn();
+      return;
+    }
     if (source.type === 'app') { if (narrow()) togglePhone(false); return openApp(source.id); }
     if (source.type === 'file') {
       const f = D.files.find(f => f.id === source.id); if (!f || !test(f.requires)) return;
       if (narrow()) togglePhone(false);
       if (f.deleted && !S.flags['restored_' + f.id]) openRecycle(); else openFile(f);
     } else if (source.type === 'props') {
-      const f = D.files.find(f => f.id === source.id); if (f && test(f.requires)) showProps(f);
+      const f = D.files.find(f => f.id === source.id);
+      if (f && test(f.requires)) { if (narrow()) togglePhone(false); showProps(f); }
     } else if (source.type === 'url') {
       if (narrow()) togglePhone(false); openIE(source.value);
     } else if (source.type === 'gx') {
@@ -3854,6 +4028,9 @@ const Y2K = (() => {
   // 日志里暂时挑不出可做的一步时（本章步骤做完、等人回话、等补读），给玩家一个能点的去处，不让指引空着。
   function journalFallback(journal) {
     const visible = c => D.contacts2018[c] && contactVisible(c);
+    if (S.chapter === 'ch8' && S.flags.c8_end && !S.flags.collected_all) {
+      return ['尾声已经结束。给四十岁的话找到了 ' + S.collected.length + '/' + Object.keys(D.collectibles).length + ' 句。剩下的在旧资料里，找齐后再看看米乐的消息。', { type: 'collection' }];
+    }
     // 几个人同时有动静时，指向最近来消息的那一个。
     const lastAt = c => String(((S.chat[c] || []).at(-1) || {}).sceneAt || '');
     const latest = list => list.sort((a, b) => lastAt(b).localeCompare(lastAt(a)))[0];
@@ -3877,14 +4054,20 @@ const Y2K = (() => {
     if (old) return [contactInfo(old).name + _t(' 发来过消息，还没读。'), { type: 'chat', id: old }];
     return [_t('现在要等一等：有人还没回你，或者坏道还在补读。先回看本章的线索和原件，过一会儿再来。'), null];
   }
+  function isComputerSource(source) {
+    return source && ['app', 'file', 'props', 'url', 'gx'].includes(source.type);
+  }
   function renderJournal(body) {
     const journal = D.journal[S.chapter]; if (!journal) return;
     const next = nextJournalStep();
     const [text, source] = next ? [next.text, next.source] : journalFallback(journal);
+    let action = _t('前往资料');
+    if (isComputerSource(source) && S.stage !== 'win') action = S.stage === 'off' ? _t('打开读盘机') : _t('查看读盘机');
+    if (source?.type === 'collection') action = _t('查看已收集的话');
     body.append(h('section', { class: 'ph-journal', 'data-investigation': next?.until || 'fallback' },
       h('div', { class: 'k', text: _t('本章调查') }), h('h3', { text: journal.question }),
       h('p', { text }),
-      source ? sourceButton(source, _t('前往资料')) : null));
+      source ? sourceButton(source, action) : null));
     const facts = (journal.facts || []).filter(f => test(f.requires));
     if (facts.length) body.append(h('details', { class: 'ph-facts', open: true },
       h('summary', { text: _t('目前能确认的事') + ' · ' + facts.length }),
@@ -3893,15 +4076,16 @@ const Y2K = (() => {
   function nextJournalStep() {
     const available = source => {
       if (!source) return false;
+      if (isComputerSource(source) && S.stage !== 'win' && D.boot.requires && !test(D.boot.requires)) return false;
       if (source.type === 'item') return S.items.includes(source.id);
       if (source.type === 'mail') return S.mails.includes(source.id);
       if (source.type === 'chat') return contactVisible(source.id);
-      if (source.type === 'app') return S.stage === 'win' && D.apps[source.id] && test(D.apps[source.id].requires);
+      if (source.type === 'app') return D.apps[source.id] && test(D.apps[source.id].requires);
       if (source.type === 'board') return D.boards[source.id] && test(D.boards[source.id].requires);
       if (source.type === 'clip') return clipsOpen() && clipList().some(c => c.id === source.id);
-      if (['file', 'props'].includes(source.type)) return S.stage === 'win' && D.files.some(f => f.id === source.id && test(f.requires));
-      if (source.type === 'url') return S.stage === 'win';
-      if (source.type === 'gx') return S.stage === 'win' && D.gxLogs.some(l => l.id === source.id && test(l.requires));
+      if (['file', 'props'].includes(source.type)) return D.files.some(f => f.id === source.id && test(f.requires));
+      if (source.type === 'url') return true;
+      if (source.type === 'gx') return D.gxLogs.some(l => l.id === source.id && test(l.requires));
       return false;
     };
     return ((D.journal[S.chapter] || {}).steps || []).find(step => {
@@ -4145,7 +4329,8 @@ const Y2K = (() => {
       }
     } else if (ui.tab === 'boards') {
       title(_t('推理'), _t('把线索拼成结论'));
-      const list = Object.entries(D.boards).filter(([id]) => canOpenBoard(id) || id === S.chapter.replace('ch', 'c') + '_final');
+      const current = D.journal[S.chapter]?.steps.find(step => step.source?.type === 'board')?.source.id;
+      const list = Object.entries(D.boards).filter(([id]) => canOpenBoard(id) || id === current);
       if (!list.length) body.append(h('div', { class: 'ph-empty', text: _t('暂无记录。') }));
       list.reverse().forEach(([id, b]) => {
         if (!canOpenBoard(id)) { body.append(lockedBoardCard(id, b)); return; }
@@ -4213,8 +4398,8 @@ const Y2K = (() => {
     body.append(h('button', { class: 'ph-btn sm', style: { width: '100%' }, text: _t('返回标题画面'), onclick: () => { writeSave('auto'); showTitle(); } }));
   }
   // Out-of-story reference only: no story data, evidence links, tasks or answers.
-  function openHelp() {
-    const m = modalRoot(); m.innerHTML = '';
+  function openHelp(onPC = false) {
+    const m = modalRoot(onPC === true); m.innerHTML = '';
     const dlg = h('div', { class: 'dlg98 out raised help-dialog', role: 'dialog', 'aria-label': _t('帮助') });
     const tabs = h('div', { class: 'help-tabs', role: 'tablist' });
     const body = h('div', { class: 'help-content', role: 'tabpanel', tabindex: 0 });
@@ -4226,7 +4411,7 @@ const Y2K = (() => {
       if (tab === 'controls') {
         for (const [title, text] of [
           ['电脑与手机', '用鼠标双击图标打开程序，拖动标题栏移动窗口。想看文件属性，就右键点文件。用触屏时，轻点图标即可打开，长按文件可看属性。点右下角的手机按钮可以展开手机。表格太宽时，可以左右滑。'],
-          ['材料与笔记', '手机里收着消息、邮件、物品和录像。读过原件，线索会记进“笔记”。忘了接下来要查什么，就看手机首页的“本章调查”，点“前往资料”能直接打开要看的东西。'],
+          ['材料与笔记', '手机里收着消息、邮件、物品和录像。读过原件，线索会记进“笔记”。忘了接下来要查什么，到手机“笔记”点“待解决的问题”。上方的“本章调查”能带你回到要看的原件。'],
           ['解题操作', '多选题会标出要选几项。看录像时一帧一帧点开，选中那一帧再提交。修复坏道时，从标出的起始簇开始，照“下一簇”的编号往后接；编号读不出来，就看哪两段文字接得上。'],
           ['上网与搜索', '读盘机能通过老K自己架的“旧网代理”打开存档网页。地址栏可以直接输入网址，“收藏”菜单里有常用站点。“旧网搜索”能搜人名、地名、日期，多个词用空格隔开。工具栏的“源文件”能看网页原来的代码。'],
           ['文件、比较与地图', '资源管理器“查看”菜单里勾上“显示所有文件”，才能看见隐藏文件。右键文件看属性，修改时间、作者、备注都可能是线索。“文件比较”要先把两份资料都打开过一次。看平面图时，点地点再确认。'],
@@ -4391,7 +4576,7 @@ const Y2K = (() => {
   function powerOn() {
     if (D.boot.requires && !test(D.boot.requires)) return toast(fmt(D.boot.lockedText || _t('还不能开机。')));
     markInteraction();
-    S.stage = 'boot'; $('#led').classList.add('on');
+    S.stage = 'boot'; renderPhone(); $('#led').classList.add('on');
     const sc = screen(); sc.innerHTML = '';
     const bios = h('div', { class: 'bios' }); sc.append(bios);
     const lines = [
@@ -4418,7 +4603,9 @@ const Y2K = (() => {
     bios.innerHTML += '\nVerifying DMI Pool Data ........\nBoot from Hard Disk...\nStarting Windows 98...\n';
     later(() => {
       const sc = screen(); sc.innerHTML = '';
-      sc.append(h('div', { class: 'splash' }, h('div', { class: 'logo', html: 'Windows<b>98</b>' }), h('div', { class: 'bar', html: '<i></i>' })));
+      sc.append(h('div', {class:'splash'}, h('div', {class:'boot-mark', html:icon('win')}),
+        h('div', {class:'logo'}, h('small', {text:'Microsoft'}), 'Windows', h('b', {text:'98'})),
+        h('div', {class:'bar', html:'<i></i>'})));
       later(showLogin, 2200);
     }, 900);
   }
@@ -4545,9 +4732,10 @@ const Y2K = (() => {
     const W = dk.clientWidth, H = dk.clientHeight;
     const w = Math.min(o.w || 560, W - 10), hh = Math.min(o.h || 400, H - 10);
     const n = wins.length;
-    const x = Math.max(0, Math.min(W - w, 40 + n * 24 + Math.random() * 20)), y = Math.max(0, Math.min(H - hh, 20 + n * 22));
+    const x = Math.max(0, Math.min(W - w, 24 + (n % 6) * 22));
+    const y = Math.max(0, Math.min(H - hh, 18 + (n % 6) * 22));
     const win = { key: o.key, o, title: o.title, state: Object.assign({}, o.state || {}), z: ++zTop, min: false };
-    const el = h('div', { class: 'win out', style: { left: x + 'px', top: y + 'px', width: w + 'px', height: hh + 'px', zIndex: win.z } });
+    const el = h('div', { class: 'win out', 'data-window': o.key, role: 'dialog', 'aria-label': o.title, style: { left: x + 'px', top: y + 'px', width: w + 'px', height: hh + 'px', zIndex: win.z } });
     const tt = h('span', { class: 't', text: o.title });
     const symbol = kind => h('span', { class: 'window-symbol ' + kind, 'aria-hidden': 'true' });
     const maxSymbol = symbol('max');
@@ -4557,7 +4745,8 @@ const Y2K = (() => {
       el.classList.toggle('max', max); maxSymbol.className = 'window-symbol ' + (max ? 'restore' : 'max');
       maxBtn.setAttribute('aria-label', _t(max ? '还原' : '最大化')); maxBtn.title = _t(max ? '还原' : '最大化');
     };
-    const bar = h('div', { class: 'titlebar' }, h('span', { html: icon(o.icon || 'exe') }), tt,
+    const titleIcon = h('span', { class: 'title-icon', html: icon(o.icon || 'exe') });
+    const bar = h('div', { class: 'titlebar' }, titleIcon, tt,
       controlButton({ class: 'b98 tbb', 'aria-label': _t('最小化'), title: _t('最小化') }, () => { win.min = true; el.hidden = true; renderTasks(); }, symbol('min')),
       maxBtn,
       controlButton({ class: 'b98 tbb', 'aria-label': _t('关闭'), title: _t('关闭') }, () => closeWin(win), symbol('close')));
@@ -4569,7 +4758,8 @@ const Y2K = (() => {
     el.append(bar, menu, top, body, status, h('div', { class: 'grip' }));
     win.el = el; win.body = body; win.menu = menu; win.top = top; win.status = status; win.tt = tt;
     guardWinInteraction(win);
-    win.setTitle = (t) => { win.title = t; tt.textContent = t; renderTasks(); };
+    win.setTitle = t => { win.title = t; tt.textContent = t; el.setAttribute('aria-label', t); renderTasks(); };
+    win.setIcon = name => { if (win.o.icon !== name) { win.o.icon = name; titleIcon.innerHTML = icon(name); renderTasks(); } };
     win.refresh = (force) => {
       if (body.querySelector('.pz[data-awaiting-ack]')) return;
       if (!force && win.isInteracting()) { win.refreshPending = true; return; }
@@ -4597,9 +4787,16 @@ const Y2K = (() => {
     el.addEventListener('pointerdown', e => { if (!e.target.closest('.tbb')) focusWin(win); }, true);
     dragify(el, bar, win);
     resizify(el, el.querySelector('.grip'));
+    if (o.propertyPage) {
+      bar.querySelector('[aria-label="' + _t('最小化') + '"]').remove();
+      maxBtn.remove();
+      el.querySelector('.grip').remove();
+      el.style.left = Math.max(0, (W - w) / 2) + 'px';
+      el.style.top = Math.max(0, (H - hh) / 2) + 'px';
+    }
     dk.append(el);
     wins.push(win);
-    if (narrow() || o.max) win.toggleMax(true);
+    if ((narrow() && !o.propertyPage) || o.max) win.toggleMax(true);
     focusWin(win);
     win.refresh(true);
     return win;
@@ -4621,7 +4818,7 @@ const Y2K = (() => {
       const up = () => { handle.removeEventListener('pointermove', mv); handle.removeEventListener('pointerup', up); handle.removeEventListener('pointercancel', up); };
       handle.addEventListener('pointermove', mv); handle.addEventListener('pointerup', up); handle.addEventListener('pointercancel', up);
     });
-    handle.addEventListener('dblclick', (e) => { if (!e.target.closest('button')) win.toggleMax(); });
+    handle.addEventListener('dblclick', (e) => { if (!win.o.propertyPage && !e.target.closest('button')) win.toggleMax(); });
   }
   function resizify(el, grip) {
     grip.addEventListener('pointerdown', (e) => {
@@ -4648,6 +4845,10 @@ const Y2K = (() => {
         const dd = h('div', { class: 'dropdown out', role: 'menu' });
         items.forEach(it => { if (it === '-') return dd.append(h('div', { class: 'sep98', style: { padding: 0 } })); dd.append(bindControl(h('div', { class: it[2] ? 'chk' : '', text: it[0], role: 'menuitem', tabindex: 0, onkeydown: activate }), () => { m.classList.remove('open'); dd.remove(); document.removeEventListener('pointerdown', off, true); it[1](); })); });
         m.append(dd);
+        const bounds = desktop().getBoundingClientRect();
+        const rect = dd.getBoundingClientRect();
+        if (rect.right > bounds.right) dd.style.left = Math.min(0, bounds.right - rect.right) + 'px';
+        dd.style.maxHeight = Math.max(60, bounds.bottom - rect.top) + 'px';
         const off = (ev) => { if (!m.contains(ev.target)) { m.classList.remove('open'); dd.remove(); document.removeEventListener('pointerdown', off, true); } };
         document.addEventListener('pointerdown', off, true);
       }, e => e.target.closest('.dropdown') ? null : m);
@@ -4711,6 +4912,9 @@ const Y2K = (() => {
     el.addEventListener('touchcancel', () => { cancel(); touching = false; touchOpened = false; }, { passive: true });
   }
   // 开始菜单
+  function pcMessage(title, html, buttons, aboveOverlay) {
+    msgBox(title, html, buttons, aboveOverlay, true);
+  }
   function toggleStart() { if ($('#startmenu')) return closeStart(); openStart(); }
   function closeStart() { const m = $('#startmenu'); if (m) m.remove(); const b = $('#startbtn'); if (b) b.classList.remove('down'); }
   function openStart() {
@@ -4719,10 +4923,10 @@ const Y2K = (() => {
     Object.entries(D.apps).forEach(([id, a]) => { if (test(a.requires) && id !== 'recycle' && id !== 'mydocs') items.push([a.icon, a.name, () => openApp(id)]); });
     items.push(['notepad', _t('记事本'), () => openNotepad({ id: null, path: _t('无标题'), text: '' })]);
     items.push(['display', _t('显示属性'), () => openDisplay()]);
-    items.push(['help', _t('帮助'), openHelp]);
-    items.push(['shutdown', _t('关闭系统...'), () => msgBox(_t('关闭 Windows'), _t('读盘机正在做镜像，先别关。<br><span style="color:#666">—— 你自己贴在机箱上的纸条</span>'), [{ text: _t('返回标题画面'), fn: () => { writeSave('auto'); showTitle(); } }, { text: _t('取消') }])]);
-    const ul = h('ul');
-    items.forEach(([ic, n, fn]) => ul.append(bindControl(h('li', { html: icon(ic) + `<span>${esc(n)}</span>` }), () => { closeStart(); fn(); })));
+    items.push(['help', _t('帮助'), () => openHelp(true)]);
+    items.push(['shutdown', _t('关闭系统...'), () => pcMessage(_t('关闭 Windows'), _t('读盘机正在做镜像，先别关。<br><span style="color:#666">—— 你自己贴在机箱上的纸条</span>'), [{ text: _t('返回标题画面'), fn: () => { writeSave('auto'); showTitle(); } }, { text: _t('取消') }])]);
+    const ul = h('ul', {role: 'menu'});
+    items.forEach(([ic, n, fn]) => ul.append(bindControl(h('li', { tabindex: 0, role: 'menuitem', onkeydown: e => { if (confirmInput(e) || e.key === ' ') { e.preventDefault(); e.currentTarget.click(); } }, html: icon(ic) + `<span>${esc(n)}</span>` }), () => { closeStart(); fn(); })));
     const m = h('div', { id: 'startmenu', class: 'out' }, h('div', { class: 'side', html: '<b>Windows</b>98' }), ul);
     dk.parentNode.append(m);
     $('#startbtn').classList.add('down');
@@ -4806,16 +5010,16 @@ const Y2K = (() => {
       if (firstOpen && f.id === 'f_ph_sms') window.Y2KAudio?.sfx('keypad');
       const t = f.type;
       if (t === 'folder') return openExplorer(f.path);
-      if (['txt', 'log', 'ini', 'bas', 'bat', 'bak', 'dat', 'sys'].includes(t)) return f.text != null ? openNotepad(f) : msgBox(nameOf(f.path), _t('无法打开此文件。<br>Windows 不知道用什么程序打开它。'));
+      if (['txt', 'log', 'ini', 'bas', 'bat', 'bak', 'dat', 'sys'].includes(t)) return f.text != null ? openNotepad(f) : pcMessage(nameOf(f.path), _t('无法打开此文件。<br>Windows 不知道用什么程序打开它。'));
       if (t === 'doc') return openWordpad(f);
       if (t === 'htm') return openIE(null, f);
       if (t === 'img') return openImage(f);
       if (t === 'audio') return openMedia(f);
       if (f.clip) { if (narrow()) togglePhone(true); return goEvidence({ type: 'clip', id: f.clip }); }
       if (t === 'zip') return openZip(f);
-      if (t === 'lnk' || t === 'exe') { if (f.app) return openApp(f.app); if (f.messageWhen && test(f.messageWhen)) return msgBox(nameOf(f.path), f.messageHtml); return msgBox(nameOf(f.path), esc(f.text || _t('该程序无法在此系统上运行。')).replace(/\n/g, '<br>')); }
+      if (t === 'lnk' || t === 'exe') { if (f.app) return openApp(f.app); if (f.messageWhen && test(f.messageWhen)) return pcMessage(nameOf(f.path), f.messageHtml); return pcMessage(nameOf(f.path), esc(f.text || _t('该程序无法在此系统上运行。')).replace(/\n/g, '<br>')); }
       if (f.text != null) return openNotepad(f);
-      msgBox(nameOf(f.path), _t('无法打开此类型的文件。'));
+      pcMessage(nameOf(f.path), _t('无法打开此类型的文件。'));
     };
     if (f.type === 'zip') return go();
     withLock(f.lock, go);
@@ -4829,13 +5033,14 @@ const Y2K = (() => {
     const rows = [[_t('类型'), fileTypeName(f)], [_t('位置'), dispPath(parentOf(f.path)) || f.path], [_t('大小'), f.type === 'folder' ? '-' : sizeOf(f)], [_t('修改时间'), fatOf(f) || '-']];
     if (recOf(f)) rows.push([_t('六号机记录'), recOf(f) + _t('（病历）')]);
     if (f.created) rows.push([_t('创建时间'), f.created]);
-    const attr = `<label><input type="checkbox" disabled ${f.hidden ? 'checked' : ''}${_t('> 隐藏')}</label>　<label><input type="checkbox" disabled checked> ${_t('只读')}</label>`;
-    let html = `<div style="display:flex;gap:10px;align-items:center;margin-bottom:8px"><span style="width:32px">${icon(TYPEICON[f.type] || 'txt')}</span><b>${esc(nameOf(f.path))}</b></div><div class="sep98"></div><table style="border-collapse:collapse">`;
-    rows.forEach(([k, v]) => html += `<tr><td style="padding:2px 12px 2px 0;color:#333;white-space:nowrap;vertical-align:top">${k}：</td><td style="padding:2px 0">${esc(v)}</td></tr>`);
-    html += `<tr><td style="padding:2px 12px 2px 0;color:#333">${_t('属性：')}</td><td>${attr}</td></tr>`;
-    if (f.props) { html += '</table><div class="sep98"></div><table style="border-collapse:collapse">'; Object.entries(f.props).forEach(([k, v]) => html += `<tr><td style="padding:2px 12px 2px 0;color:#333;white-space:nowrap;vertical-align:top">${esc(k)}：</td><td style="padding:2px 0;white-space:pre-wrap">${fmt(esc(v))}</td></tr>`); }
-    html += '</table>';
-    msgBox(nameOf(f.path) + _t(' 属性'), html, null, aboveOverlay);
+    const attr = `<label><input type="checkbox" disabled checked> ${_t('只读')}</label> <label><input type="checkbox" disabled ${f.hidden ? 'checked' : ''}> ${_t('隐藏')}</label>`;
+    const row = (label, value) => `<tr><td>${esc(label)}：</td><td>${value}</td></tr>`;
+    const basic = rows.map(([k,v]) => row(k, esc(v))).join('');
+    const extra = Object.entries(f.props || {}).map(([k,v]) => row(k, fmt(esc(v)))).join('');
+    const html = `<div class="sheet-tab">常规</div><div class="property-sheet"><div class="property-name">${icon(TYPEICON[f.type] || 'txt')}<b>${esc(nameOf(f.path))}</b></div>
+      <div class="sep98"></div><table>${basic}${row(_t('属性'), attr)}</table>
+      ${extra ? '<div class="sep98"></div><table>' + extra + '</table>' : ''}</div>`;
+    pcMessage(nameOf(f.path) + _t(' 属性'), html, null, aboveOverlay);
   }
 
   // ============================================================
@@ -4858,7 +5063,7 @@ const Y2K = (() => {
       if (id === 'diskfix') return openDiskFix();
       if (a.path) return openExplorer(a.path);
       if (id === 'map') return openMap();
-      msgBox(a.name || id, _t('无法启动程序。'));
+      pcMessage(a.name || id, _t('无法启动程序。'));
     };
     withLock(a.lock, go);
   }
@@ -4874,7 +5079,7 @@ const Y2K = (() => {
     const p = st.path;
     const title = p === '' ? _t('我的电脑') : p === 'A:' ? _t('3.5 软盘 (A:)') : p === 'C:' ? '(C:)' : nameOf(p);
     win.setTitle(title + snapTag());
-    win.o.icon = p === '' ? 'computer' : 'folder';
+    win.setIcon(p === '' ? 'computer' : p === 'A:' ? 'floppy' : p === 'C:' ? 'drive' : 'folder');
     st.history ||= [p]; st.hi ??= 0;
     const go = (np, back = false) => { if (!back && np !== st.path) { st.history = st.history.slice(0, st.hi + 1); st.history.push(np); st.hi = st.history.length - 1; } st.path = np; st.sel = null; win.resetScroll = true; win.refresh(true); };
     win.navigate = go;
@@ -4893,26 +5098,40 @@ const Y2K = (() => {
       const wanted = parts.join('/').toLowerCase();
       raw = Object.keys(FS.nodes).find(key => key.toLowerCase() === wanted) || raw;
       const node = FS.nodes[raw], f = nodeFile(raw);
-      if (!node || !reachablePath(raw) || (!f && (!node.folder || !folderVisible(raw)))) return msgBox('资源管理器', '找不到指定的路径。请检查文件夹名称是否写对。');
+      if (!node || !reachablePath(raw) || (!f && (!node.folder || !folderVisible(raw)))) return pcMessage('资源管理器', '找不到指定的路径。请检查文件夹名称是否写对。');
       const locks = []; for (let q = raw; q && q !== 'A:' && q !== 'C:'; q = parentOf(q)) { const e = folderEntry(q); if (e?.lock && !solved(e.lock)) locks.unshift(e.lock); }
       const enter = () => { if (locks.length) return withLock(locks.shift(), enter); if (f) openFile(f); else go(raw); }; enter();
     };
     address.onkeydown = e => { if (confirmInput(e)) { e.preventDefault(); visit(); } }; address.onfocus = () => address.select();
     win.el.onkeydown = e => { if (e.altKey && ['ArrowLeft','ArrowRight','ArrowUp'].includes(e.key)) { e.preventDefault(); if(e.key==='ArrowUp')go(parentOf(st.path));else travel(e.key==='ArrowLeft'?-1:1); } else if(e.ctrlKey&&e.key.toLowerCase()==='l'){e.preventDefault();address.focus();} else if(e.key==='F5'){e.preventDefault();win.refresh(true);} };
     const sel = () => st.sel && items.find(x => x.path === st.sel);
+    const props = item => {
+      if (!item) return pcMessage('属性', '请先单击选中一个文件。');
+      if (item.drive) {
+        const type = item.path === 'A:' ? '3.5 英寸软盘' : item.path === 'C:' ? '本地磁盘' : '系统文件夹';
+        const name = item.label || nameOf(item.path);
+        const path = item.path === '#display' ? '我的电脑' : dispPath(item.path) + String.fromCharCode(92);
+        return pcMessage(name + ' 属性', '<div class="sheet-tab">常规</div><div class="property-sheet"><div class="property-name">' +
+          icon(item.drive) + '<b>' + esc(name) + '</b></div><div class="sep98"></div>' + type + '<br>' + esc(path) + '</div>');
+      }
+      showProps(item.file || item.entry || {path:item.path, type:'folder'});
+    };
     menus(win, [
-      [_t('文件(F)'), [[_t('打开'), () => { const s = sel(); if (s) openEntry(s); else msgBox(_t('打开'), _t('请先单击选中一个文件。')); }], [_t('属性'), () => { const s = sel(); if (s) showProps(s.file || s.entry || { path: s.path, type: 'folder' }); else msgBox(_t('属性'), _t('请先单击选中一个文件。')); }], '-', [_t('关闭'), () => closeWin(win)]]],
+      [_t('文件(F)'), [[_t('打开'), () => { const s = sel(); if (s) openEntry(s); else pcMessage(_t('打开'), _t('请先单击选中一个文件。')); }], [_t('属性'), () => props(sel())], '-', [_t('关闭'), () => closeWin(win)]]],
       [_t('查看(V)'), [[_t('大图标'), () => { st.view = 'icons'; win.refresh(true); }, st.view === 'icons'], [_t('详细资料'), () => { st.view = 'details'; win.refresh(true); }, st.view === 'details'], '-',
         [_t('显示所有文件（含隐藏文件）'), () => { S.showHidden = !S.showHidden; flagVer++; refreshWins(true); renderIcons(); save('auto'); toast(S.showHidden ? _t('已显示隐藏文件') : _t('已不显示隐藏文件')); }, S.showHidden]]],
-      [_t('帮助(H)'), [[_t('关于 Windows'), () => msgBox(_t('关于 Windows'), fmt('Microsoft Windows 98<br>本机已授权给：老K工作室'))]]],
+      [_t('帮助(H)'), [[_t('关于 Windows'), () => pcMessage(_t('关于 Windows'), fmt('Microsoft Windows 98<br>本机已授权给：老K工作室'))]]],
     ]);
-    win.top.append(h('div', { class: 'toolbar98' },
-      controlButton({ class: 'b98', text: '← 后退', disabled: st.hi === 0 }, () => travel(-1)),
-      controlButton({ class: 'b98', text: '前进 →', disabled: st.hi >= st.history.length - 1 }, () => travel(1)),
-      controlButton({ class: 'b98', text: _t('↑ 向上'), disabled: p === '' }, () => go(p === 'A:' || p === 'C:' ? '' : parentOf(p))),
-      controlButton({ class: 'b98', text: '刷新' }, () => win.refresh(true)),
-      controlButton({ class: 'b98', text: _t('属性') }, () => { const s = sel(); if (s) showProps(s.file || s.entry || { path: s.path, type: 'folder' }); else msgBox(_t('属性'), _t('请先单击选中一个文件。')); })),
-      h('div', { class: 'addr' }, h('span', { text: _t('地址') }), address, controlButton({ class: 'b98', text: '转到' }, visit)));
+    win.top.append(h('div', {class:'toolbar98 nav-band'},
+      navButton('back', '后退', () => travel(-1), st.hi === 0, '← 后退'),
+      navButton('forward', '前进', () => travel(1), st.hi >= st.history.length - 1, '前进 →'),
+      navButton('up', '向上', () => go(parentOf(p)), !p, '↑ 向上'),
+      navButton('refresh', '刷新', () => win.refresh(true)),
+      navButton('props', '属性', () => props(sel()))),
+      h('div', {class:'addr nav-address'}, h('label', {text:'地址(D)', for:'explorer-address'}),
+        h('span', {class:'address-field in'}, h('span', {html:icon(win.o.icon)}), address),
+        controlButton({class:'b98', text:'转到'}, visit)));
+    address.id = 'explorer-address';
     const body = win.body;
     body.innerHTML = '';
     let items;
@@ -4920,12 +5139,12 @@ const Y2K = (() => {
       items = [{ path: 'A:', folder: true, drive: 'floppy', label: _t('3.5 软盘 (A:)') }, { path: 'C:', folder: true, drive: 'drive', label: '(C:)' }, { path: '#display', label: _t('控制面板'), drive: 'display' }];
     } else items = listDir(p);
     const openEntry = (it) => {
-      if (it.path === '#display') return openDisplay();
+      if (it.path === '#display') return openControlPanel();
       if (it.folder) { const fe = it.entry; if (fe) { opened(fe.id, fe.onOpen); return withLock(fe.lock, () => go(it.path)); } return go(it.path); }
       openFile(it.file);
     };
     if (!items.length) { body.append(h('div', { class: 'empty98', text: _t('此文件夹为空。') })); }
-    else if (st.view === 'icons' || p === '') {
+    else if (st.view === 'icons') {
       const fl = h('div', { class: 'flist' });
       items.forEach(it => {
         const f = it.file; const locked = (f && f.lock && !solved(f.lock)) || (it.entry && it.entry.lock && !solved(it.entry.lock));
@@ -4936,7 +5155,7 @@ const Y2K = (() => {
         bindControl(el, () => { select(); if (coarse()) openEntry(it); });
         el.ondblclick = () => { if (!coarse()) openEntry(it); };
         el.onkeydown = (e) => { if (confirmInput(e)) openEntry(it); };
-        bindCtx(el, () => [[_t('打开'), () => openEntry(it)], [_t('属性'), () => showProps(f || it.entry || { path: it.path, type: 'folder' })]], select);
+        bindCtx(el, () => [[_t('打开'), () => openEntry(it)], [_t('属性'), () => props(it)]], select);
         fl.append(el);
       });
       body.append(fl);
@@ -4947,6 +5166,7 @@ const Y2K = (() => {
       if (recCol) columns.push('六号机记录');
       const sortValue = (it, key) => {
         const file = it.file || it.entry;
+        if (it.drive) return key === '大小' ? 0 : key === '名称' ? it.label : key === '类型' ? (it.folder ? '磁盘' : '系统文件夹') : '';
         if (key === '大小') {
           if (it.folder) return 0;
           const size = sizeOf(file).replace(/,/g, '');
@@ -4969,14 +5189,14 @@ const Y2K = (() => {
       items.forEach(it => {
         const f = it.file; const locked = f && f.lock && !solved(f.lock);
         const tr = h('tr', { class: st.sel === it.path ? 'sel' : '' },
-          h('td', { class: 'nm', html: icon(it.folder ? 'folder' : TYPEICON[f.type], locked) + esc(nameOf(it.path)) + ((it.folder ? newUnder(it.path) : isNewFile(f)) ? `<span class="newtag">${_t('新')}</span>` : '') }),
-          h('td', { text: it.folder ? '' : sizeOf(f) }), h('td', { text: it.folder ? _t('文件夹') : fileTypeName(f) }), h('td', { text: fatOf(f || it.entry) }), recCol ? h('td', { text: recOf(f || it.entry) }) : null);
+          h('td', { class: 'nm', html: icon(it.drive || (it.folder ? 'folder' : TYPEICON[f.type]), locked) + esc(it.label || nameOf(it.path)) + ((it.folder ? newUnder(it.path) : isNewFile(f)) ? `<span class="newtag">${_t('新')}</span>` : '') }),
+          h('td', { text: it.folder || it.drive ? '' : sizeOf(f) }), h('td', { text: it.drive ? sortValue(it, '类型') : it.folder ? _t('文件夹') : fileTypeName(f) }), h('td', { text: fatOf(f || it.entry) }), recCol ? h('td', { text: recOf(f || it.entry) }) : null);
         const select = () => { st.sel = it.path; tb.querySelectorAll('.sel').forEach(x => x.classList.remove('sel')); tr.classList.add('sel'); win.status.firstChild && (win.status.firstChild.textContent = statusText(it)); };
         bindControl(tr, () => { select(); if (coarse()) openEntry(it); });
         tr.ondblclick = () => { if (!coarse()) openEntry(it); };
         tr.tabIndex = 0;
         tr.onkeydown = e => { if (confirmInput(e)) openEntry(it); };
-        bindCtx(tr, () => [[_t('打开'), () => openEntry(it)], [_t('属性'), () => showProps(f || it.entry || { path: it.path, type: 'folder' })]], select);
+        bindCtx(tr, () => [[_t('打开'), () => openEntry(it)], [_t('属性'), () => props(it)]], select);
         tb.append(tr);
       });
       body.append(tb);
@@ -4989,7 +5209,7 @@ const Y2K = (() => {
   function openRecycle() { openWin({ key: 'recycle', title: _t('回收站'), icon: 'recycle', w: 520, h: 320, live: true, render: renderRecycle }); }
   function renderRecycle(win) {
     const items = recycleItems();
-    win.o.icon = items.length ? 'recyclefull' : 'recycle';
+    win.setIcon(items.length ? 'recyclefull' : 'recycle');
     win.top.append(h('div', { class: 'toolbar98' }, h('span', { text: _t('选中文件后点"还原"，文件会回到原来的位置。') })));
     if (!items.length) { win.body.append(h('div', { class: 'empty98', text: _t('回收站是空的。') })); return; }
     const tb = h('table', { class: 'det recycle-table' });
@@ -5003,9 +5223,13 @@ const Y2K = (() => {
   }
 
   // ---- 记事本 / 写字板 / 看图 ----
-  function openNotepad(f, key = 'np_' + (f.id || Math.random())) {
-    return openWin({ key,title:nameOf(f.path)+' - 记事本',icon:'notepad',file:f,w:660,h:530,state:{text:fmt(f.text||'').replace(/&amp;/g,'&'),wrap:true,q:'',at:0},onClose:()=>{if(!f.id)save('auto');},render:win=>{
-      const st=win.state,editable=!f.id;
+  function openNotepad(f, key = 'np_' + (f.id || Math.random()), source = false) {
+    const editable = !f.id && !source;
+    const text = source ? f.text : fmt(f.text || '').replace(/&amp;/g, '&');
+    return openWin({ key, title: nameOf(f.path) + ' - 记事本', icon: 'notepad', file: f.id ? f : null,
+      w: 660, h: 530, state: {text, wrap: !source, q: '', at: 0},
+      onClose: () => { if (editable) save('auto'); }, render: win => {
+      const st = win.state;
       const paper=editable?h('textarea',{class:'scratch-note','aria-label':'记事本文本',spellcheck:false}):h('pre',{class:'note',text:st.text,tabindex:0});
       const wrap=()=>{paper.style.whiteSpace=st.wrap?'pre-wrap':'pre';paper.style.overflowWrap=st.wrap?'anywhere':'normal';};wrap();
       if(editable){
@@ -5014,20 +5238,25 @@ const Y2K = (() => {
         paper.oninput=()=>{st.text=paper.value;st.changed=true;win.setTitle('*'+nameOf(f.path)+' - 记事本');save('auto');};
       }
       const all=()=>{if(editable){paper.focus();paper.select();}else{const r=document.createRange();r.selectNodeContents(paper);const s=getSelection();s.removeAllRanges();s.addRange(r);}};
-      const copy=async()=>{let text=editable?paper.value.slice(paper.selectionStart,paper.selectionEnd):String(getSelection());if(!text){all();text=st.text;}try{if(navigator.clipboard?.writeText)await navigator.clipboard.writeText(text);else if(!document.execCommand('copy'))throw Error();}catch{msgBox('记事本','请选中文字后按 Ctrl+C 复制。');}};
+      const copy=async()=>{let text=editable?paper.value.slice(paper.selectionStart,paper.selectionEnd):String(getSelection());if(!text){all();text=st.text;}try{if(navigator.clipboard?.writeText)await navigator.clipboard.writeText(text);else if(!document.execCommand('copy'))throw Error();}catch{pcMessage('记事本','请选中文字后按 Ctrl+C 复制。');}};
       const findNext=()=>{
         if(!st.q)return find();const hay=st.text.toLowerCase(),q=st.q.toLowerCase();let pos=hay.indexOf(q,st.at);if(pos<0)pos=hay.indexOf(q);
-        if(pos<0){msgBox('记事本','找不到“'+esc(st.q)+'”。');return;}
+        if(pos<0){pcMessage('记事本','找不到“'+esc(st.q)+'”。');return;}
         st.at=pos+q.length;
         if(editable){paper.focus();paper.setSelectionRange(pos,pos+q.length);}else{const node=paper.firstChild;if(!node)return;const range=document.createRange();range.setStart(node,pos);range.setEnd(node,pos+q.length);const sel=getSelection();sel.removeAllRanges();sel.addRange(range);const rect=range.getBoundingClientRect(),base=win.body.getBoundingClientRect();win.body.scrollTop+=rect.top-base.top-50;paper.focus({preventScroll:true});}
       };
-      const find=()=>{const input=h('input',{class:'f98',id:'np-find','aria-label':'查找内容',value:st.q});const run=()=>{st.q=input.value;st.at=0;closeModal();if(st.q)findNext();};const m=modalRoot();m.innerHTML='';m.append(h('div',{class:'shade',onclick:closeModal}),h('div',{class:'dlg98 out'},h('div',{class:'titlebar'},h('span',{class:'t',text:'查找'}),controlButton({class:'b98 tbb',text:'×','aria-label':'关闭'},closeModal)),h('div',{class:'wbody'},h('label',{for:'np-find',text:'查找内容：'}),input,h('div',{class:'row'},controlButton({class:'b98',text:'查找下一个'},run),controlButton({class:'b98',text:'取消'},closeModal)))));input.onkeydown=e=>{if (confirmInput(e))run();};if(!touchKeyboard()){input.focus();input.select();}};
-      const saveCopy=(onSaved)=>{const filename=h('input',{class:'f98',id:'np-filename','aria-label':'文件名',value:editable?'无标题.txt':nameOf(f.path)});const m=modalRoot();m.innerHTML='';const run=()=>{let name=filename.value.trim();if(!name){filename.focus();return;}name=name.replace(/[<>:"/\\|?*]/g,'_');if(!name.includes('.'))name+='.txt';const blob=new Blob(['\ufeff'+st.text],{type:'text/plain;charset=utf-8'}),url=URL.createObjectURL(blob),a=h('a',{href:url,download:name});document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);st.changed=false;if(editable){f.path=name;win.setTitle(name+' - 记事本');}closeModal();if(typeof onSaved==='function')onSaved();};m.append(h('div',{class:'shade',onclick:closeModal}),h('div',{class:'dlg98 out'},h('div',{class:'titlebar'},h('span',{class:'t',text:'另存为'}),controlButton({class:'b98 tbb',text:'×','aria-label':'关闭'},closeModal)),h('div',{class:'wbody'},h('label',{for:'np-filename',text:'文件名：'}),filename,h('div',{class:'row'},controlButton({class:'b98',text:'保存'},run),controlButton({class:'b98',text:'取消'},closeModal)))));filename.onkeydown=e=>{if (confirmInput(e))run();};if(!touchKeyboard()){filename.focus();filename.select();}};
-      const close=()=>{if(st.changed)return msgBox('记事本','是否保存对文档的修改？',[{text:'保存',fn:()=>saveCopy(()=>closeWin(win,true))},{text:'不保存',fn:()=>closeWin(win,true)},{text:'取消'}]);closeWin(win,true);};
+      const find=()=>{const input=h('input',{class:'f98',id:'np-find','aria-label':'查找内容',value:st.q});const run=()=>{st.q=input.value;st.at=0;closeModal();if(st.q)findNext();};const m=modalRoot(true);m.innerHTML='';m.append(h('div',{class:'shade',onclick:closeModal}),h('div',{class:'dlg98 out'},h('div',{class:'titlebar'},h('span',{class:'t',text:'查找'}),controlButton({class:'b98 tbb',text:'×','aria-label':'关闭'},closeModal)),h('div',{class:'wbody'},h('label',{for:'np-find',text:'查找内容：'}),input,h('div',{class:'row'},controlButton({class:'b98',text:'查找下一个'},run),controlButton({class:'b98',text:'取消'},closeModal)))));input.onkeydown=e=>{if (confirmInput(e))run();};if(!touchKeyboard()){input.focus();input.select();}};
+      const saveCopy=(onSaved)=>{const filename=h('input',{class:'f98',id:'np-filename','aria-label':'文件名',value:editable?'无标题.txt':nameOf(f.path)});const m=modalRoot(true);m.innerHTML='';const run=()=>{let name=filename.value.trim();if(!name){filename.focus();return;}name=name.replace(/[<>:"/\\|?*]/g,'_');if(!name.includes('.'))name+='.txt';const blob=new Blob(['\ufeff'+st.text],{type:'text/plain;charset=utf-8'}),url=URL.createObjectURL(blob),a=h('a',{href:url,download:name});document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);st.changed=false;if(editable){f.path=name;win.setTitle(name+' - 记事本');}closeModal();if(typeof onSaved==='function')onSaved();};m.append(h('div',{class:'shade',onclick:closeModal}),h('div',{class:'dlg98 out'},h('div',{class:'titlebar'},h('span',{class:'t',text:'另存为'}),controlButton({class:'b98 tbb',text:'×','aria-label':'关闭'},closeModal)),h('div',{class:'wbody'},h('label',{for:'np-filename',text:'文件名：'}),filename,h('div',{class:'row'},controlButton({class:'b98',text:'保存'},run),controlButton({class:'b98',text:'取消'},closeModal)))));filename.onkeydown=e=>{if (confirmInput(e))run();};if(!touchKeyboard()){filename.focus();filename.select();}};
+      const close=()=>{if(st.changed)return pcMessage('记事本','是否保存对文档的修改？',[{text:'保存',fn:()=>saveCopy(()=>closeWin(win,true))},{text:'不保存',fn:()=>closeWin(win,true)},{text:'取消'}]);closeWin(win,true);};
       win.requestClose=close;
-      menus(win,[['文件(F)',[['新建',()=>openNotepad({path:'无标题',text:''})],['另存为…',saveCopy],...(f.id?[['属性',()=>showProps(f)]]:[]),'-',['关闭',close]]],['编辑(E)',[['复制',copy],['查找…',find],['查找下一个',findNext],'-',['全选',all]]],['格式(O)',[['自动换行',()=>{st.wrap=!st.wrap;win.refresh(true);},st.wrap]]]]);
+      menus(win, [
+        ['文件(F)', [['新建', () => openNotepad({path:'无标题',text:''})], ['另存为…', saveCopy], ...(f.id ? [['属性', () => showProps(f)]] : []), '-', ['关闭', close]]],
+        ['编辑(E)', [['复制', copy], ['全选', all], '-', ['自动换行', () => { st.wrap = !st.wrap; win.refresh(true); }, st.wrap]]],
+        ['搜索(S)', [['查找…', find], ['查找下一个', findNext]]],
+        ['帮助(H)', [['关于记事本', () => pcMessage('关于记事本', 'Microsoft Windows 98<br>记事本')]]],
+      ]);
       win.el.onkeydown=e=>{if(e.ctrlKey&&['f','s','a'].includes(e.key.toLowerCase())){e.preventDefault();({f:find,s:saveCopy,a:all})[e.key.toLowerCase()]();}else if(e.key==='F3'){e.preventDefault();findNext();}};
-      win.body.append(paper);win.status.append(h('div',{text:editable?'新建文档':'只读副本'}),h('div',{text:'Unicode'}));
+      win.body.append(paper);
     }});
   }
 
@@ -5054,7 +5283,7 @@ const Y2K = (() => {
         controlButton({ class: 'b98', text: _t('原始大小') }, () => { win.state.z = 1; win.updateImageSize(); }),
         controlButton({ class: 'b98', text: _t('全屏查看') }, fullScreen),
         f.backHtml ? controlButton({ class: 'b98', text: win.state.back ? '看正面' : '看背面' }, () => { win.state.back = !win.state.back; win.refresh(true); }) : null,
-        f.documentPhoto && f.caption ? controlButton({ class: 'b98', text: _t('照片说明') }, () => msgBox(_t('照片说明'), fmt(f.caption))) : null,
+        f.documentPhoto && f.caption ? controlButton({ class: 'b98', text: _t('照片说明') }, () => pcMessage(_t('照片说明'), fmt(f.caption))) : null,
         controlButton({ class: 'b98', text: _t('属性') }, () => showProps(f)),
         value));
       // The caption stays outside the zoom surface, so wrapping text cannot feed
@@ -5127,30 +5356,51 @@ const Y2K = (() => {
 
   // ---- 压缩包 ----
   function openZip(f) {
-    openWin({ key: 'zip_' + f.id, title: nameOf(f.path) + _t(' - 解压缩'), icon: 'zip', file: f, w: 480, h: 380, bodyClass: 'out', live: true, render: (win) => {
+    openWin({ key: 'zip_' + f.id, title: nameOf(f.path) + _t(' - 解压缩'), icon: 'zip', file: f, w: 480, h: 300, bodyClass: 'out', live: true, render: (win) => {
       const z = f.zip || {}; const unlocked = !f.lock || solved(f.lock);
       const tb = h('table', { class: 'det in' });
       tb.append(h('tr', {}, h('th', { class: 'out', text: _t('名称') }), h('th', { class: 'out', text: _t('状态') })));
       (z.entries || []).forEach(n => tb.append(h('tr', {}, h('td', { class: 'nm', html: icon('txt') + esc(dispName(n)) + (unlocked ? '' : ' *') }), h('td', { text: unlocked ? _t('已解压') : _t('已加密') }))));
       win.body.append(h('div', { class: 'zipv' },
         h('div', { text: _t('压缩包注释：') }), h('div', { class: 'cmt in', html: fmt(esc(z.comment || _t('（无）'))).replace(/\n/g, '<br>') }),
-        h('div', { style: { overflow: 'auto', maxHeight: '160px' } }, tb),
+        h('div', { class:'archive-entries in' }, tb),
         h('div', { class: 'row', style: { display: 'flex', gap: '6px', flexWrap: 'wrap' } },
           unlocked ? controlButton({ class: 'b98', text: _t('打开解压目录') }, () => z.extractTo && openExplorer(normPath(z.extractTo)))
-            : controlButton({ class: 'b98', text: _t('解压…') }, () => (z.broken && test(z.broken)) ? msgBox(_t('解压缩'), fmt(z.brokenText || 'CRC 错误：数据损坏，无法解压。')) : askPuzzle(f.lock, () => { toast(_t('已解压到 ') + dispPath(z.extractTo), 'good'); dirty(); })))));
+            : controlButton({ class: 'b98', text: _t('解压…') }, () => (z.broken && test(z.broken)) ? pcMessage(_t('解压缩'), fmt(z.brokenText || 'CRC 错误：数据损坏，无法解压。')) : askPuzzle(f.lock, () => { toast(_t('已解压到 ') + dispPath(z.extractTo), 'good'); dirty(); })))));
       win.status.append(h('div', { text: unlocked ? _t('已解压到 ') + dispPath(z.extractTo) : _t('文件已加密，需要密码') }));
     } });
   }
 
   // ---- 显示属性 / 屏保 ----
+  function openControlPanel() {
+    return openWin({ key:'control-panel', title:_t('控制面板'), icon:'display', w:480, h:310, render:win => {
+      menus(win, [[_t('文件(F)'), [[_t('关闭'), () => closeWin(win)]]]]);
+      const display = controlButton({class:'icon', html:icon('display') + '<span>显示</span>'}, e => {
+        if (coarse() || e.detail === 0) openDisplay();
+        else display.classList.add('sel');
+      });
+      display.ondblclick = () => { if (!coarse()) openDisplay(); };
+      win.body.append(h('div', {class:'flist'}, display));
+      win.status.append(h('div', {text:'1 个对象'}));
+    }});
+  }
   function openDisplay() {
-    openWin({ key: 'display', title: _t('显示 属性'), icon: 'display', w: 400, h: 360, bodyClass: 'out', render: (win) => {
-      const box = h('div', { style: { padding: '12px', display: 'flex', flexDirection: 'column', gap: '10px' } },
-        h('div', { class: 'in', style: { height: '130px', background: '#000', display: 'flex', alignItems: 'center', overflow: 'hidden' } }, h('div', { style: { color: '#ffd84a', fontFamily: 'var(--font-hand)', fontSize: '18px', whiteSpace: 'nowrap', padding: '0 10px' }, text: saverText().slice(0, 18) + '…' })),
-        h('div', {}, _t('屏幕保护程序：'), h('select', { class: 'f98', id: 'saverSel' }, h('option', { text: _t('字幕') }))),
-        h('div', {}, _t('等待：1 分钟　'), controlButton({ class: 'b98', text: _t('设置…') }, () => msgBox(_t('字幕设置'), _t('文字：<br><div class="in" style="padding:4px;margin-top:4px">') + esc(saverText()) + '</div>')), ' ', controlButton({ class: 'b98', text: _t('预览') }, () => showSaver())));
-      win.body.append(box);
-    } });
+    openWin({key:'display', title:_t('显示 属性'), icon:'display', w:410, h:coarse() || narrow() ? 420 : 365, propertyPage:true, bodyClass:'display-body',
+      render:win => {
+        const preview = h('div', {class:'crt-preview', 'aria-hidden':'true'},
+          h('div', {class:'crt-case'}, h('div', {class:'crt-glass'}, h('span', {text:strip(saverText())}))),
+          h('div', {class:'crt-neck'}), h('div', {class:'crt-foot'}));
+        const box = h('fieldset', {class:'saver-group'}, h('legend', {text:'屏幕保护程序'}),
+          h('div', {class:'saver-options'},
+            h('select', {class:'f98', id:'saverSel', 'aria-label':'屏幕保护程序'}, h('option', {text:'字幕'})),
+            controlButton({class:'b98',text:'设置…'}, () => pcMessage('字幕设置', '文字：<div class="in saver-setting">' + esc(saverText()) + '</div>')),
+            controlButton({class:'b98',text:'预览'}, showSaver)),
+          h('div', {class:'saver-wait'}, h('label', {for:'saver-wait',text:'等待(W)：'}),
+            h('input', {class:'f98', id:'saver-wait', type:'text', readonly:true, value:'1'}), '分钟'));
+        win.body.append(h('div', {class:'display-sheet'}, h('div', {class:'sheet-tab',text:'屏幕保护程序'}),
+          h('div', {class:'property-sheet'}, preview, box),
+          h('div', {class:'sheet-actions'}, controlButton({class:'b98',text:'确定'}, () => closeWin(win)))));
+      }});
   }
   // 满足条件的屏保轮流播放：还没触发过 onShow 的优先，其次按顺序轮换
   let saverIdx = -1, saverPick = null;
@@ -5212,7 +5462,7 @@ const Y2K = (() => {
     };
     if (!account || !gxCanRead(st.account)) {
       win.setTitle('鸽讯 2005 · 打开本地账号');
-      menus(win,[['文件(F)',[['关闭',()=>closeWin(win)]]],['帮助(H)',[['关于鸽讯',()=>msgBox('鸽讯 2005','本地消息管理器 5.0<br>打开已备份的用户资料和聊天记录。此窗口不连接消息服务器。')]]]]);
+      menus(win,[['文件(F)',[['关闭',()=>closeWin(win)]]],['帮助(H)',[['关于鸽讯',()=>pcMessage('鸽讯 2005','本地消息管理器 5.0<br>打开已备份的用户资料和聊天记录。此窗口不连接消息服务器。')]]]]);
       const accounts=Object.entries(D.gxAccounts).filter(([,a])=>test(a.requires));
       const panel=h('div',{class:'gx-login'});
       panel.append(h('div',{class:'gx-brand',html:icon('pigeon')+'<b>鸽讯 2005</b><small>本地消息管理器</small>'}));
@@ -5257,7 +5507,7 @@ const Y2K = (() => {
     }
     const accountName = account.nick;
     win.setTitle('鸽讯 — '+accountName+'（'+account.number+'）');
-    menus(win,[['系统(S)',[['切换账号…',logout],['查找聊天记录…',()=>gxSearch(win)],'-',['关闭',()=>closeWin(win)]]],['帮助(H)',[['资料来源',()=>msgBox('资料来源',esc(account.source))]]]]);
+    menus(win,[['系统(S)',[['切换账号…',logout],['查找聊天记录…',()=>gxSearch(win)],'-',['关闭',()=>closeWin(win)]]],['帮助(H)',[['资料来源',()=>pcMessage('资料来源',esc(account.source))]]]]);
     win.top.append(h('div',{class:'toolbar98 gx-accountbar'},h('b',{text:accountName+'  '+account.number}),h('span',{text:'本地资料'}),controlButton({class:'b98',text:'切换账号'},logout),controlButton({class:'b98',text:'查找'},()=>gxSearch(win))));
     if(account.recoveryPending&&test(account.recoveryPending))win.top.append(h('div',{class:'gx-recovery-status',text:account.recoveryText}));
     const gx=h('div',{class:'gx'}),left=h('div',{class:'left'}),groups={};
@@ -5294,7 +5544,7 @@ const Y2K = (() => {
             if (line.fail) {
               const rs = line.resend, done = rs && S.flags[rs.flag];
               const tag = h('div', { class: 'gx-fail', text: done ? rs.doneText + '。' : '这条消息没有送达。' });
-              if (rs && !done) tag.append(bindControl(h('span', { class: 'gx-resend', role: 'link', tabindex: 0, text: '重新发送' }), () => msgBox('重新发送', rs.confirm,
+              if (rs && !done) tag.append(bindControl(h('span', { class: 'gx-resend', role: 'link', tabindex: 0, text: '重新发送' }), () => pcMessage('重新发送', rs.confirm,
                 [{ text: rs.yes || '确定', fn: () => { act(rs.action); save('auto'); win.refresh(true); } }, { text: rs.no || '取消' }])));
               row.append(tag);
             }
@@ -5308,7 +5558,7 @@ const Y2K = (() => {
   }
   function gxSearch(win) {
     if(!gxCanRead(win.state.account))return;
-    const m=modalRoot();m.innerHTML='';
+    const m=modalRoot(true);m.innerHTML='';
     const inp=h('input',{class:'f98',id:'gxq','aria-label':'查找内容',style:{width:'100%'}}),from=h('input',{class:'f98',type:'date','aria-label':'起始日期'}),to=h('input',{class:'f98',type:'date','aria-label':'结束日期'});
     const res=h('div',{class:'in gx-search-results',role:'status'});
     const run=()=>{res.innerHTML='';const q=inp.value.trim();if(!q){res.textContent='请输入查找内容。';return;}
@@ -5470,22 +5720,39 @@ const Y2K = (() => {
     const st = win.state; const url = st.hist[st.hi];
     if (win.resetScroll) st.missingTopic = null;
     const reload = () => { st.missingTopic = null; win.refresh(true); };
+    const bookmarks = [...Object.entries(D.sites || {}).filter(([, s]) => s.fav && test(s.requires)).map(([host, s]) => [s.name, () => ieGo(win, 'http://' + host + '/')]), [(D.bbsMeta.name || _t('少年宫小站')) + _t(' 首页'), () => ieGo(win, 'http://' + (D.bbsMeta.host || '192.168.1.103') + '/')], ...(bbsArchiveReady() ? [[_t('站务管理'), () => ieGo(win, 'http://' + (D.bbsMeta.host || '192.168.1.103') + '/admin/')]] : [])];
     menus(win, [
       [_t('文件(F)'), [[_t('关闭'), () => closeWin(win)]]],
       [_t('查看(V)'), [[_t('源文件'), () => viewSource(win)], [_t('刷新'), reload]]],
-      [_t('收藏(A)'), [...Object.entries(D.sites || {}).filter(([, s]) => s.fav && test(s.requires)).map(([host, s]) => [s.name, () => ieGo(win, 'http://' + host + '/')]), [(D.bbsMeta.name || _t('少年宫小站')) + _t(' 首页'), () => ieGo(win, 'http://' + (D.bbsMeta.host || '192.168.1.103') + '/')], ...(bbsArchiveReady() ? [[_t('站务管理'), () => ieGo(win, 'http://' + (D.bbsMeta.host || '192.168.1.103') + '/admin/')]] : [])]],
-      [_t('帮助(H)'), [[_t('关于'), () => msgBox(_t('关于 Internet Explorer'), 'Microsoft Internet Explorer 6.0')]]],
+      [_t('收藏(A)'), bookmarks],
+      [_t('帮助(H)'), [[_t('关于'), () => pcMessage(_t('关于 Internet Explorer'), 'Microsoft Internet Explorer 6.0')]]],
     ]);
-    const addr = h('input', { class: 'f98', id: 'ieaddr', value: url, spellcheck: 'false', autocomplete: 'off' });
+    const addr = h('input', { class: 'f98', id: 'ieaddr', 'aria-label':'Internet Explorer 地址', value: url, spellcheck: 'false', autocomplete: 'off' });
     addr.onkeydown = (e) => { if (confirmInput(e)) { markInteraction(); ieGo(win, addr.value); } };
     addr.onfocus = () => addr.select();
-    win.top.append(h('div', { class: 'toolbar98' },
-      controlButton({ class: 'b98', text: _t('← 后退'), disabled: st.hi === 0 }, () => ieVisit(win, st.hi - 1)),
-      controlButton({ class: 'b98', text: _t('前进 →'), disabled: st.hi >= st.hist.length - 1 }, () => ieVisit(win, st.hi + 1)),
-      controlButton({ class: 'b98', text: _t('刷新') }, reload),
-      controlButton({ class: 'b98', text: _t('主页') }, () => ieGo(win, D.webHome || 'http://' + (D.bbsMeta.host || '192.168.1.103') + '/')),
-      controlButton({ class: 'b98', text: _t('源文件') }, () => viewSource(win))),
-      h('div', { class: 'addr' }, h('span', { text: _t('地址(D)') }), addr, controlButton({ class: 'b98', style: { minWidth: 0 }, text: _t('转到') }, () => { markInteraction(); ieGo(win, addr.value); })));
+    const visit = () => { markInteraction(); ieGo(win, addr.value); };
+    const goHome = () => ieGo(win, D.webHome || 'http://' + (D.bbsMeta.host || '192.168.1.103') + '/');
+    const searchSite = Object.entries(D.sites || {}).find(([,site]) => site.search && test(site.requires));
+    win.top.append(h('div', {class:'toolbar98 nav-band'},
+      navButton('back', '后退', () => ieVisit(win, st.hi - 1), st.hi === 0, '← 后退'),
+      navButton('forward', '前进', () => ieVisit(win, st.hi + 1), st.hi >= st.hist.length - 1, '前进 →'),
+      navButton('refresh', '刷新', reload), navButton('home', '主页', goHome),
+      searchSite ? navButton('search', '搜索', () => ieGo(win, 'http://' + searchSite[0] + '/')) : null,
+      navButton('favorite', '收藏夹', e => {
+        const r = e.currentTarget.getBoundingClientRect();
+        showCtx(bookmarks, r.left, r.bottom, e.detail === 0);
+      }),
+      navButton('source', '源文件', () => viewSource(win))),
+      h('div', {class:'addr nav-address'}, h('label', {text:'地址(D)', for:'ieaddr'}),
+        h('span', {class:'address-field in'}, h('span', {html:icon('htm')}), addr),
+        controlButton({class:'b98', text:'转到'}, visit)));
+    win.el.onkeydown = e => {
+      if (e.ctrlKey && e.key.toLowerCase() === 'l') { e.preventDefault(); addr.focus(); }
+      else if (e.key === 'F5') { e.preventDefault(); reload(); }
+      else if (e.altKey && ['ArrowLeft','ArrowRight'].includes(e.key)) {
+        e.preventDefault(); ieVisit(win, st.hi + (e.key === 'ArrowLeft' ? -1 : 1));
+      }
+    };
     let page;
     if (url.startsWith('file:///')) {
       const f = st.local && ('file:///' + st.local.path) === url ? st.local : D.files.find(x => 'file:///' + x.path === url);
@@ -5510,7 +5777,7 @@ const Y2K = (() => {
     win.body.append(body);
     body.querySelectorAll('.evidence-photo').forEach(photo => bindImageZoom(photo));
     const onWeb = !url.startsWith('file:///') && parseURL(url).host !== (D.bbsMeta.host || '192.168.1.103').toLowerCase();
-    win.status.append(h('div', { text: _t('完成') }), h('div', { style: { flex: 'none', width: '120px' }, text: onWeb ? 'Internet · 旧网代理' : _t('本地 Intranet') }));
+    win.status.append(h('div', { text: _t('完成') }), h('div', { style: { flex: 'none', maxWidth: '62%', paddingRight: '16px' }, text: onWeb ? 'Internet · 旧网代理' : _t('本地 Intranet') }));
     if (page.after) page.after(body);
   }
   function viewSource(win) {
@@ -5518,7 +5785,7 @@ const Y2K = (() => {
     if (p.srcFlag) { setFlag(p.srcFlag); if (!S.opened[p.srcFlag]) { S.opened[p.srcFlag] = 1; act(p.onSource); } dirty(); }
     const content = p.node ? p.node.innerHTML : (p.html || '');
     const src = `<html>\n<head>\n<meta http-equiv="Content-Type" content="text/html; charset=gb2312">\n<title>${strip(p.title || (D.bbsMeta.name || _t('少年宫小站')))}</title>\n<link rel="stylesheet" href="/style.css">\n</head>\n<body bgcolor="#FFFFFF">\n${p.source ? fmt(p.source) + '\n' : ''}${D.bbsMeta.homeSource || ''}\n${content.replace(/></g, '>\n<').slice(0, 20000)}\n</body>\n</html>`;
-    openWin({ key: 'src_' + Math.random(), title: _t('源文件 - 记事本'), icon: 'notepad', w: 600, h: 440, render: (w) => w.body.append(h('pre', { class: 'note', text: src })) });
+    openNotepad({ path: _t('源文件'), text: src }, 'src_' + Math.random(), true);
   }
   function errPage(msg) {
     return { title: _t('无法找到网页'), html: `<div class="err"><h1>${_t('无法找到该网页')}</h1><p>${msg || _t('您要查找的网页可能已被删除、已更名或暂时不可用。')}</p><hr><p>${_t('请尝试以下操作：')}<br>${_t('· 检查地址栏中的网址拼写是否正确。')}<br>${_t('· 打开')} <a href="/">${_t('少年宫小站首页')}</a>${_t('，然后查找需要的链接。')}</p><p style="color:#888">${_t('HTTP 404 - 文件未找到')}<br>Internet Explorer</p></div>` };
@@ -5849,7 +6116,8 @@ const Y2K = (() => {
     const st = win.state, docs = cmpDocs();
     const fileLabel = file => {
       const label = cmpLabel(file);
-      return file.evidenceOwner ? nameOf(parentOf(file.path)) + ' · ' + label : label;
+      const sameName = docs.some(other => other.id !== file.id && nameOf(other.path) === nameOf(file.path));
+      return file.evidenceOwner || sameName ? nameOf(parentOf(file.path)) + ' · ' + label : label;
     };
     docs.sort((a, b) => fileLabel(a).localeCompare(fileLabel(b), 'zh-CN', { numeric: true, sensitivity: 'base' }));
     const pick = (key) => {
@@ -5882,7 +6150,16 @@ const Y2K = (() => {
         st.msg ? h('div', { class: 'cmp-msg', html: fmt(st.msg) }) : null);
       win.top.append(ban);
     } else if (st.msg) win.top.append(h('div', { class: 'cmp-msg', html: fmt(st.msg) }));
-    if (!L || !R) { body.append(h('div', { class: 'empty98', text: _t('在上方选好两份资料，这里就会显示它们的差别。') })); win.status.append(h('div', { text: `${docs.length} ${_t('份可比较的资料')}` })); return; }
+    if (!L || !R) {
+      const panes = h('div', {class:'cmp-preview'});
+      for (const [label, file] of [['左侧文件', L], ['右侧文件', R]]) {
+        panes.append(h('section', {}, h('div', {class:'out cmp-preview-heading', text:file ? fileLabel(file) : label}),
+          file ? h('pre', {class:'note', text:cmpText(file)}) : h('div', {class:'empty98', text:'尚未选择文件'})));
+      }
+      body.append(panes);
+      win.status.append(h('div', { text:docs.length + ' 份可比较的资料' }));
+      return;
+    }
     const rows = diffLines(cmpText(L), cmpText(R), L.sourceText, R.sourceText);
     const hunks = rows.filter(x => !x.eq);
     const tb = h('table', { class: 'cmp' });
@@ -6127,14 +6404,14 @@ const Y2K = (() => {
     const cur = ui[key] ? [ui[key], D.puzzles[ui[key]]] : null;
     return cur && ok(cur) ? cur : (Object.entries(D.puzzles).find(ok) || null);
   };
-  function pickBanner(body, pz, selLabel, onSubmit, msgKey) {
+  function pickBanner(body, pz, selLabel, onSubmit, message) {
     const [pid, p] = pz;
     const hints = puzzleHints(pid, p, 'ph-btn sm');
     body.append(h('div', { class: 'ph-card pick-task' },
       h('div', { class: 'k', text: _t('待核对') }), h('b', { text: p.title }), h('div', { html: fmt(p.prompt || '') }), hints.box,
       h('div', { class: 'row' }, hints.button,
         h('button', { class: 'ph-btn sm pri', text: selLabel ? _t('提交：') + selLabel : _t('先选一帧画面'), disabled: !selLabel, onclick: onSubmit })),
-      ui[msgKey] ? h('div', { class: 'pick-msg', html: fmt(ui[msgKey]) }) : null));
+      message ? h('div', { class: 'pick-msg', html: fmt(message) }) : null));
   }
   function renderClips(title, body) {
     const clip = ui.clip && clipList().find(c => c.id === ui.clip);
@@ -6142,8 +6419,7 @@ const Y2K = (() => {
       title(_t('录像'), (D.footage.sub || ''));
       if (D.footage.intro) body.append(h('div', { class: 'ph-card done', html: fmt(D.footage.intro) }));
       clipList().forEach(c => {
-        const frameTime = c.frames?.[0]?.t?.slice(0, 5);
-        const recorded = [c.date, frameTime].filter(Boolean).join(' ');
+        const recorded = c.date || '';
         const b = h('button', { class: 'ph-card clipcard' + (S.flags['seen_' + c.id] ? '' : ' new'), type: 'button', onclick: () => { ui.clip = c.id; ui.frameSel = null; ui.frameMsg = ''; renderPhone(); } },
           h('div', { class: 'k', text: c.dur ? `${recorded}　${_t('时长')} ${c.dur}` : recorded }), h('b', { text: c.title }), c.sub ? h('div', { class: 'faded', text: c.sub }) : null);
         body.append(b);
@@ -6154,15 +6430,17 @@ const Y2K = (() => {
     title(clip.title, clip.date, () => { ui.clip = null; ui.frameSel = null; ui.frameMsg = ''; renderPhone(); });
     const frames = clip.frames.map((fr, i) => [fr, i]).filter(([fr]) => test(fr.requires));
     const pz = activePick('frame', 'framePuzzle', clip.id);
+    const previous = ui.frameMsg?.solved;
+    if (previous) body.append(h('div', { class: 'pick-msg', html: fmt(previous) }));
     if (pz) {
       const sel = ui.frameSel != null && clip.frames[ui.frameSel];
       pickBanner(body, pz, sel ? sel.t : '', () => {
         const [pid, p] = pz; markInteraction();
-        if ([].concat(p.frame).includes(sel.t)) { ui.frameMsg = p.solvedText || _t('就是这一帧。'); ui.framePuzzle = null; solvePuzzle(pid); }
+        if ([].concat(p.frame).includes(sel.t)) { ui.frameMsg = {solved: p.solvedText || _t('就是这一帧。')}; ui.framePuzzle = null; ui.frameSel = null; solvePuzzle(pid); }
         else { sfx('err'); ui.frameMsg = (p.near || {})[sel.t] || _t('再看看别的画面。这一帧里找不到要核对的细节。'); }
         renderPhone();
-      }, 'frameMsg');
-    } else if (ui.frameMsg) body.append(h('div', { class: 'pick-msg', html: fmt(ui.frameMsg) }));
+      }, previous ? '' : ui.frameMsg);
+    } else if (ui.frameMsg && !previous) body.append(h('div', { class: 'pick-msg', html: fmt(ui.frameMsg) }));
     if (clip.sub) body.append(h('div', { class: 'faded', style: { margin: '0 2px 8px' }, text: clip.sub }));
     frames.forEach(([fr, i]) => {
       const card = h('div', { class: 'frame' + (ui.frameSel === i ? ' sel' : ''), tabindex: 0, role: 'button', 'aria-pressed': ui.frameSel === i ? 'true' : 'false' },
@@ -6307,7 +6585,7 @@ const Y2K = (() => {
       h('div', { id: 'modal' }), h('div', { id: 'overlay' }), h('div', { id: 'title', class: 'title', hidden: true }), h('div', { id: 'toast' }));
     ['pointerdown', 'keydown', 'wheel', 'touchstart'].forEach(ev => document.addEventListener(ev, resetIdle, { passive: true }));
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') { if (ctxEl) closeCtx(); else if ($('#modal').children.length) closeModal(); else if (overlay().classList.contains('on') && overlay().querySelector('.board, .viewer')) { closeOverlay(); showCards(); renderAll(); } }
+      if (e.key === 'Escape') { if ($('#startmenu')) { closeStart(); $('#startbtn').focus(); } else if (ctxEl) closeCtx(); else if ($('#modal').children.length) closeModal(); else if (overlay().classList.contains('on') && overlay().querySelector('.board, .viewer')) { closeOverlay(); showCards(); renderAll(); } }
     });
     setInterval(() => { if (!S) return; renderTray(); const st = $('#phStatus'); if (st) { const t = phoneNow(); st.querySelector('b') && (st.querySelector('b').textContent = t.hm); } }, 15000);
     setInterval(() => { if (S && !titleOn) { tickPlay(); writeSave('auto'); } }, 30000);
@@ -6316,6 +6594,7 @@ const Y2K = (() => {
     window.addEventListener('pageshow', syncPlayClock);
     window.addEventListener('beforeunload', () => { if (S && !titleOn) writeSave('auto'); });
     window.addEventListener('resize', () => {
+      const dialog = $('#modal.pc-modal'); if (dialog) positionPCDialog(dialog);
       if (!narrow() && ui.phoneOpen) togglePhone(false);
       const dk = desktop(); if (!dk) return;
       wins.forEach(w => {
