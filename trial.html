@@ -5770,6 +5770,7 @@ const Y2K = (() => {
       win.status.append(h('div', {text:'1 个对象'}));
     }});
   }
+  const SCREENSAVER_WAIT_MINUTES = 3;
   function openDisplay() {
     openWin({key:'display', title:_t('显示 属性'), icon:'display', w:410, h:coarse() || narrow() ? 420 : 365, propertyPage:true, bodyClass:'display-body',
       render:win => {
@@ -5782,7 +5783,7 @@ const Y2K = (() => {
             controlButton({class:'b98',text:'设置…'}, () => pcMessage('字幕设置', '文字：<div class="in saver-setting">' + esc(saverText()) + '</div>')),
             controlButton({class:'b98',text:'预览'}, showSaver)),
           h('div', {class:'saver-wait'}, h('label', {for:'saver-wait',text:'等待(W)：'}),
-            h('input', {class:'f98', id:'saver-wait', type:'text', readonly:true, value:'1'}), '分钟'));
+            h('input', {class:'f98', id:'saver-wait', type:'text', readonly:true, value:String(SCREENSAVER_WAIT_MINUTES)}), '分钟'));
         win.body.append(h('div', {class:'display-sheet'}, h('div', {class:'sheet-tab',text:'屏幕保护程序'}),
           h('div', {class:'property-sheet'}, preview, box),
           h('div', {class:'sheet-actions'}, controlButton({class:'b98',text:'确定'}, () => closeWin(win)))));
@@ -5802,7 +5803,7 @@ const Y2K = (() => {
   function resetIdle() {
     if (saverOn) hideSaver();
     clearTimeout(idleT);
-    idleT = setTimeout(() => { if (S && S.stage === 'win' && !titleOn && !overlay().classList.contains('on')) showSaver(); }, 60000);
+    idleT = setTimeout(() => { if (S && S.stage === 'win' && !titleOn && !overlay().classList.contains('on')) showSaver(); }, SCREENSAVER_WAIT_MINUTES * 60_000);
   }
   function showSaver() {
     if (!S || S.stage !== 'win') return;
