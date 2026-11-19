@@ -53,7 +53,7 @@
     }
   } catch {}
   const opener = document.createElement('button');
-  opener.className = 'tbtn feedback-entry-button';
+  opener.className = 'tbtn author-note-entry';
   opener.type = 'button';
   opener.textContent = '作者的话';
   opener.setAttribute('aria-haspopup', 'dialog');
