@@ -28,19 +28,53 @@
     script.src = './author-note.js';
     document.body.append(script);
   }
-  async function play() {
-    const release = window.QNC2_GAME_PACKAGE;
-    if (!release || !/^full-game-[a-f0-9]{16}\.qnc$/.test(release.file))
-      throw Error('游戏包信息有误。');
-    const permission = await auth.api('/api/content-key');
-    if (permission.format !== 'QNC2ENC1') throw Error('激活服务返回了不匹配的游戏格式。');
-    const response = await fetch('./' + release.file, {cache:'no-store'});
-    if (!response.ok) throw Error('无法读取游戏包，请重试。');
+  function validRelease(release) {
+    return typeof release?.sha256 === 'string' && /^[a-f0-9]{64}$/.test(release.sha256)
+      && release.file === 'full-game-' + release.sha256.slice(0, 16) + '.qnc';
+  }
+  async function fetchPublic(url, resource) {
+    const response = await fetch(url, {cache:'no-store', credentials:'omit'});
+    if (!response.ok) throw Error(resource + '下载失败（HTTP ' + response.status + '）。');
+    return response;
+  }
+  async function readPackage(release, url) {
+    const response = await fetchPublic(url, '完整版游戏包');
     const bytes = new Uint8Array(await response.arrayBuffer());
     const digest = new Uint8Array(await crypto.subtle.digest('SHA-256', bytes));
     const hex = Array.from(digest, n => n.toString(16).padStart(2, '0')).join('');
     if (hex !== release.sha256 || new TextDecoder().decode(bytes.subarray(0, 8)) !== 'QNC2ENC1')
-      throw Error('游戏包校验失败，请重新载入。');
+      throw Error('完整版游戏包校验失败。');
+    return bytes;
+  }
+  async function loadPackage() {
+    let release = window.QNC2_GAME_PACKAGE;
+    if (validRelease(release)) {
+      try { return await readPackage(release, './' + release.file); }
+      catch { /* A cached index can point to a retired package. Read the live index below. */ }
+    }
+    const refresh = '?v=' + Date.now();
+    let issue;
+    try {
+      const response = await fetchPublic('./package-config.js' + refresh, '游戏包索引');
+      const match = (await response.text()).trim().match(/^window\.QNC2_GAME_PACKAGE=(\{[^\n]+\});$/);
+      const latest = match && JSON.parse(match[1]);
+      if (!validRelease(latest)) throw Error('完整版游戏包索引有误。');
+      release = latest;
+      return await readPackage(release, './' + release.file + refresh);
+    } catch (error) { issue = error; }
+    // Pages and the public repository serve the same encrypted bytes.
+    if (location.origin === 'https://qiannianchongdlzp.github.io' && validRelease(release)) {
+      try {
+        return await readPackage(release, 'https://raw.githubusercontent.com/QiannianchongDLZP/qiannianchongdlzp.github.io/main/' + release.file);
+      } catch { /* Report the primary site's error. */ }
+    }
+    const reason = issue instanceof TypeError ? '完整版下载中断。' : issue.message;
+    throw Error(reason + ' 激活仍然有效，请稍后点“重新载入完整版”。');
+  }
+  async function play() {
+    const permission = await auth.api('/api/content-key');
+    if (permission.format !== 'QNC2ENC1') throw Error('激活服务返回了不匹配的游戏格式。');
+    const bytes = await loadPackage();
     const raw = Uint8Array.from(atob(permission.key.replace(/-/g, '+').replace(/_/g, '/')), c => c.charCodeAt(0));
     const key = await crypto.subtle.importKey('raw', raw, 'AES-GCM', false, ['decrypt']);
     raw.fill(0);
