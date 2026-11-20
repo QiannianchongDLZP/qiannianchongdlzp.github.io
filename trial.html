@@ -1856,17 +1856,18 @@ ul.bl-list{margin:0 0 10px;padding-left:1.4em;color:#aaa}
   .tm-caption { font-size: 13px; min-height: 0; }
   .time-machine button { padding-block: 3px; }
 }
-</style></head><body><noscript>请启用JavaScript以运行游戏。</noscript><script type="text/plain" id="trial-program">window.Y2K_LANGS=['zh'];window.Y2K_STATS_CONFIG={"endpoint":"https://qiannianchong-stats.chenhao2003.chatgpt.site/api/stats2","allowedOrigins":["https://qiannianchong2.chenhao2003.chatgpt.site","https://qiannianchongdlzp.github.io","https://qiannianchonggametwo.github.io","https://automatic-wildfowl-d0ch94a37e6e3-1533818985.tcloudbaseapp.com"],"game":"2-sixth-disk","leaderboardEndpoint":"https://qiannianchong-stats.chenhao2003.chatgpt.site/api/leaderboard?game=2-sixth-disk"};
+</style></head><body><noscript>请启用JavaScript以运行游戏。</noscript><script type="text/plain" id="trial-program">window.Y2K_LANGS=['zh'];window.Y2K_STATS_CONFIG={"endpoint":"https://qiannianchong-stats.chenhao2003.chatgpt.site/api/stats2","allowedOrigins":["https://qiannianchong2.chenhao2003.chatgpt.site","https://qiannianchongdlzp.github.io","https://qiannianchonggametwo.github.io","https://automatic-wildfowl-d0ch94a37e6e3-1533818985.tcloudbaseapp.com"],"game":"2-sixth-disk","leaderboardEndpoint":"https://qiannianchong-stats.chenhao2003.chatgpt.site/api/leaderboard?game=2-sixth-disk","showTitleStats":true};
 'use strict';
 // 只传递随机标识与游玩状态；与剧情、昵称和存档无关。
 window.Y2KStats = (() => {
   const words = {
-    zh: { online: '当前在线', loading: '正在读取统计', error: '统计暂时不可用', offline: '离线模式', preview: '本地预览不计入统计', retry: '重新连接' },
-    en: { online: 'Online now', loading: 'Loading statistics', error: 'Statistics temporarily unavailable', offline: 'Offline mode', preview: 'Local previews are not counted', retry: 'Reconnect' },
-    ja: { online: '現在オンライン', loading: '統計を読み込み中', error: '統計を取得できません', offline: 'オフラインモード', preview: 'ローカルプレビューは集計対象外です', retry: '再接続' },
+    zh: { visits: '累计访问', online: '当前在线', loading: '正在读取统计', error: '统计暂时不可用', offline: '离线模式', preview: '本地预览不计入统计', retry: '重新连接' },
+    en: { visits: 'Total visits', online: 'Online now', loading: 'Loading statistics', error: 'Statistics temporarily unavailable', offline: 'Offline mode', preview: 'Local previews are not counted', retry: 'Reconnect' },
+    ja: { visits: '累計アクセス', online: '現在オンライン', loading: '統計を読み込み中', error: '統計を取得できません', offline: 'オフラインモード', preview: 'ローカルプレビューは集計対象外です', retry: '再接続' },
   };
+  const showOnTitle = window.Y2K_STATS_CONFIG?.showTitleStats === true;
   let started = false, playing = false, pageId, sessionId, visitorId, registered = false;
-  let flight = false, queued = false, seq = 0, lastApplied = 0, online = null, mode = 'loading';
+  let flight = false, queued = false, seq = 0, lastApplied = 0, online = null, visits = null, mode = 'loading';
   let endpoint = '', enabled = false, departed = false;
   let retryTimer = 0, retryAttempt = 0;
   const panels = new Map();
@@ -1893,6 +1894,7 @@ window.Y2KStats = (() => {
       const w = words[lang] || words.zh;
       const format = value => new Intl.NumberFormat(lang === 'zh' ? 'zh-CN' : lang).format(value);
       const ready = mode === 'ready';
+      el.querySelector('[data-stat="visits"]').textContent = ready ? format(visits) : '—';
       el.querySelector('[data-stat="online"]').textContent = ready ? format(online) : '—';
       el.querySelector('.stats-state').textContent = ready ? '' : w[mode];
       el.querySelector('.stats-retry').hidden = mode !== 'error' || !enabled;
@@ -1902,9 +1904,11 @@ window.Y2KStats = (() => {
   function mount(lang) {
     const w = words[lang] || words.zh, el = document.createElement('div');
     el.className = 'site-stats'; el.setAttribute('role', 'group');
-    const item = document.createElement('span'), value = document.createElement('strong');
-    item.className = 'stat-item'; value.dataset.stat = 'online'; value.textContent = '—';
-    item.append(w.online, value); el.append(item);
+    for (const key of ['online', 'visits']) {
+      const item = document.createElement('span'), value = document.createElement('strong');
+      item.className = 'stat-item'; value.dataset.stat = key; value.textContent = '—';
+      item.append(w[key], value); el.append(item);
+    }
     const state = document.createElement('span'); state.className = 'stats-state'; state.setAttribute('role', 'status'); el.append(state);
     const retry = document.createElement('button'); retry.type = 'button'; retry.className = 'stats-retry'; retry.hidden = true;
     retry.textContent = w.retry;
@@ -1933,11 +1937,11 @@ window.Y2KStats = (() => {
       const response = await fetch(endpoint, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=UTF-8' }, body: JSON.stringify(message), credentials: 'omit', cache: 'no-store', signal: controller.signal });
       if (!response.ok) throw new Error('stats unavailable');
       const result = await response.json();
-      if (!Number.isSafeInteger(result.online) || result.online < 0) throw new Error('invalid statistics');
+      if (!Number.isSafeInteger(result.online) || result.online < 0 || (showOnTitle && (!Number.isSafeInteger(result.visits) || result.visits < 0))) throw new Error('invalid statistics');
       if (message.sessionId !== sessionId) return;
       if (message.event === 'visit') registered = true;
       retryAttempt = 0;
-      if (message.seq >= lastApplied && document.visibilityState === 'visible') { lastApplied = message.seq; online = result.online; mode = 'ready'; paint(); }
+      if (message.seq >= lastApplied && document.visibilityState === 'visible') { lastApplied = message.seq; online = result.online; visits = result.visits; mode = 'ready'; paint(); }
     } catch (_) {
       if (departed || message.sessionId !== sessionId) return;
       mode = 'error'; paint();
@@ -1967,13 +1971,14 @@ window.Y2KStats = (() => {
     window.addEventListener('online', () => void send());
     setInterval(() => void send(), 30000); void send();
   }
-  return { mount, setPlaying, start };
+  return { mount, setPlaying, start, showOnTitle };
 })();
 
 // Anonymous results are separate from story saves; only completed runs are submitted.
 (() => {
   'use strict';
   const config = window.Y2K_STATS_CONFIG || {}, game = config.game;
+  const scoresOnly = !!window.Y2KStats?.showOnTitle;
   const legacyEndpoint = config.leaderboardEndpoint;
   const endpoint = legacyEndpoint && new URL(legacyEndpoint, location.href);
   if (endpoint) endpoint.searchParams.set('layout', 'abc-h');
@@ -2009,7 +2014,8 @@ window.Y2KStats = (() => {
         const [key, score] = Object.entries(pending)[0];
         let response;
         const ending = display[score.ending];
-        const payload = ending ? { ...score, ending } : score;
+        const payload = { ...score, ending: ending || score.ending };
+        if (scoresOnly) delete payload.review;
         try { response = await fetch(ending ? endpoint : legacyEndpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload), signal: AbortSignal.timeout(10000) }); } catch { break; }
         if (response.ok || response.status === 400) { if (pending[key] === score) delete pending[key]; put('pending', pending); }
         else break;
@@ -2054,7 +2060,7 @@ window.Y2KStats = (() => {
     return `review:${state.runId}:${bucket[ending]}:${result.durationMs}:${result.hints}`;
   }
   // 结局页的按钮点下去时才问；问完（或不用问）再执行按钮原本的动作。
-  function reviewPending(state, ending) { const r = state.finishRecords?.[ending]; return !!r && r.review === null; }
+  function reviewPending(state, ending) { const r = state.finishRecords?.[ending]; return !scoresOnly && !!r && r.review === null; }
   function requestReview(host, state, ending, language, save, opts = {}) {
     const result = state.finishRecords?.[ending];
     // Older completed saves are not prompted retroactively.
@@ -2095,7 +2101,8 @@ window.Y2KStats = (() => {
     const scroll = el('div', 'leaderboard-scroll'); scroll.tabIndex = 0; scroll.setAttribute('aria-label', t.swipe);
     const grid = el('div', 'leaderboard-grid'); scroll.append(grid);
     const notice = el('section', 'leaderboard-notice');
-    notice.append(el('h4', '', t.notice), el('p', 'leaderboard-rule', t.rule), el('p', 'leaderboard-note', t.privacy), el('p', 'leaderboard-note', t.clock), el('p', 'leaderboard-note', t.reviewHint));
+    notice.append(el('h4', '', t.notice), el('p', 'leaderboard-rule', t.rule), el('p', 'leaderboard-note', t.privacy), el('p', 'leaderboard-note', t.clock));
+    if (!scoresOnly) notice.append(el('p', 'leaderboard-note', t.reviewHint));
     body.append(notice, toolbar, el('p', 'leaderboard-swipe', t.swipe), scroll);
     const layer = body.closest('.title-panel-layer');
     const tip = el('div', 'leaderboard-review'); tip.id = 'leaderboard-review'; tip.setAttribute('role', 'tooltip'); tip.hidden = true;
@@ -2135,6 +2142,7 @@ window.Y2KStats = (() => {
         (data?.[ending] || []).slice(0, 20).forEach((score, i) => {
           const row = el('tr');
           [i + 1, time(score.durationMs), score.hints].forEach((value, columnIndex) => {
+            if (scoresOnly) { row.append(el('td', '', value)); return; }
             const cell = el('td'), button = el('button', 'leaderboard-number', value); button.type = 'button';
             button.setAttribute('aria-label', `${[t.rank, t.time, t.hints][columnIndex]} ${value} · ${t.reviewRead}`);
             button.onpointerenter = e => { if (e.pointerType === 'mouse' && !pinned) showReview(button, score, ending, i + 1); };
@@ -4954,7 +4962,14 @@ const Y2K = (() => {
     const langs = h('div', { class: 'langs', role: 'group', 'aria-label': 'Language' });
     langs.hidden = READY.length < 2;
     Object.entries(LANGS).filter(([code]) => READY.includes(code)).forEach(([code, label]) => langs.append(h('button', { class: 'lbtn' + (code === LANG ? ' on' : ''), lang: code, 'aria-pressed': code === LANG ? 'true' : 'false', text: label, onclick: () => { if (code === LANG) return; const m = meta(); m.lang = code; setMeta(m); location.reload(); } })));
-    tl.append(h('div', { class: 'title-topbar' }, h('div', { class: 'title-actions' }), langs), h('div', { class: 'title-content' }, clk, h('h1', { html: _t('千年<span>虫</span> 2') }), h('div', { class: 'sub', text: _t('未寄出的明天 · 梧城少年宫 · 1999—2009') }), menu, panel,
+    const actions = h('div', { class: 'title-actions' });
+    const stats = window.Y2KStats;
+    if (stats?.showOnTitle) {
+      actions.append(controlButton({ class: 'tbtn leaderboard-entry', text: _t('排行榜'), 'aria-haspopup': 'dialog' }, event => {
+        window.Y2KLeaderboard.mount(titlePanel(panel, _t('排行榜'), event.currentTarget), LANG, !!meta().endings?.H);
+      }));
+    }
+    tl.append(h('div', { class: 'title-topbar' }, actions, langs), h('div', { class: 'title-content' }, clk, h('h1', { html: _t('千年<span>虫</span> 2') }), h('div', { class: 'sub', text: _t('未寄出的明天 · 梧城少年宫 · 1999—2009') }), menu, panel, stats?.showOnTitle ? stats.mount(LANG) : null,
       h('div', { class: 'foot' }, h('div', { class: 'community', text: _t('QQ群') + '：1130040971' }), h('div', { text: _t('本作纯属虚构 · 建议用电脑上的 Chrome / Edge 打开 · 进度自动保存在本浏览器') }))));
     const collected = meta().endings || {};
     if (!D.trialLimit && window.openTimeMachine && ['A', 'B', 'C', 'H'].every(id => collected[id])) {
@@ -7653,7 +7668,7 @@ const Y2K = (() => {
     const resume = !unlockRequest && (window.QNC2ResumeTrial || (reload && sessionScreen() === 'game')) && location.hash !== '#leaderboard' && readSave('auto');
     if (resume && !needsFullGame(resume)) loadState(resume); else showTitle();
     if (unlockRequest) openFullUnlock(new URLSearchParams(location.search).get('unlock') === 'continue');
-    else if (location.hash === '#leaderboard') window.Y2KLeaderboard?.mount(titlePanel($('#title .title-panel-host'), _t('排行榜'), $('#title .menu button:not(:disabled)')), LANG, !!meta().endings?.H);
+    else if (location.hash === '#leaderboard') window.Y2KLeaderboard?.mount(titlePanel($('#title .title-panel-host'), _t('排行榜'), $('#title .leaderboard-entry') || $('#title .menu button:not(:disabled)')), LANG, !!meta().endings?.H);
     window.Y2KStats?.start();
   }
 
