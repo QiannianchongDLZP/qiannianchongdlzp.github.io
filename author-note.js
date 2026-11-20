@@ -17,7 +17,7 @@
       touch-action: pan-y; user-select: text; -webkit-user-select: text;
     }
     #author-note p { margin: 0 0 16px; }
-    #author-note .note-highlight { color: var(--amber); }
+    #author-note .note-highlight { color: #ffa34d; }
     #author-note .note-signature { text-align: right; }
     #author-note time { display: block; color: #92959d; font-size: 13px; }
     #author-note form { margin: 0; }
@@ -34,10 +34,11 @@
       <form method="dialog"><button type="submit" class="tbtn title-panel-close" aria-label="关闭" title="关闭">×</button></form>
     </div>
     <div class="title-panel-body note-text" tabindex="0" role="region" aria-label="寄语正文">
-      <p>首先非常感谢大家对于《千年虫1》的喜爱。第一部里面的很多内容是照着我自己初高中的经历写的。写的时候只是想把记得的事写下来，没想到引起这么多玩家的共鸣，这让我挺开心的。如果你还没玩过第一部，那建议先去玩一下。</p>
-      <p>我是1999年年末出生的，一直很喜欢“千禧年”这三个字。第二部挑在11月27日发，正好是我生日，给自己留个纪念。这一部会收一点费用。做游戏的确是耗时耗力的工作，我后面也还想接着做下去。有一点收入，也算给自己一点继续做下去的动力。价格就照着生日，定成了11.27元。</p>
-      <p>序章、第一章和第二章都可以免费玩，先玩玩看，喜欢再买激活码就行。激活码在闲鱼搜“千年虫 2”，卖家是“鲨鱼 pku”，自动发货。一个码最多能在 5 个浏览器上激活。玩的时候请用普通窗口，别用无痕模式，不然窗口一关，激活和存档都留不住。</p>
-      <p>我们也有一个玩家QQ 群：<strong class="note-highlight">1130040971</strong>。也可以关注我的<strong class="note-highlight">小红书</strong>、<strong class="note-highlight">抖音</strong>和<strong class="note-highlight">b站</strong>账号（搜千年虫就可以找到）。</p>
+      <p>首先，非常感谢大家喜欢《千年虫1》。我是 1999 年出生的，千禧年对我来说一直有着特别的意义。这次带来的第二部，讲的是五个在少年宫一起上课的孩子的故事。选在 11 月 27 日发布，是因为这天刚好是我的生日，也算给自己留个纪念。</p>
+      <p>这一部会收一点费用。做游戏确实挺花时间和精力，我以后还想接着做下去，能有一点收入，也多一份动力。价格就照着生日，定成了 <strong class="note-highlight">11.27 元</strong>。</p>
+      <p>序章、第一章和第二章都可以免费玩。大家先玩玩看，喜欢再买激活码就行。在闲鱼搜 <strong class="note-highlight">“千年虫 2”</strong>，卖家是 <strong class="note-highlight">“鲨鱼 pku”</strong>，下单后会自动发货。一个码最多能在 5 个浏览器上激活。玩的时候记得用普通窗口。要是用了无痕模式，窗口一关，激活记录和存档就都留不住了。</p>
+      <p>我们也有一个玩家 QQ 群，群号是 <strong>1130040971</strong>。想关注我的话，在<strong>小红书</strong>、<strong>抖音</strong>和 <strong>B 站</strong>搜“千年虫”就能找到我。</p>
+      <p>还想特别谢谢两位玩家，<strong class="note-highlight">北大的茴香白菜同学</strong>和 <strong class="note-highlight">LYB 同学</strong>。做第二部的这段时间，他们给我提了不少建议，帮了我很多忙。</p>
       <p>希望你们也喜欢第二部，游戏愉快！</p>
       <div class="note-signature">Shark 于 北京大学<time datetime="2026-11-27">2026.11.27</time></div>
     </div>`;
