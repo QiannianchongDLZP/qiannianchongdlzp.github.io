@@ -3314,7 +3314,7 @@ const Y2K = (() => {
       const width = Math.max(220, Math.min(Number(rect[2]) || 560, dk.clientWidth - 10));
       const height = Math.max(140, Math.min(Number(rect[3]) || 400, dk.clientHeight - 10));
       win.el.style.width = width + 'px'; win.el.style.height = height + 'px';
-      win.el.style.left = Math.max(0, Math.min(Number(rect[0]) || 0, dk.clientWidth - width)) + 'px';
+      win.el.style.left = windowLeft(Number(rect[0]) || 0, width, dk.clientWidth) + 'px';
       win.el.style.top = Math.max(0, Math.min(Number(rect[1]) || 0, dk.clientHeight - height)) + 'px';
       win.toggleMax(narrow() || !!saved.max); win.refresh(true);
       const nodes = [win.body, ...win.body.querySelectorAll('*')];
@@ -5293,7 +5293,7 @@ const Y2K = (() => {
       if (!win.resetScroll) { body.scrollTop = st; body.scrollLeft = sl; } else { body.scrollTop = 0; body.scrollLeft = 0; win.resetScroll = false; }
     };
     el.addEventListener('pointerdown', e => { if (!e.target.closest('.tbb')) focusWin(win); }, true);
-    dragify(el, bar, win);
+    bar.addEventListener('dblclick', e => { if (!o.propertyPage && !e.target.closest('button')) win.toggleMax(); });
     resizify(el, el.querySelector('.grip'));
     if (o.propertyPage) {
       bar.querySelector('[aria-label="' + _t('最小化') + '"]').remove();
@@ -5310,23 +5310,79 @@ const Y2K = (() => {
     return win;
   }
   function focusWin(w) {
+    closeStart();
+    if (!w.min && w.el.classList.contains('active')) return;
     w.z = ++zTop; w.el.style.zIndex = w.z; w.min = false; w.el.hidden = false;
-    wins.forEach(x => x.el.classList.toggle('active', x === w));
-    renderTasks(); closeStart();
+    renderTasks();
   }
   function closeWin(w, force = false) { if (!force && w.requestClose) return w.requestClose(); if (w.body.querySelector('.pz[data-awaiting-ack]')) dirty(); w.interactionCleanup(); w.el.remove(); wins = wins.filter(x => x !== w); w.o.onClose && w.o.onClose(w); renderTasks(); }
   function closeAllWins() { wins.forEach(w => { w.interactionCleanup(); w.el.remove(); w.o.onClose && w.o.onClose(w); }); wins = []; }
-  function dragify(el, handle, win) {
-    handle.addEventListener('pointerdown', (e) => {
-      if (e.target.closest('button') || el.classList.contains('max') || (e.pointerType === 'mouse' && e.button !== 0)) return;
-      const dk = desktop(); const r = el.getBoundingClientRect(), dr = dk.getBoundingClientRect();
-      const ox = e.clientX - r.left, oy = e.clientY - r.top;
-      handle.setPointerCapture(e.pointerId);
-      const mv = (ev) => { el.style.left = Math.max(0, Math.min(Math.max(0, dr.width - r.width), ev.clientX - dr.left - ox)) + 'px'; el.style.top = Math.max(0, Math.min(dr.height - 24, ev.clientY - dr.top - oy)) + 'px'; };
-      const up = () => { handle.removeEventListener('pointermove', mv); handle.removeEventListener('pointerup', up); handle.removeEventListener('pointercancel', up); };
-      handle.addEventListener('pointermove', mv); handle.addEventListener('pointerup', up); handle.addEventListener('pointercancel', up);
-    });
-    handle.addEventListener('dblclick', (e) => { if (!win.o.propertyPage && !e.target.closest('button')) win.toggleMax(); });
+  function windowLeft(x, width, desktopWidth) {
+    // Keep enough of the title bar reachable even for a nearly desktop-wide window.
+    const visible = Math.min(144, width, desktopWidth);
+    return Math.max(visible - width, Math.min(desktopWidth - visible, x));
+  }
+  let draggingTitle = false;
+  function startTitleDrag(e) {
+    if (draggingTitle || !e.isPrimary || e.button !== 0) return;
+    const handle = e.target.closest?.('.titlebar');
+    if (!handle || e.target.closest('button')) return;
+    const el = handle.parentElement;
+    if (!el.matches('.win, .dlg98:not(.dlgph), .classic-viewer')) return;
+
+    const win = wins.find(w => w.el === el);
+    const container = el.closest('#desktop, #modal.pc-modal, .login98, .viewer') || document.documentElement;
+    const bounds = container.getBoundingClientRect();
+    const handleHeight = handle.getBoundingClientRect().height;
+    let rect = el.getBoundingClientRect();
+    let grabX = e.clientX - rect.left;
+    const grabY = e.clientY - rect.top;
+    // Centered dialogs keep their CSS transform and their offset from previous drags.
+    const [priorX, priorY = 0] = el.style.translate.split(' ').map(value => parseFloat(value) || 0);
+    let maximized = !!win && el.classList.contains('max'), moved = false;
+    let left, top;
+
+    e.preventDefault();
+    handle.setPointerCapture(e.pointerId);
+    draggingTitle = true;
+    el.style.willChange = 'translate';
+    function move(ev) {
+      if (ev.pointerId !== e.pointerId) return;
+      if (!moved && ev.clientX === e.clientX && ev.clientY === e.clientY) return;
+      if (maximized) {
+        if (Math.hypot(ev.clientX - e.clientX, ev.clientY - e.clientY) < 6) return;
+        const fraction = grabX / rect.width;
+        win.toggleMax(false);
+        rect = el.getBoundingClientRect();
+        grabX = fraction * rect.width;
+        maximized = false;
+      }
+      left = windowLeft(ev.clientX - bounds.left - grabX, rect.width, bounds.width);
+      top = Math.max(0, Math.min(bounds.height - handleHeight, ev.clientY - bounds.top - grabY));
+      const dx = priorX + left - (rect.left - bounds.left);
+      const dy = priorY + top - (rect.top - bounds.top);
+      el.style.translate = `${dx}px ${dy}px`;
+      moved = true;
+    }
+    const listeners = new AbortController();
+    function finish(ev) {
+      if (ev.type !== 'blur' && ev.pointerId !== e.pointerId) return;
+      if (ev.type === 'lostpointercapture' && ev.target !== handle && handle.isConnected) return;
+      if (ev.type === 'pointerup') move(ev);
+      if (win && moved) {
+        el.style.left = left + 'px';
+        el.style.top = top + 'px';
+        el.style.translate = '';
+      }
+      el.style.willChange = '';
+      listeners.abort();
+      draggingTitle = false;
+      if (handle.hasPointerCapture(e.pointerId)) handle.releasePointerCapture(e.pointerId);
+    }
+    const options = { capture: true, signal: listeners.signal };
+    document.addEventListener('pointermove', move, options);
+    for (const type of ['pointerup', 'pointercancel', 'lostpointercapture']) document.addEventListener(type, finish, options);
+    window.addEventListener('blur', finish, { signal: listeners.signal });
   }
   function resizify(el, grip) {
     grip.addEventListener('pointerdown', (e) => {
@@ -7614,6 +7670,7 @@ const Y2K = (() => {
     window.Y2KAudio?.setPrefs(audioPrefs());
     setInterval(audioSync, 400);
     guardControlClicks();
+    document.addEventListener('pointerdown', startTitleDrag);
     PATCHES.forEach(fn => fn(D));
     cleanStoredSaveData();
     const collection = meta();
@@ -7653,12 +7710,14 @@ const Y2K = (() => {
     window.addEventListener('pageshow', syncPlayClock);
     window.addEventListener('beforeunload', () => { if (S && !titleOn) writeSave('auto'); });
     window.addEventListener('resize', () => {
+      // Recenter dragged dialogs when the screen rotates or the browser changes size.
+      document.querySelectorAll('.dlg98, .classic-viewer').forEach(el => { if (el.style.translate) el.style.translate = ''; });
       const dialog = $('#modal.pc-modal'); if (dialog) positionPCDialog(dialog);
       if (!narrow() && ui.phoneOpen) togglePhone(false);
       const dk = desktop(); if (!dk) return;
       wins.forEach(w => {
         if (w.el.classList.contains('max')) return;
-        w.el.style.left = Math.max(0, Math.min(parseFloat(w.el.style.left) || 0, dk.clientWidth - w.el.offsetWidth)) + 'px';
+        w.el.style.left = windowLeft(parseFloat(w.el.style.left) || 0, w.el.offsetWidth, dk.clientWidth) + 'px';
         w.el.style.top = Math.max(0, Math.min(parseFloat(w.el.style.top) || 0, dk.clientHeight - w.el.offsetHeight)) + 'px';
       });
     });
