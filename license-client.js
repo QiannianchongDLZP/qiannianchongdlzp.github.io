@@ -69,5 +69,14 @@ bindTextInputs();
   const publicKey=await crypto.subtle.exportKey('jwk',pair.publicKey),c=await api('/api/challenge',{purpose,publicKey});const signature=await crypto.subtle.sign({name:'ECDSA',hash:'SHA-256'},pair.privateKey,new TextEncoder().encode(c.message));const encoded=btoa(String.fromCharCode(...new Uint8Array(signature))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');return api('/api/'+purpose,{id:c.id,signature:encoded,...(key?{key}:{})});
  }
  async function resume(){if(!await hasActivation())return false;const session=await api('/api/session');if(session.unlocked)return true;await prove('resume');return true;}
- window.QNC2License={api,prove,resume};
+ async function contentPermission(){
+  if(!await hasActivation())return null;
+  if(sessionStorage.getItem('qnc2-session')){
+   try{return await api('/api/content-key');}
+   catch(error){if(error.status!==401 && error.status!==403)throw error;}
+  }
+  await prove('resume');
+  return api('/api/content-key');
+ }
+ window.QNC2License={api,prove,resume,contentPermission};
 })();
