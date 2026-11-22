@@ -1880,7 +1880,7 @@ ul.bl-list{margin:0 0 10px;padding-left:1.4em;color:#aaa}
   .tm-caption { font-size: 13px; min-height: 0; }
   .time-machine button { padding-block: 3px; }
 }
-</style></head><body><noscript>请启用JavaScript以运行游戏。</noscript><script type="text/plain" id="trial-program">window.Y2K_LANGS=['zh'];window.Y2K_STATS_CONFIG={"endpoint":"https://qiannianchong-stats.chenhao2003.chatgpt.site/api/stats2","allowedOrigins":["https://qiannianchong2.chenhao2003.chatgpt.site","https://qiannianchongdlzp.github.io","https://qiannianchonggametwo.github.io","https://automatic-wildfowl-d0ch94a37e6e3-1533818985.tcloudbaseapp.com"],"game":"2-sixth-disk","leaderboardEndpoint":"https://qiannianchong-stats.chenhao2003.chatgpt.site/api/leaderboard?game=2-sixth-disk","showTitleStats":true};
+</style></head><body><noscript>请启用JavaScript以运行游戏。</noscript><script type="text/plain" id="trial-program">window.Y2K_LANGS=['zh'];window.Y2K_STATS_CONFIG={"endpoint":"https://qiannianchong-stats.chenhao2003.chatgpt.site/api/stats2","allowedOrigins":["https://qiannianchong2.chenhao2003.chatgpt.site","https://qiannianchongdlzp.github.io","https://qiannianchonggametwo.github.io","https://automatic-wildfowl-d0ch94a37e6e3-1533818985.tcloudbaseapp.com"],"game":"2-sixth-disk","leaderboardEndpoint":"https://qiannianchong-stats.chenhao2003.chatgpt.site/api/leaderboard?game=2-sixth-disk","showTitleStats":true,"showHiddenEndingOnLeaderboard":true};
 'use strict';
 // 只传递随机标识与游玩状态；与剧情、昵称和存档无关。
 window.Y2KStats = (() => {
@@ -2155,7 +2155,7 @@ window.Y2KStats = (() => {
       hideReview();
       grid.replaceChildren();
       for (const ending of endings) {
-        if (ending === 'H' && !hiddenUnlocked) continue;
+        if (ending === 'H' && !hiddenUnlocked && !config.showHiddenEndingOnLeaderboard) continue;
         const column = el('section', 'leaderboard-column'); column.dataset.ending = ending;
         column.append(el('h4', '', ending === 'H' ? t.hidden : t.ending + ending));
         const viewport = el('div', 'leaderboard-rows'); viewport.tabIndex = 0;
