@@ -613,9 +613,17 @@ table.det td.nm svg { width: 16px; height: 16px; }
 .endgrid div { padding: 8px 10px; border-radius: 6px; background: #1d2026; display: flex; justify-content: space-between; gap: 8px; }
 .endgrid div.no { color: #555; }
 
-#toast { position: fixed; left: 50%; bottom: 26px; transform: translateX(-50%); z-index: 9800; display: flex; flex-direction: column; gap: 6px; align-items: center; pointer-events: none; width: min(420px, calc(100% - 32px)); }
+#noticeStack { position: fixed; left: 50%; bottom: max(26px, env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); z-index: 9800; pointer-events: none; width: min(420px, calc(100% - 32px)); }
+#toast, #fragmentNotices { display: flex; flex-direction: column; gap: 6px; align-items: center; }
+#toast:not(:empty) + #fragmentNotices:not(:empty) { margin-top: 6px; }
 .tst { background: rgba(20,22,26,.95); color: #f0f0f0; border: 1px solid #3a3f4a; border-radius: 10px; padding: 9px 14px; font: 13px/1.5 var(--font-ph); box-shadow: 0 8px 24px rgba(0,0,0,.5); animation: tin .25s; text-align: center; }
 .tst.good { border-color: #3d8a5c; }
+.fragment-notice { display: flex; align-items: center; gap: 9px; max-width: 100%; border-color: #ab8c55; color: #fff4df; text-align: left; }
+.fragment-notice svg { display: block; width: 21px; height: 21px; }
+.fragment-notice small { white-space: nowrap; color: #e7c88c; font-variant-numeric: tabular-nums; }
+@media (max-width: 960px) {
+  body:has(#phone.open) #noticeStack:has(.fragment-notice) { bottom: calc(60px + env(safe-area-inset-bottom, 0px)); }
+}
 @keyframes tin { from { transform: translateY(10px); opacity: 0; } }
 .viewer { position: absolute; inset: 0; background: rgba(0,0,0,.88); display: grid; place-items: center; padding: max(12px, env(safe-area-inset-top)) max(12px, env(safe-area-inset-right)) max(12px, env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-left)); }
 .viewer-panel { width: min(1100px, 100%); height: 100%; min-height: 0; display: flex; flex-direction: column; background: #181b21; border: 1px solid #3a4150; border-radius: 8px; overflow: hidden; }
@@ -2935,13 +2943,15 @@ const Y2K = (() => {
     S.notes.push(id); S.noteCh[id] = S.chapter; S.newNotes++;
     toast(_t('笔记 · ') + clipText(strip(fmt(D.notes[id].text)), 34));
   }
+  function photoCount() { return Object.keys(D.collectibles).filter(id => S.collected.includes(id)).length; }
+  function photoTotal() { return D.trialLimit?.totalNotebookPages ?? Object.keys(D.collectibles).length; }
   function collectPhoto(id, notify = true) {
     const piece = D.collectibles[id];
     if (!piece || S.collected.includes(id) || !piece.parts.every(part => test(part.flag))) return false;
     S.collected.push(id);
     setFlag('col_' + id);
     document.querySelector('.fragment-dialog')?.dispatchEvent(new Event('fragmentchange'));
-    if (notify) toast(_t('收到照片碎片 · ') + esc(piece.title), 'good');
+    if (notify) showPhotoNotice(piece.title);
     return true;
   }
   function recordPhotoRewards(notify = true) {
@@ -3163,6 +3173,7 @@ const Y2K = (() => {
     clearTimeout(dirtyT); dirtyT = 0; clearTimeout(saveT); saveT = 0;
     closeAllWins(); closeOverlay(); closeModal(false);
     $('#toast')?.replaceChildren();
+    $('#fragmentNotices').replaceChildren();
     removeRetiredSaveData(o);
     restoreCollectedEndings(o);
     S = Object.assign(fresh(o.player), o);
@@ -3432,6 +3443,14 @@ const Y2K = (() => {
     box.append(el);
     while (box.children.length > 3) box.firstChild.remove();
     setTimeout(() => el.remove(), 3800);
+  }
+  function showPhotoNotice(title) {
+    const notice = h('div', { class: 'tst fragment-notice' },
+      h('span', { 'aria-hidden': 'true', html: icon('img') }),
+      h('span', { text: _t('发现照片碎片') + ' · ' + title }),
+      h('small', { text: photoCount() + ' / ' + photoTotal() }));
+    $('#fragmentNotices').append(notice);
+    setTimeout(() => notice.remove(), 5000);
   }
 
   // ============================================================
@@ -3804,8 +3823,7 @@ const Y2K = (() => {
           style: { left: (100*x/1774)+'%', top: (100*y/887)+'%', width: (100*w/1774)+'%', height: (100*hgt/887)+'%' } }));
         displayed.add(id);
       }
-      const total = D.trialLimit?.totalNotebookPages ?? Object.keys(D.collectibles).length;
-      status.textContent = '已收集 ' + displayed.size + ' / ' + total;
+      status.textContent = '已收集 ' + displayed.size + ' / ' + photoTotal();
       canvas.dataset.empty = String(!displayed.size);
     }
     refresh();
@@ -4856,8 +4874,7 @@ const Y2K = (() => {
       const reading = D.readings.find(r => r.id === ui.reading && readingAvailable(r));
       title(reading ? reading.title : _t('笔记'), currentChapterLabel(), reading ? () => { ui.reading = null; renderPhone(); } : null);
       const asks = Object.entries(D.puzzles).filter(([id, p]) => p.ask && test(p.requires) && !solved(id));
-      const pagesFound = [...new Set(S.collected)].filter(id => Object.hasOwn(D.collectibles, id));
-      const pageTotal = D.trialLimit?.totalNotebookPages ?? Object.keys(D.collectibles).length;
+      const pageTotal = photoTotal();
       if (ui.noteTab === 'poems') ui.noteTab = 'questions';
       const controls = h('div', { class: 'ph-note-controls' });
       const pages = h('div', { class: 'ph-note-tabs', 'aria-label': _t('笔记') });
@@ -4867,7 +4884,7 @@ const Y2K = (() => {
         pages.append(h('button', { type: 'button', class: key === ui.noteTab ? 'on' : '', 'aria-pressed': key === ui.noteTab ? 'true' : 'false', onclick: () => { ui.noteTab = key; ui.reading = null; renderPhone(); } }, h('span', { text: label }), count == null ? null : h('small', { text: count })));
       });
       if (pageTotal) pages.append(h('button', { type: 'button', 'aria-haspopup': 'dialog', onclick: openPhotoCollection },
-        h('span', { text: D.collectLabel }), h('small', { text: pagesFound.length + '/' + pageTotal })));
+        h('span', { text: D.collectLabel }), h('small', { text: photoCount() + '/' + pageTotal })));
       controls.append(pages); body.append(controls);
       if (ui.noteTab === 'questions') {
         renderJournal(body);
@@ -5025,6 +5042,7 @@ const Y2K = (() => {
     tickPlay(); playClockRunning = false;
     window.Y2KStats?.setPlaying(false);
     titleOn = true; sessionScreen('title'); closeOverlay(); closeModal();
+    $('#fragmentNotices').replaceChildren();
     clearTimers(); running = {}; typing = {};
     clearTimeout(dirtyT); dirtyT = 0;
     clearTimeout(saveT); saveT = 0;
@@ -7799,7 +7817,9 @@ const Y2K = (() => {
         h('div', { id: 'deskwrap' }, h('div', { id: 'monitor' }, h('div', { id: 'screen' }), h('div', { class: 'brand', text: _t('老K工作室 · 读盘机') }), h('div', { class: 'led', id: 'led' }))),
         h('div', { id: 'phone' }, h('div', { class: 'ph-status', id: 'phStatus' }), h('div', { class: 'ph-main' }, h('div', { class: 'ph-head', id: 'phHead' }), h('div', { class: 'ph-body', id: 'phBody' }), h('div', { class: 'ph-choices', id: 'phFoot', hidden: true })), h('div', { class: 'ph-tabs', id: 'phTabs' }))),
       controlButton({ id: 'phoneFab', 'aria-label': _t('手机') }, () => togglePhone()),
-      h('div', { id: 'modal' }), h('div', { id: 'overlay' }), h('div', { id: 'title', class: 'title', hidden: true }), h('div', { id: 'toast' }));
+      h('div', { id: 'modal' }), h('div', { id: 'overlay' }), h('div', { id: 'title', class: 'title', hidden: true }),
+      h('div', { id: 'noticeStack' }, h('div', { id: 'toast' }),
+        h('div', { id: 'fragmentNotices', role: 'log', 'aria-label': '照片碎片', 'aria-live': 'polite', 'aria-relevant': 'additions' })));
     ['pointerdown', 'keydown', 'wheel', 'touchstart'].forEach(ev => document.addEventListener(ev, resetIdle, { passive: true }));
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') { if ($('#startmenu')) { closeStart(); $('#startbtn').focus(); } else if (ctxEl) closeCtx(); else if ($('#modal').children.length) closeModal(); else if (overlay().classList.contains('on') && overlay().querySelector('.board, .viewer, .fragment-dialog')) { closeOverlay(); showCards(); renderAll(); } }
