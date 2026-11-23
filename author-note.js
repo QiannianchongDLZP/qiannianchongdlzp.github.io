@@ -36,7 +36,7 @@
     <div class="title-panel-body note-text" tabindex="0" role="region" aria-label="寄语正文">
       <p>首先，非常感谢大家喜欢《千年虫1》。我是 1999 年出生的，千禧年对我来说一直有着特别的意义。这次带来的第二部，讲的是五个在少年宫一起上课的孩子的故事。选在 11 月 27 日发布，是因为这天刚好是我的生日，也算给自己留个纪念。</p>
       <p>这一部会收一点费用。做游戏确实挺花时间和精力，我以后还想接着做下去，能有一点收入，也多一份动力。价格就照着生日，定成了 <strong class="note-highlight">11.27 元</strong>。</p>
-      <p>序章、第一章和第二章都可以免费玩。大家先玩玩看，喜欢再买激活码就行。在闲鱼搜 <strong class="note-highlight">“千年虫 2”</strong>，卖家是 <strong class="note-highlight">“鲨鱼 pku”</strong>，下单后会自动发货。一个码最多能在 5 个浏览器上激活。玩的时候记得用普通窗口。要是用了无痕模式，窗口一关，激活记录和存档就都留不住了。</p>
+      <p>从序章到第三章都可以免费玩。大家先玩玩看，喜欢再买激活码就行。在闲鱼搜 <strong class="note-highlight">“千年虫 2”</strong>，卖家是 <strong class="note-highlight">“鲨鱼 pku”</strong>，下单后会自动发货。一个码最多能在 5 个浏览器上激活。玩的时候记得用普通窗口。要是用了无痕模式，窗口一关，激活记录和存档就都留不住了。</p>
       <p>我们也有一个玩家 QQ 群，群号是 <strong>1130040971</strong>。想关注我的话，在<strong>小红书</strong>、<strong>抖音</strong>和 <strong>B 站</strong>搜“千年虫”就能找到我。</p>
       <p>还想特别谢谢两位玩家，<strong class="note-highlight">北大的茴香白菜同学</strong>和 <strong class="note-highlight">LYB 同学</strong>。做第二部的这段时间，他们给我提了不少建议，帮了我很多忙。</p>
       <p>希望你们也喜欢第二部，游戏愉快！</p>
