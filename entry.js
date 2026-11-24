@@ -8,6 +8,9 @@
   const startup = document.getElementById('startup');
   let authorized = false;
   let startupMessage = '';
+  // Returning players can check the small release index during license verification.
+  const earlyIndex = (pendingFull || sessionStorageSafe('qnc2-session')) && location.protocol !== 'file:'
+    ? readIndex('./package-config.js').catch(() => null) : null;
 
   function sessionStorageSafe(name) {
     try { return sessionStorage.getItem(name); } catch { return null; }
@@ -60,7 +63,7 @@
     const bytes = await verifiedBytes(response, release);
     if (cache) {
       try {
-        await cache.put(slot, new Response(bytes, {headers: {'X-QNC2-Digest': release.sha256}}));
+        void cache.put(slot, new Response(bytes, {headers: {'X-QNC2-Digest': release.sha256}})).catch(() => {});
       } catch { /* Storage may be full or disabled. The downloaded bytes are usable. */ }
     }
     return bytes;
@@ -75,7 +78,7 @@
   async function loadPackage() {
     let release = window.QNC2_GAME_PACKAGE;
     try {
-      release = await readIndex('./package-config.js');
+      release = (await earlyIndex) || await readIndex('./package-config.js');
       return await readPackage(release, './' + release.file);
     } catch { /* Retry against a fresh index when a deployment or stale CDN entry intervenes. */ }
     const refresh = '?v=' + Date.now();
