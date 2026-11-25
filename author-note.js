@@ -18,6 +18,11 @@
     }
     #author-note p { margin: 0 0 16px; }
     #author-note .note-highlight { color: #ffa34d; }
+    #author-note .note-sites { margin: 0 0 16px; }
+    #author-note .note-sites p { display: flex; align-items: baseline; gap: .45em; margin: 4px 0; }
+    #author-note .note-sites strong { flex: none; }
+    #author-note .note-sites a { min-width: 0; color: #ffb000; text-decoration: underline; overflow-wrap: anywhere; }
+
     #author-note .note-signature { text-align: right; }
     #author-note time { display: block; color: #92959d; font-size: 13px; }
     #author-note form { margin: 0; }
@@ -37,6 +42,11 @@
       <p>首先，非常感谢大家喜欢《千年虫1》。我是 1999 年出生的，千禧年对我来说一直有着特别的意义。这次带来的第二部，讲的是五个在少年宫一起上课的孩子的故事。选在 11 月 27 日发布，是因为这天刚好是我的生日，也算给自己留个纪念。</p>
       <p>这一部会收一点费用。做游戏确实挺花时间和精力，我以后还想接着做下去，能有一点收入，也多一份动力。价格就照着生日，定成了 <strong class="note-highlight">11.27 元</strong>。</p>
       <p>从序章到第三章都可以免费玩。大家先玩玩看，喜欢再买激活码就行。在闲鱼搜 <strong class="note-highlight">“千年虫 2”</strong>，卖家是 <strong class="note-highlight">“鲨鱼 pku”</strong>，下单后会自动发货。一个码最多能在 5 个浏览器上激活。玩的时候记得用普通窗口。要是用了无痕模式，窗口一关，激活记录和存档就都留不住了。</p>
+      <p>《千年虫 2》有两个游玩网址，<strong class="note-highlight">同一个激活码在两个网址都能用。</strong>推荐地址可以查看在线人数和排行榜。如果打不开，可以用国内备用地址。</p>
+      <div class="note-sites">
+        <p><strong>推荐地址：</strong><a href="https://qiannianchongdlzp.github.io/" target="_blank" rel="noopener noreferrer">https://qiannianchongdlzp.github.io/</a></p>
+        <p><strong>备用地址：</strong><a href="https://automatic-wildfowl-d0ch94a37e6e3-1533818985.tcloudbaseapp.com/" target="_blank" rel="noopener noreferrer">https://automatic-wildfowl-d0ch94a37e6e3-1533818985.tcloudbaseapp.com/</a></p>
+      </div>
       <p>我们也有一个玩家 QQ 群，群号是 <strong>1130040971</strong>。想关注我的话，在<strong>小红书</strong>、<strong>抖音</strong>和 <strong>B 站</strong>搜“千年虫”就能找到我。</p>
       <p>还想特别谢谢两位玩家，<strong class="note-highlight">北大的茴香白菜同学</strong>和 <strong class="note-highlight">LYB 同学</strong>。做第二部的这段时间，他们给我提了不少建议，帮了我很多忙。</p>
       <p>希望你们也喜欢第二部，游戏愉快！</p>
