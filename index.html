@@ -321,7 +321,11 @@ table.det td.nm svg { width: 16px; height: 16px; }
 .dlg98 .field-choices { grid-column: 1 / -1; border: 0; margin: 4px 0 0; padding: 0; min-width: 0; }
 .dlg98 .field-choices legend { padding: 0; margin-bottom: 4px; }
 .dlg98 .fields .f98 { min-width: 0; box-sizing: border-box; width: 100%; }
-.dlg98 .fields { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 6px 8px; align-items: center; }
+.dlg98 .fields { display: grid; grid-template-columns: minmax(0, 1fr) minmax(8em, 1fr); gap: 6px 8px; align-items: center; }
+@media (max-width: 480px) {
+  .dlg98 .fields { grid-template-columns: minmax(0, 1fr); }
+  .dlg98 .fields > label:not(:first-child) { margin-top: 4px; }
+}
 .dlgph { background: #171a20; color: #e9eaee; border-radius: 16px; border: 1px solid #333a46; box-shadow: 0 24px 70px rgba(0,0,0,.6); padding: 0; font: 14px/1.6 var(--font-ph); width: min(440px, calc(100% - 24px)); }
 .dlgph .titlebar { background: none !important; color: #e9eaee; height: auto; padding: 14px 16px 0; font-size: 15px; }
 .dlgph .titlebar svg { display: none; }
@@ -1840,11 +1844,11 @@ ul.bl-list{margin:0 0 10px;padding-left:1.4em;color:#aaa}
 @media(max-width:600px){:lang(en) .title h1{font-size:clamp(30px,8vw,44px);line-height:1.15;letter-spacing:.08em}}
 
 .title .title-actions{display:flex;align-items:center;flex-wrap:wrap;gap:8px;min-width:0}
-.title .title-topbar :is(.author-note-entry,.feedback-entry-button,.support-entry){position:static;inset:auto;flex:none;min-height:44px;margin:0;padding:9px 16px;font-size:14px;letter-spacing:.06em;white-space:nowrap;background:rgba(43,36,23,.9);border-color:#9e7c32;color:#edd49b}
-.title :is(.author-note-entry,.feedback-entry-button):is(:hover,:focus-visible){color:#fff1c4;background:#3a2f1b;outline:2px solid #f1d28f;outline-offset:3px}
+.title .title-topbar :is(.author-note-entry,.feedback-entry-button,.song-entry,.support-entry){position:static;inset:auto;flex:none;min-height:44px;margin:0;padding:9px 16px;font-size:14px;letter-spacing:.06em;white-space:nowrap;background:rgba(43,36,23,.9);border-color:#9e7c32;color:#edd49b}
+.title :is(.author-note-entry,.feedback-entry-button,.song-entry):is(:hover,:focus-visible){color:#fff1c4;background:#3a2f1b;outline:2px solid #f1d28f;outline-offset:3px}
 .ending .support-entry { color: var(--author-accent); border-color: currentColor; background: #342115; }
 .ending .support-entry:is(:hover, :focus-visible) { background: #492a16; outline: 2px solid currentColor; outline-offset: 3px; }
-@media(max-width:600px){.title .title-topbar :is(.author-note-entry,.feedback-entry-button,.support-entry){font-size:13px;padding:8px 12px}}
+@media(max-width:600px){.title .title-topbar :is(.author-note-entry,.feedback-entry-button,.song-entry,.support-entry){font-size:13px;padding:8px 12px}}
 
 .title .menu { margin-top: clamp(0px, 1.4vh, 14px); }
 .unlock-form { display: grid; gap: 10px; }
@@ -4154,6 +4158,7 @@ const Y2K = (() => {
   function replayEnding(id, opener) {
     // 回看只读取解锁记录，不能重新触发结局、存档或成绩提交。
     if (!meta().endings?.[id] || !D.endings[id] || $('.ending-replay')) return;
+    stopTitleSong();
     tickPlay(); playClockRunning = false;
     let cleanupMemory = () => {};
     const close = () => { el.remove(); cleanupMemory?.(); syncPlayClock(); if (opener?.isConnected) opener.focus({ preventScroll: true }); };
@@ -5541,7 +5546,45 @@ const Y2K = (() => {
   // 标题画面
   // ============================================================
   let titleOn = false;
+  let titleSong = null;
+  function stopTitleSong() {
+    if (!titleSong) return;
+    const { audio, button } = titleSong;
+    titleSong = null;
+    audio.onerror = audio.onended = null;
+    audio.pause();
+    audio.removeAttribute('src');
+    audio.load();
+    button.textContent = '《换我等你》';
+    button.setAttribute('aria-pressed', 'false');
+  }
+  function titleSongButton() {
+    return controlButton({ class: 'tbtn song-entry', text: '《换我等你》', 'aria-pressed': 'false', 'aria-haspopup': 'dialog' }, async event => {
+      if (titleSong) { stopTitleSong(); return; }
+      const button = event.currentTarget;
+      const audio = new Audio();
+      titleSong = { audio, button };
+      button.textContent = '停止播放';
+      button.setAttribute('aria-pressed', 'true');
+      audio.onended = () => { if (titleSong?.audio === audio) stopTitleSong(); };
+      const failed = () => {
+        if (titleSong?.audio !== audio) return;
+        stopTitleSong();
+        toast('歌曲播放失败，请再试一次。');
+      };
+      audio.onerror = failed;
+      openEndingLyrics(event);
+      try {
+        const source = window.Y2KAudio.endingSongUrl();
+        const url = typeof source === 'string' ? source : await source;
+        if (titleSong?.audio !== audio) return;
+        audio.src = url;
+        await audio.play();
+      } catch { failed(); }
+    });
+  }
   function showTitle() {
+    stopTitleSong();
     if (S && !titleOn && lastTick) writeSave('auto');
     tickPlay(); playClockRunning = false;
     window.Y2KStats?.setPlaying(false);
@@ -5586,6 +5629,8 @@ const Y2K = (() => {
         window.Y2KFeedback.mount(titlePanel(panel, _t('评分与留言'), event.currentTarget), LANG);
       }));
     }
+    const collected = meta().endings || {};
+    if (!D.trialLimit && collected.C && $('#ending-c-song')) actions.append(titleSongButton());
     if ($('#author-support-codes')) actions.append(supportAuthorButton());
     const notice = $('#release-notice');
     const noticeButton = notice && controlButton({ class: 'release-notice-entry', text: '游戏公告', 'aria-haspopup': 'dialog' }, event => {
@@ -5596,9 +5641,10 @@ const Y2K = (() => {
     });
     tl.append(h('div', { class: 'title-topbar' }, actions, langs), h('div', { class: 'title-content' }, clk, h('h1', { html: _t('千年<span>虫</span> 2') }), h('div', { class: 'sub', text: D.trialLimit?.standalone ? '未寄出的明天 · 试玩版（序章至第三章）' : _t('未寄出的明天 · 梧城少年宫 · 1999—2009') }), menu, panel, window.QNC2TrialOnline?.mount() || (stats?.showOnTitle ? stats.mount(LANG) : null),
       h('div', { class: 'foot' }, h('div', { class: 'community' }, _t('QQ群') + '：1130040971', noticeButton), h('div', { text: _t('本作纯属虚构 · 建议用电脑上的 Chrome / Edge 打开 · 进度自动保存在本浏览器') }))));
-    const collected = meta().endings || {};
     if (!D.trialLimit && window.openTimeMachine && ['A', 'B', 'C', 'H'].every(id => collected[id])) {
-      tl.append(h('button', { class: 'tbtn time-machine-entry', text: '时光机', 'aria-haspopup': 'dialog', onclick: e => window.openTimeMachine(e.currentTarget) }));
+      tl.append(h('button', { class: 'tbtn time-machine-entry', text: '时光机', 'aria-haspopup': 'dialog', onclick: e => {
+        stopTitleSong(); window.openTimeMachine(e.currentTarget);
+      } }));
     }
   }
   function showReleaseNoticeOnce() {
@@ -5645,7 +5691,7 @@ const Y2K = (() => {
     panel.append(form);
     if (!touchKeyboard() && !authorized) input.focus();
   }
-  function hideTitle() { titleOn = false; sessionScreen('game'); syncPlayClock(); const tl = $('#title'); tl.hidden = true; tl.innerHTML = ''; tl.classList.remove('panel-open'); window.Y2KStats?.setPlaying(true); showCards(); }
+  function hideTitle() { stopTitleSong(); titleOn = false; sessionScreen('game'); syncPlayClock(); const tl = $('#title'); tl.hidden = true; tl.innerHTML = ''; tl.classList.remove('panel-open'); window.Y2KStats?.setPlaying(true); showCards(); }
   function titlePanel(host, title, opener) {
     host.innerHTML = '';
     const tl = $('#title'); tl.classList.add('panel-open');
@@ -8529,7 +8575,7 @@ const Y2K = (() => {
     setInterval(() => { if (!S) return; renderTray(); const st = $('#phStatus'); if (st) { const t = phoneNow(); st.querySelector('b') && (st.querySelector('b').textContent = t.hm); } }, 15000);
     setInterval(() => { if (S && !titleOn) { tickPlay(); writeSave('auto'); } }, 30000);
     document.addEventListener('visibilitychange', () => { syncPlayClock(); if (S && !titleOn) writeSave('auto'); });
-    window.addEventListener('pagehide', () => { if (S && !titleOn) writeSave('auto'); playClockRunning = false; });
+    window.addEventListener('pagehide', () => { stopTitleSong(); if (S && !titleOn) writeSave('auto'); playClockRunning = false; });
     window.addEventListener('pageshow', syncPlayClock);
     window.addEventListener('beforeunload', () => { if (S && !titleOn) writeSave('auto'); });
     window.addEventListener('resize', () => {
@@ -10900,11 +10946,11 @@ const Y2K2_PHOTOS = {"rooftop-1999":"data:image/webp;base64,UklGRmjLAgBXRUJQVlA4
         answerSet: ['队伍先停，门里的人随后叫孟凡别开门。', '小川先松开袖口，白露后来才拉开孟凡。'],
         hints: ['声音里能分出喊停和劝阻的先后。谁先松手，得靠当时抓着那只手的人。', '降噪录音01:09:40与01:09:44隔了四秒；翻《门.txt》找孟凡的袖口和白露的手。', '选“队伍先停，门里的人随后叫孟凡别开门”和“小川先松开袖口，白露后来才拉开孟凡”。'],
         solvedText: '录音里先是喊停，然后才是门里那句“别开，让小孩先过”。孟凡在《门.txt》里写，袖口是先松开的，白露随后才拉他。', onSolve: { note: 'n_who' } },
-      c5_door: { difficulty: '中等', kind: 'multi', ask: true, title: '表彰材料', requires: 'solved_c5_who & seen_v2003b',
+      c5_door: { difficulty: '中等', kind: 'multi', ask: true, workbench: true, fieldFeedback: true, title: '表彰材料', requires: 'solved_c5_who & seen_v2003b',
         prompt: '报上说李静关上了门，把孩子们带了出去。仔细听门口那段录音：关门声过后，是谁在领队？过了多久才听见李静说最后一个孩子过去了？',
         fields: [
-          { label: '闷响过后，出声领着队伍往下走的是', answers: ['米乐', Q.nick.mile] },
-          { label: '从闷响到李静喊“最后一个过去了”，两声相隔几秒', answers: ['40', '40秒', '四十', '四十秒'] },
+          { label: '闷响后领队的人', answers: ['米乐', Q.nick.mile] },
+          { label: '两声相隔（秒）', answers: ['40', '40秒', '四十', '四十秒'] },
         ],
         hints: ['把降噪那一分钟从头听：门是什么时候合上的？那时候谁在领孩子走？李静是什么时候到平台的？', '01:09:50，一声闷响，紧跟着是米乐的“跟着我，扶好”；01:10:30，才听到李静喊“最后一个过去了”。', '答案：米乐；40秒。'],
         solvedText: '01:09:50，一声闷响，接着是米乐的“跟着我，扶好”。01:10:30才听到李静报队尾。她亲眼看见了什么，还得问她。', onSolve: { note: 'n_c5door' } },
