@@ -602,6 +602,7 @@ table.det td.nm svg { width: 16px; height: 16px; }
   border-radius: 10px;
 }
 .ending-lyrics-dialog[open], .author-support-dialog[open] { display: flex; flex-direction: column; }
+.ending-lyrics-dialog { max-width: none; }
 .ending-lyrics-dialog::backdrop, .author-support-dialog::backdrop { background: rgb(0 0 0 / 72%); }
 .author-support-dialog { width: min(600px, calc(100% - 24px)); }
 .support-message { flex: none; margin: 14px 12px 0; text-align: center; font-size: 15px; line-height: 1.5; }
@@ -616,18 +617,11 @@ table.det td.nm svg { width: 16px; height: 16px; }
   .support-codes { grid-template-columns: minmax(0, 230px); justify-content: center; }
 }
 .ending-lyrics-dialog .song-lyrics {
-  min-height: 0;
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  padding: 20px clamp(16px, 5vw, 36px) 24px;
-  font: 16px/1.9 "Songti SC", SimSun, serif;
-  text-align: left;
-  color: #e7e2d7;
+  white-space: pre-line;
+  text-align: center;
+  font: clamp(20px, 2vw, 22px)/1.85 var(--font-ph);
   user-select: text;
 }
-.song-lyrics p { margin: 0; white-space: pre-line; }
-.song-lyrics p + p { margin-block-start: 2lh; }
-.song-lyrics p + p:last-child { margin-block-start: 1lh; }
 .endgrid { display: grid; gap: 6px; margin: 8px 0; }
 .endgrid div { padding: 8px 10px; border-radius: 6px; background: #1d2026; display: flex; justify-content: space-between; gap: 8px; }
 .endgrid div.no { color: #555; }
@@ -4075,7 +4069,6 @@ const Y2K = (() => {
     };
   }
   function openEndingLyrics(event) {
-    const body = h('div', { class: 'song-lyrics', tabindex: 0 });
     const verses = [
       `我们把明天说得那么轻，
 仿佛谁都能一直年轻。
@@ -4104,7 +4097,7 @@ const Y2K = (() => {
       `这一次，我先到。
 你慢慢来。`
     ];
-    for (const text of verses) body.append(h('p', { text }));
+    const body = h('div', { class: 'title-panel-body song-lyrics', lang: 'zh-CN', tabindex: 0, text: verses.join('\n\n') });
     openReadingDialog(event.currentTarget, 'ending-lyrics', '《换我等你》', body);
   }
   function supportAuthorButton() {
